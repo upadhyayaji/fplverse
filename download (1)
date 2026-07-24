@@ -1,0 +1,321 @@
+#!/usr/bin/env python3
+"""Collect Fantasy Premier League manager history for FPLVerse.
+
+The collector uses the public JSON responses used by the official FPL site.
+It can discover managers from one classic mini-league, accept explicit entry
+IDs, or combine both sources.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import sys
+import time
+from dataclasses import dataclass
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Iterable
+
+import requests
+
+BASE_URL = "https://fantasy.premierleague.com/api"
+DEFAULT_CONFIG = Path("config/fplverse.json")
+DEFAULT_OUTPUT = Path("data/managers.json")
+
+
+class CollectorError(RuntimeError):
+    """Raised for a user-actionable collector failure."""
+
+
+@dataclass(frozen=True)
+class Settings:
+    enabled: bool
+    season: str
+    league_id: int | None
+    manager_ids: tuple[int, ...]
+    aliases: dict[str, str]
+    publish_real_manager_names: bool
+    request_delay_seconds: float
+
+
+class FPLClient:
+    def __init__(self, delay_seconds: float = 0.2) -> None:
+        self.delay_seconds = max(0.0, delay_seconds)
+        self.session = requests.Session()
+        self.session.headers.update(
+            {
+                "Accept": "application/json",
+                "User-Agent": "FPLVerse/0.1 (+https://github.com/upadhyayaji/fplverse)",
+            }
+        )
+
+    def get_json(self, path: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
+        url = f"{BASE_URL}/{path.lstrip('/')}"
+        last_error: Exception | None = None
+
+        for attempt in range(1, 5):
+            try:
+                response = self.session.get(url, params=params, timeout=30)
+                if response.status_code == 429:
+                    wait = min(20, attempt * 4)
+                    print(f"Rate limited by FPL. Retrying in {wait}s...", file=sys.stderr)
+                    time.sleep(wait)
+                    continue
+                response.raise_for_status()
+                payload = response.json()
+                if not isinstance(payload, dict):
+                    raise CollectorError(f"Unexpected response shape from {url}")
+                if self.delay_seconds:
+                    time.sleep(self.delay_seconds)
+                return payload
+            except (requests.RequestException, ValueError, CollectorError) as exc:
+                last_error = exc
+                if attempt < 4:
+                    time.sleep(attempt * 2)
+
+        raise CollectorError(f"Could not retrieve {url}: {last_error}")
+
+
+def load_settings(path: Path) -> Settings:
+    if not path.exists():
+        raise CollectorError(f"Configuration file not found: {path}")
+
+    raw = json.loads(path.read_text(encoding="utf-8"))
+    league_id = raw.get("league_id")
+    manager_ids = raw.get("manager_ids", [])
+
+    try:
+        parsed_league_id = int(league_id) if league_id not in (None, "", 0) else None
+        parsed_manager_ids = tuple(
+            dict.fromkeys(int(value) for value in manager_ids if value not in (None, "", 0))
+        )
+    except (TypeError, ValueError) as exc:
+        raise CollectorError("league_id and manager_ids must be numeric.") from exc
+
+    aliases = raw.get("aliases") or {}
+    if not isinstance(aliases, dict):
+        raise CollectorError("aliases must be a JSON object mapping entry IDs to display names.")
+
+    return Settings(
+        enabled=bool(raw.get("enabled", False)),
+        season=str(raw.get("season") or "FPL season"),
+        league_id=parsed_league_id,
+        manager_ids=parsed_manager_ids,
+        aliases={str(k): str(v) for k, v in aliases.items()},
+        publish_real_manager_names=bool(raw.get("publish_real_manager_names", True)),
+        request_delay_seconds=float(raw.get("request_delay_seconds", 0.2)),
+    )
+
+
+def discover_league_entries(client: FPLClient, league_id: int) -> list[int]:
+    entries: list[int] = []
+    page = 1
+
+    while True:
+        payload = client.get_json(
+            f"leagues-classic/{league_id}/standings/",
+            params={"page_standings": page},
+        )
+        standings = payload.get("standings") or {}
+        results = standings.get("results") or []
+
+        for row in results:
+            entry = row.get("entry")
+            if entry is not None:
+                entries.append(int(entry))
+
+        if not standings.get("has_next"):
+            break
+        page += 1
+
+    if not entries:
+        raise CollectorError(
+            f"No managers were found in classic league {league_id}. "
+            "Check that it is a classic mini-league ID."
+        )
+
+    return list(dict.fromkeys(entries))
+
+
+def manager_display_name(
+    entry_id: int,
+    profile: dict[str, Any],
+    settings: Settings,
+) -> str:
+    alias = settings.aliases.get(str(entry_id))
+    if alias:
+        return alias
+
+    if not settings.publish_real_manager_names:
+        return f"Manager {entry_id}"
+
+    full_name = " ".join(
+        part.strip()
+        for part in (
+            str(profile.get("player_first_name") or ""),
+            str(profile.get("player_last_name") or ""),
+        )
+        if part.strip()
+    )
+    return full_name or f"Manager {entry_id}"
+
+
+def normalize_history(history_payload: dict[str, Any]) -> list[dict[str, Any]]:
+    rows = history_payload.get("current") or []
+    normalized: list[dict[str, Any]] = []
+
+    for row in rows:
+        event = row.get("event")
+        if event is None:
+            continue
+        normalized.append(
+            {
+                "gameweek": int(event),
+                "points": int(row.get("points") or 0),
+                "total_points": int(row.get("total_points") or 0),
+                "overall_rank": int(row.get("overall_rank") or 0),
+                "gameweek_rank": int(row.get("rank") or 0),
+                "transfers": int(row.get("event_transfers") or 0),
+                "transfer_cost": int(row.get("event_transfers_cost") or 0),
+                "points_on_bench": int(row.get("points_on_bench") or 0),
+                "team_value": int(row.get("value") or 0),
+                "bank": int(row.get("bank") or 0),
+            }
+        )
+
+    normalized.sort(key=lambda item: item["gameweek"])
+    return normalized
+
+
+def collect_manager(
+    client: FPLClient,
+    entry_id: int,
+    settings: Settings,
+) -> dict[str, Any]:
+    profile = client.get_json(f"entry/{entry_id}/")
+    history_payload = client.get_json(f"entry/{entry_id}/history/")
+    history = normalize_history(history_payload)
+
+    if not history:
+        raise CollectorError(
+            f"Entry {entry_id} returned no gameweek history. "
+            "The season may have rolled over, or the entry ID may be incorrect."
+        )
+
+    return {
+        "id": entry_id,
+        "name": manager_display_name(entry_id, profile, settings),
+        "team_name": str(profile.get("name") or f"Entry {entry_id}"),
+        "joined_time": profile.get("joined_time"),
+        "started_event": profile.get("started_event"),
+        "current_event": profile.get("current_event"),
+        "history": history,
+    }
+
+
+def write_payload(path: Path, payload: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    temporary.write_text(
+        json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+    temporary.replace(path)
+
+
+def archive_payload(output_path: Path, payload: dict[str, Any]) -> Path:
+    stamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H-%M-%SZ")
+    archive_path = output_path.parent / "archive" / f"{stamp}.json"
+    write_payload(archive_path, payload)
+    return archive_path
+
+
+def resolve_entry_ids(client: FPLClient, settings: Settings) -> list[int]:
+    entries: list[int] = list(settings.manager_ids)
+    if settings.league_id is not None:
+        entries.extend(discover_league_entries(client, settings.league_id))
+    return list(dict.fromkeys(entries))
+
+
+def run(config_path: Path, output_path: Path, force: bool) -> int:
+    settings = load_settings(config_path)
+
+    if not settings.enabled and not force:
+        print(
+            "FPLVerse collection is disabled. Edit config/fplverse.json and set "
+            '"enabled": true after adding a league_id or manager_ids.'
+        )
+        return 0
+
+    client = FPLClient(settings.request_delay_seconds)
+    entry_ids = resolve_entry_ids(client, settings)
+
+    if not entry_ids:
+        raise CollectorError(
+            "No managers are configured. Add league_id and/or manager_ids "
+            "to config/fplverse.json."
+        )
+
+    print(f"Collecting {len(entry_ids)} manager(s)...")
+    managers = []
+    failures = []
+
+    for position, entry_id in enumerate(entry_ids, start=1):
+        print(f"[{position}/{len(entry_ids)}] Entry {entry_id}")
+        try:
+            managers.append(collect_manager(client, entry_id, settings))
+        except CollectorError as exc:
+            failures.append({"entry_id": entry_id, "error": str(exc)})
+            print(f"Warning: {exc}", file=sys.stderr)
+
+    if not managers:
+        raise CollectorError("No manager history could be collected.")
+
+    managers.sort(
+        key=lambda manager: manager["history"][-1].get("total_points", 0),
+        reverse=True,
+    )
+
+    payload = {
+        "season": settings.season,
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "source": "Fantasy Premier League public JSON responses",
+        "league_id": settings.league_id,
+        "manager_count": len(managers),
+        "failures": failures,
+        "managers": managers,
+    }
+
+    write_payload(output_path, payload)
+    archive_path = archive_payload(output_path, payload)
+    print(f"Wrote {output_path}")
+    print(f"Archived snapshot at {archive_path}")
+
+    return 0
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Collect FPL data for FPLVerse.")
+    parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
+    parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Run even when the configuration has enabled=false.",
+    )
+    return parser.parse_args()
+
+
+def main() -> int:
+    args = parse_args()
+    try:
+        return run(args.config, args.output, args.force)
+    except (CollectorError, json.JSONDecodeError, OSError) as exc:
+        print(f"FPLVerse collector failed: {exc}", file=sys.stderr)
+        return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

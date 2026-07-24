@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="FPLVerse tracks friends and family across every Fantasy Premier League gameweek." />
+  <meta name="theme-color" content="#070b12" />
+  <title>FPLVerse — Private League Analytics</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+<div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">FPL</div>
+        <div class="brand-copy">
+          <strong>FPLVerse</strong>
+          <span>Private-league analytics, season races and bragging rights</span>
+        </div>
+      </div>
+      <div class="top-actions">
+        <label class="button file-label">Load JSON<input id="jsonUpload" type="file" accept="application/json,.json" /></label>
+        <button class="button primary" id="downloadButton">Export CSV</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow">FPL season analytics</div>
+          <h1>Every point.<br />Every gameweek.<br />Every bragging right.</h1>
+          <p>Track every manager across every gameweek, compare cumulative and weekly scores, and turn your private league into a clean analytics experience.</p>
+        </div>
+        <aside class="hero-card">
+          <div>
+            <div class="season-pill">Current leader</div>
+            <div class="hero-rank">
+              <span id="heroLeaderName">Loading…</span>
+              <strong id="heroLeaderScore">—</strong>
+            </div>
+          </div>
+          <div class="hero-card-grid">
+            <div class="mini-metric"><span>Managers</span><strong id="managerCount">—</strong></div>
+            <div class="mini-metric"><span>Gameweeks</span><strong id="gameweekCount">—</strong></div>
+            <div class="mini-metric"><span>Winning gap</span><strong id="winningGap">—</strong></div>
+            <div class="mini-metric"><span>League average</span><strong id="leagueAverage">—</strong></div>
+          </div>
+        </aside>
+      </section>
+
+      <div id="status" class="status"></div>
+
+      <section class="stats-grid">
+        <article class="stat-card"><span class="stat-label">Best single gameweek</span><strong class="stat-value" id="bestGwValue">—</strong><span class="stat-foot" id="bestGwFoot">—</span></article>
+        <article class="stat-card"><span class="stat-label">Most consistent</span><strong class="stat-value" id="consistentValue">—</strong><span class="stat-foot" id="consistentFoot">—</span></article>
+        <article class="stat-card"><span class="stat-label">Biggest comeback</span><strong class="stat-value" id="comebackValue">—</strong><span class="stat-foot" id="comebackFoot">—</span></article>
+        <article class="stat-card"><span class="stat-label">Highest weekly average</span><strong class="stat-value" id="avgValue">—</strong><span class="stat-foot" id="avgFoot">—</span></article>
+      </section>
+
+      <section class="dashboard-grid">
+        <article class="panel">
+          <div class="panel-header">
+            <div>
+              <h2>Season race</h2>
+              <p id="chartDescription">Cumulative points after each gameweek</p>
+            </div>
+            <div class="segmented" aria-label="Chart metric">
+              <button class="segment active" data-mode="cumulative">Total score</button>
+              <button class="segment" data-mode="weekly">Weekly points</button>
+            </div>
+          </div>
+          <div class="chart-wrap" id="chartWrap">
+            <svg id="scoreChart" role="img" aria-label="FPL score trend chart"></svg>
+            <div class="chart-tooltip" id="chartTooltip"></div>
+          </div>
+          <div class="legend" id="legend"></div>
+        </article>
+
+        <aside class="panel">
+          <div class="panel-header">
+            <div><h2>Final table</h2><p>Season standings</p></div>
+          </div>
+          <div class="leaderboard" id="leaderboard"></div>
+        </aside>
+
+        <article class="panel full-width">
+          <div class="panel-header">
+            <div><h2>Manager analytics</h2><p>Useful numbers for settling arguments</p></div>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>Rank</th><th>Manager</th><th>Team</th><th>Total</th><th>Average</th><th>Best GW</th><th>Worst GW</th><th>Final 5 GWs</th><th>Gap</th></tr></thead>
+              <tbody id="analyticsTable"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer>
+      <span>FPLVerse — private-league analytics built for friends and family.</span>
+      <span>Demo data is fictional until you configure your league or manager IDs.</span>
+    </footer>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>
