@@ -59,6 +59,20 @@ def main() -> int:
     except (OSError, json.JSONDecodeError, CollectorError) as exc:
         errors.append(f"Invalid data/managers.json: {exc}")
 
+    seasons_path = ROOT / "data" / "seasons.json"
+    try:
+        catalog = json.loads(seasons_path.read_text(encoding="utf-8"))
+        seasons = catalog.get("seasons") if isinstance(catalog, dict) else None
+        if not isinstance(seasons, list) or not seasons:
+            raise ValueError("Season catalog must contain at least one season.")
+        for season in seasons:
+            if not isinstance(season, dict) or not isinstance(season.get("path"), str):
+                raise ValueError("Every season catalog item must include a path.")
+            if not (ROOT / season["path"]).is_file():
+                raise ValueError(f'Season catalog references missing data: {season["path"]}')
+    except (OSError, json.JSONDecodeError, ValueError) as exc:
+        errors.append(f"Invalid data/seasons.json: {exc}")
+
     config_path = ROOT / "config" / "fplverse.json"
     try:
         json.loads(config_path.read_text(encoding="utf-8"))
@@ -75,4 +89,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
