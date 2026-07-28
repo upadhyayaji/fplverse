@@ -42,6 +42,7 @@ jobs:
           cp -R assets _site/assets
           mkdir -p _site/data
           cp data/managers.json _site/data/managers.json
+          cp data/seasons.json _site/data/seasons.json
           touch _site/.nojekyll
 
       - name: Configure Pages
@@ -55,4 +56,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
