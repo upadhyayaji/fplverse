@@ -6,7 +6,7 @@ import {
 } from "./analytics.mjs";
 
 const COLORS = ["#b7ff45", "#58d7ff", "#ff6ec7", "#ffb649", "#9b87ff", "#38e8b0", "#ff7575"];
-const state = { payload: null, mode: "cumulative", hiddenManagers: new Set() };
+const state = { payload: null, mode: "cumulative", hiddenManagers: new Set(), seasons: [] };
 
 const elements = {
   analyticsTable: document.querySelector("#analyticsTable"),
@@ -33,6 +33,7 @@ const elements = {
   legend: document.querySelector("#legend"),
   managerCount: document.querySelector("#managerCount"),
   scoreChart: document.querySelector("#scoreChart"),
+  seasonPicker: document.querySelector("#seasonPicker"),
   seasonLabel: document.querySelector("#seasonLabel"),
   status: document.querySelector("#status"),
   updatedLabel: document.querySelector("#updatedLabel"),
@@ -298,15 +299,41 @@ function render() {
 }
 
 async function loadDefaultData() {
-  setStatus("Loading league data…");
+  setStatus("Loading season archive…");
   try {
-    const response = await fetch("data/managers.json", { cache: "no-store" });
-    if (!response.ok) throw new Error(`Data request failed with status ${response.status}.`);
-    state.payload = validateDataset(await response.json());
-    render();
+    const catalogResponse = await fetch("data/seasons.json", { cache: "no-store" });
+    if (!catalogResponse.ok) throw new Error(`Season catalog request failed with status ${catalogResponse.status}.`);
+    const catalog = await catalogResponse.json();
+    if (!Array.isArray(catalog.seasons) || catalog.seasons.length === 0) {
+      throw new Error("The season catalog does not contain a season.");
+    }
+    state.seasons = catalog.seasons;
+    elements.seasonPicker.replaceChildren(
+      ...catalog.seasons.map((season) => {
+        const option = document.createElement("option");
+        option.value = season.path;
+        option.textContent = season.label || season.season;
+        option.selected = season.season === catalog.default_season;
+        return option;
+      })
+    );
+    elements.seasonPicker.disabled = false;
+    await loadSeason(elements.seasonPicker.value);
     setStatus("");
   } catch (error) {
-    setStatus(`FPLVerse could not load its league data. ${error.message}`, "error");
+    setStatus(`FPLVerse could not load its season archive. ${error.message}`, "error");
+  }
+}
+
+async function loadSeason(path) {
+  try {
+    const response = await fetch(path, { cache: "no-store" });
+    if (!response.ok) throw new Error(`Data request failed with status ${response.status}.`);
+    state.payload = validateDataset(await response.json());
+    state.hiddenManagers.clear();
+    render();
+  } catch (error) {
+    setStatus(`FPLVerse could not load this season. ${error.message}`, "error");
   }
 }
 
@@ -323,6 +350,12 @@ elements.jsonUpload.addEventListener("change", async (event) => {
   } finally {
     event.target.value = "";
   }
+});
+
+elements.seasonPicker.addEventListener("change", async () => {
+  setStatus("Loading selected season…");
+  await loadSeason(elements.seasonPicker.value);
+  if (state.payload) setStatus("");
 });
 
 elements.downloadButton.addEventListener("click", () => {
