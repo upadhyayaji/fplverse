@@ -5,7 +5,7 @@ import {
   validateDataset,
 } from "./analytics.mjs";
 
-const COLORS = ["#b7ff45", "#58d7ff", "#ff6ec7", "#ffb649", "#9b87ff", "#38e8b0", "#ff7575"];
+const COLORS = ["#a78bfa", "#67d6ff", "#f472b6", "#fbbf24", "#818cf8", "#2dd4bf", "#fb7185"];
 const state = { payload: null, mode: "cumulative", hiddenManagers: new Set(), seasons: [] };
 
 const elements = {
@@ -184,8 +184,8 @@ function renderChart(standings) {
   const defs = svgElement("defs");
   const gradient = svgElement("linearGradient", { id: "chartFade", x1: "0", x2: "0", y1: "0", y2: "1" });
   gradient.append(
-    svgElement("stop", { offset: "0%", "stop-color": "#b7ff45", "stop-opacity": "0.16" }),
-    svgElement("stop", { offset: "100%", "stop-color": "#b7ff45", "stop-opacity": "0" })
+    svgElement("stop", { offset: "0%", "stop-color": "#8b5cf6", "stop-opacity": "0.2" }),
+    svgElement("stop", { offset: "100%", "stop-color": "#8b5cf6", "stop-opacity": "0" })
   );
   defs.append(gradient);
   svg.append(defs);
@@ -250,7 +250,7 @@ function renderChart(standings) {
         cy: pointY,
         r: 4,
         fill: color,
-        stroke: "#0a1510",
+        stroke: "#15152a",
         "stroke-width": 2,
         class: "chart-point",
         tabindex: "0",
