@@ -60,6 +60,10 @@ input {
   font: inherit;
 }
 
+select {
+  font: inherit;
+}
+
 button,
 label {
   -webkit-tap-highlight-color: transparent;
@@ -154,6 +158,35 @@ a:focus-visible,
   display: flex;
   align-items: center;
   gap: 9px;
+}
+
+.season-picker {
+  display: grid;
+  gap: 2px;
+  color: var(--muted);
+  font-family: "DM Mono", monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.season-picker select {
+  min-width: 168px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--panel-strong);
+  color: var(--text);
+  cursor: pointer;
+  font-family: "Manrope", system-ui, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0;
+  padding: 7px 28px 7px 10px;
+  text-transform: none;
+}
+
+.season-picker select:disabled {
+  cursor: wait;
+  opacity: 0.7;
 }
 
 .button {
