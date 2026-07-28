@@ -1,7 +1,190 @@
-__pycache__/
-*.py[cod]
-.venv/
-venv/
-.env
-.DS_Store
-Thumbs.db
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="FPLVerse turns a friends-and-family Fantasy Premier League into a season-long analytics dashboard."
+    />
+    <meta name="theme-color" content="#07110d" />
+    <title>FPLVerse — Private League Analytics</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="assets/styles.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
+
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="FPLVerse home">
+          <span class="brand-mark" aria-hidden="true">FV</span>
+          <span class="brand-copy">
+            <strong>FPLVerse</strong>
+            <small>Friends. Family. FPL.</small>
+          </span>
+        </a>
+
+        <div class="top-actions">
+          <label class="season-picker" for="seasonPicker">
+            <span>Season</span>
+            <select id="seasonPicker" aria-label="Select season" disabled>
+              <option>Loading seasons…</option>
+            </select>
+          </label>
+          <label class="button button-quiet file-label">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 15v4h14v-4" />
+            </svg>
+            Load JSON
+            <input id="jsonUpload" type="file" accept="application/json,.json" />
+          </label>
+          <button class="button button-primary" id="downloadButton" type="button">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M12 4v12m0 0 4.5-4.5M12 16l-4.5-4.5M5 20h14" />
+            </svg>
+            Export CSV
+          </button>
+        </div>
+      </header>
+
+      <main>
+        <section class="hero">
+          <div class="hero-copy">
+            <p class="eyebrow"><span></span> Private-league command center</p>
+            <h1>The table tells you <em>who.</em><br />The data tells you <em>why.</em></h1>
+            <p class="hero-intro">
+              Track the title race, spot momentum swings, and turn every gameweek
+              into evidence for the group chat.
+            </p>
+            <div class="season-meta">
+              <span class="live-dot"></span>
+              <strong id="seasonLabel">Loading season</strong>
+              <span id="updatedLabel">Preparing league data…</span>
+            </div>
+          </div>
+
+          <aside class="leader-card">
+            <div class="leader-card-head">
+              <span class="leader-kicker">Current leader</span>
+              <span class="leader-position">01</span>
+            </div>
+            <div>
+              <h2 id="heroLeaderName">Loading…</h2>
+              <p id="heroLeaderTeam">—</p>
+            </div>
+            <div class="leader-score">
+              <strong id="heroLeaderScore">—</strong>
+              <span>points</span>
+            </div>
+            <div class="leader-stats">
+              <div><span>Lead</span><strong id="winningGap">—</strong></div>
+              <div><span>GW average</span><strong id="leagueAverage">—</strong></div>
+              <div><span>Managers</span><strong id="managerCount">—</strong></div>
+            </div>
+          </aside>
+        </section>
+
+        <div id="status" class="status" role="status" aria-live="polite"></div>
+
+        <section class="metric-strip" aria-label="League highlights">
+          <article class="metric-card">
+            <span class="metric-index">01</span>
+            <span class="metric-label">Best single gameweek</span>
+            <strong id="bestGwValue">—</strong>
+            <p id="bestGwFoot">—</p>
+          </article>
+          <article class="metric-card">
+            <span class="metric-index">02</span>
+            <span class="metric-label">Most consistent</span>
+            <strong id="consistentValue">—</strong>
+            <p id="consistentFoot">—</p>
+          </article>
+          <article class="metric-card">
+            <span class="metric-index">03</span>
+            <span class="metric-label">Biggest comeback</span>
+            <strong id="comebackValue">—</strong>
+            <p id="comebackFoot">—</p>
+          </article>
+          <article class="metric-card">
+            <span class="metric-index">04</span>
+            <span class="metric-label">Highest average</span>
+            <strong id="avgValue">—</strong>
+            <p id="avgFoot">—</p>
+          </article>
+        </section>
+
+        <section class="dashboard-grid">
+          <article class="panel chart-panel">
+            <div class="panel-header">
+              <div>
+                <span class="section-kicker">The title race</span>
+                <h2>Season trajectory</h2>
+                <p id="chartDescription">Cumulative points after each gameweek</p>
+              </div>
+              <div class="segmented" aria-label="Chart metric">
+                <button class="segment active" data-mode="cumulative" type="button">Total</button>
+                <button class="segment" data-mode="weekly" type="button">Weekly</button>
+              </div>
+            </div>
+            <div class="chart-wrap" id="chartWrap">
+              <svg id="scoreChart" role="img" aria-label="FPL score trend chart"></svg>
+              <div class="chart-tooltip" id="chartTooltip"></div>
+            </div>
+            <div class="legend" id="legend" aria-label="Chart legend"></div>
+          </article>
+
+          <aside class="panel standings-panel">
+            <div class="panel-header">
+              <div>
+                <span class="section-kicker">Live standings</span>
+                <h2>League table</h2>
+                <p>Latest cumulative score</p>
+              </div>
+              <span class="gameweek-badge" id="gameweekCount">GW —</span>
+            </div>
+            <div class="leaderboard" id="leaderboard"></div>
+          </aside>
+
+          <article class="panel analytics-panel">
+            <div class="panel-header">
+              <div>
+                <span class="section-kicker">Under the hood</span>
+                <h2>Manager analytics</h2>
+                <p>Form, volatility, high points and the distance to first</p>
+              </div>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Rank</th>
+                    <th scope="col">Manager</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Avg</th>
+                    <th scope="col">Best GW</th>
+                    <th scope="col">Worst GW</th>
+                    <th scope="col">Last 5</th>
+                    <th scope="col">Gap</th>
+                  </tr>
+                </thead>
+                <tbody id="analyticsTable"></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+      </main>
+
+      <footer>
+        <div>
+          <strong>FPLVerse</strong>
+          <span>Independent fan project. Not affiliated with the Premier League.</span>
+        </div>
+        <span id="dataNote">Showing fictional demo data.</span>
+      </footer>
+    </div>
+
+    <script type="module" src="assets/app.js"></script>
+  </body>
+</html>

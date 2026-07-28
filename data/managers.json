@@ -1,0 +1,2011 @@
+{
+  "season": "2025/26",
+  "generated_at": "2026-07-28T00:00:00+00:00",
+  "source": "FPL 2025/26 archive sample — Zakariae Boui, fpl-luck-or-skill (MIT)",
+  "league_id": null,
+  "manager_count": 10,
+  "failures": [],
+  "demo": false,
+  "managers": [
+    {
+      "id": 3027768,
+      "name": "Archive Manager 01",
+      "team_name": "2025/26 archive entry #1",
+      "joined_time": null,
+      "started_event": 1,
+      "current_event": 38,
+      "history": [
+        {
+          "gameweek": 1,
+          "points": 35,
+          "total_points": 35
+        },
+        {
+          "gameweek": 2,
+          "points": 54,
+          "total_points": 89
+        },
+        {
+          "gameweek": 3,
+          "points": 66,
+          "total_points": 155
+        },
+        {
+          "gameweek": 4,
+          "points": 95,
+          "total_points": 250
+        },
+        {
+          "gameweek": 5,
+          "points": 54,
+          "total_points": 304
+        },
+        {
+          "gameweek": 6,
+          "points": 76,
+          "total_points": 380
+        },
+        {
+          "gameweek": 7,
+          "points": 88,
+          "total_points": 468
+        },
+        {
+          "gameweek": 8,
+          "points": 70,
+          "total_points": 538
+        },
+        {
+          "gameweek": 9,
+          "points": 59,
+          "total_points": 597
+        },
+        {
+          "gameweek": 10,
+          "points": 105,
+          "total_points": 702
+        },
+        {
+          "gameweek": 11,
+          "points": 34,
+          "total_points": 736
+        },
+        {
+          "gameweek": 12,
+          "points": 50,
+          "total_points": 786
+        },
+        {
+          "gameweek": 13,
+          "points": 65,
+          "total_points": 851
+        },
+        {
+          "gameweek": 14,
+          "points": 76,
+          "total_points": 927
+        },
+        {
+          "gameweek": 15,
+          "points": 67,
+          "total_points": 994
+        },
+        {
+          "gameweek": 16,
+          "points": 89,
+          "total_points": 1083
+        },
+        {
+          "gameweek": 17,
+          "points": 73,
+          "total_points": 1156
+        },
+        {
+          "gameweek": 18,
+          "points": 57,
+          "total_points": 1213
+        },
+        {
+          "gameweek": 19,
+          "points": 44,
+          "total_points": 1257
+        },
+        {
+          "gameweek": 20,
+          "points": 66,
+          "total_points": 1323
+        },
+        {
+          "gameweek": 21,
+          "points": 68,
+          "total_points": 1391
+        },
+        {
+          "gameweek": 22,
+          "points": 54,
+          "total_points": 1445
+        },
+        {
+          "gameweek": 23,
+          "points": 38,
+          "total_points": 1483
+        },
+        {
+          "gameweek": 24,
+          "points": 64,
+          "total_points": 1547
+        },
+        {
+          "gameweek": 25,
+          "points": 74,
+          "total_points": 1621
+        },
+        {
+          "gameweek": 26,
+          "points": 78,
+          "total_points": 1699
+        },
+        {
+          "gameweek": 27,
+          "points": 54,
+          "total_points": 1753
+        },
+        {
+          "gameweek": 28,
+          "points": 87,
+          "total_points": 1840
+        },
+        {
+          "gameweek": 29,
+          "points": 86,
+          "total_points": 1926
+        },
+        {
+          "gameweek": 30,
+          "points": 71,
+          "total_points": 1997
+        },
+        {
+          "gameweek": 31,
+          "points": 64,
+          "total_points": 2061
+        },
+        {
+          "gameweek": 32,
+          "points": 75,
+          "total_points": 2136
+        },
+        {
+          "gameweek": 33,
+          "points": 112,
+          "total_points": 2248
+        },
+        {
+          "gameweek": 34,
+          "points": 52,
+          "total_points": 2300
+        },
+        {
+          "gameweek": 35,
+          "points": 60,
+          "total_points": 2360
+        },
+        {
+          "gameweek": 36,
+          "points": 92,
+          "total_points": 2452
+        },
+        {
+          "gameweek": 37,
+          "points": 54,
+          "total_points": 2506
+        },
+        {
+          "gameweek": 38,
+          "points": 76,
+          "total_points": 2582
+        }
+      ]
+    },
+    {
+      "id": 8142824,
+      "name": "Archive Manager 02",
+      "team_name": "2025/26 archive entry #2",
+      "joined_time": null,
+      "started_event": 1,
+      "current_event": 38,
+      "history": [
+        {
+          "gameweek": 1,
+          "points": 115,
+          "total_points": 115
+        },
+        {
+          "gameweek": 2,
+          "points": 57,
+          "total_points": 172
+        },
+        {
+          "gameweek": 3,
+          "points": 63,
+          "total_points": 235
+        },
+        {
+          "gameweek": 4,
+          "points": 81,
+          "total_points": 316
+        },
+        {
+          "gameweek": 5,
+          "points": 53,
+          "total_points": 369
+        },
+        {
+          "gameweek": 6,
+          "points": 93,
+          "total_points": 462
+        },
+        {
+          "gameweek": 7,
+          "points": 97,
+          "total_points": 559
+        },
+        {
+          "gameweek": 8,
+          "points": 68,
+          "total_points": 627
+        },
+        {
+          "gameweek": 9,
+          "points": 60,
+          "total_points": 687
+        },
+        {
+          "gameweek": 10,
+          "points": 75,
+          "total_points": 762
+        },
+        {
+          "gameweek": 11,
+          "points": 32,
+          "total_points": 794
+        },
+        {
+          "gameweek": 12,
+          "points": 48,
+          "total_points": 842
+        },
+        {
+          "gameweek": 13,
+          "points": 60,
+          "total_points": 902
+        },
+        {
+          "gameweek": 14,
+          "points": 77,
+          "total_points": 979
+        },
+        {
+          "gameweek": 15,
+          "points": 63,
+          "total_points": 1042
+        },
+        {
+          "gameweek": 16,
+          "points": 102,
+          "total_points": 1144
+        },
+        {
+          "gameweek": 17,
+          "points": 93,
+          "total_points": 1237
+        },
+        {
+          "gameweek": 18,
+          "points": 42,
+          "total_points": 1279
+        },
+        {
+          "gameweek": 19,
+          "points": 33,
+          "total_points": 1312
+        },
+        {
+          "gameweek": 20,
+          "points": 61,
+          "total_points": 1373
+        },
+        {
+          "gameweek": 21,
+          "points": 57,
+          "total_points": 1430
+        },
+        {
+          "gameweek": 22,
+          "points": 42,
+          "total_points": 1472
+        },
+        {
+          "gameweek": 23,
+          "points": 43,
+          "total_points": 1515
+        },
+        {
+          "gameweek": 24,
+          "points": 60,
+          "total_points": 1575
+        },
+        {
+          "gameweek": 25,
+          "points": 76,
+          "total_points": 1651
+        },
+        {
+          "gameweek": 26,
+          "points": 78,
+          "total_points": 1729
+        },
+        {
+          "gameweek": 27,
+          "points": 51,
+          "total_points": 1780
+        },
+        {
+          "gameweek": 28,
+          "points": 79,
+          "total_points": 1859
+        },
+        {
+          "gameweek": 29,
+          "points": 64,
+          "total_points": 1923
+        },
+        {
+          "gameweek": 30,
+          "points": 59,
+          "total_points": 1982
+        },
+        {
+          "gameweek": 31,
+          "points": 68,
+          "total_points": 2050
+        },
+        {
+          "gameweek": 32,
+          "points": 50,
+          "total_points": 2100
+        },
+        {
+          "gameweek": 33,
+          "points": 102,
+          "total_points": 2202
+        },
+        {
+          "gameweek": 34,
+          "points": 54,
+          "total_points": 2256
+        },
+        {
+          "gameweek": 35,
+          "points": 53,
+          "total_points": 2309
+        },
+        {
+          "gameweek": 36,
+          "points": 96,
+          "total_points": 2405
+        },
+        {
+          "gameweek": 37,
+          "points": 74,
+          "total_points": 2479
+        },
+        {
+          "gameweek": 38,
+          "points": 65,
+          "total_points": 2544
+        }
+      ]
+    },
+    {
+      "id": 3244539,
+      "name": "Archive Manager 03",
+      "team_name": "2025/26 archive entry #3",
+      "joined_time": null,
+      "started_event": 1,
+      "current_event": 38,
+      "history": [
+        {
+          "gameweek": 1,
+          "points": 83,
+          "total_points": 83
+        },
+        {
+          "gameweek": 2,
+          "points": 52,
+          "total_points": 135
+        },
+        {
+          "gameweek": 3,
+          "points": 54,
+          "total_points": 189
+        },
+        {
+          "gameweek": 4,
+          "points": 50,
+          "total_points": 239
+        },
+        {
+          "gameweek": 5,
+          "points": 44,
+          "total_points": 283
+        },
+        {
+          "gameweek": 6,
+          "points": 73,
+          "total_points": 356
+        },
+        {
+          "gameweek": 7,
+          "points": 73,
+          "total_points": 429
+        },
+        {
+          "gameweek": 8,
+          "points": 77,
+          "total_points": 506
+        },
+        {
+          "gameweek": 9,
+          "points": 58,
+          "total_points": 564
+        },
+        {
+          "gameweek": 10,
+          "points": 88,
+          "total_points": 652
+        },
+        {
+          "gameweek": 11,
+          "points": 44,
+          "total_points": 696
+        },
+        {
+          "gameweek": 12,
+          "points": 51,
+          "total_points": 747
+        },
+        {
+          "gameweek": 13,
+          "points": 45,
+          "total_points": 792
+        },
+        {
+          "gameweek": 14,
+          "points": 70,
+          "total_points": 862
+        },
+        {
+          "gameweek": 15,
+          "points": 67,
+          "total_points": 929
+        },
+        {
+          "gameweek": 16,
+          "points": 88,
+          "total_points": 1017
+        },
+        {
+          "gameweek": 17,
+          "points": 88,
+          "total_points": 1105
+        },
+        {
+          "gameweek": 18,
+          "points": 70,
+          "total_points": 1175
+        },
+        {
+          "gameweek": 19,
+          "points": 48,
+          "total_points": 1223
+        },
+        {
+          "gameweek": 20,
+          "points": 64,
+          "total_points": 1287
+        },
+        {
+          "gameweek": 21,
+          "points": 70,
+          "total_points": 1357
+        },
+        {
+          "gameweek": 22,
+          "points": 45,
+          "total_points": 1402
+        },
+        {
+          "gameweek": 23,
+          "points": 52,
+          "total_points": 1454
+        },
+        {
+          "gameweek": 24,
+          "points": 70,
+          "total_points": 1524
+        },
+        {
+          "gameweek": 25,
+          "points": 72,
+          "total_points": 1596
+        },
+        {
+          "gameweek": 26,
+          "points": 94,
+          "total_points": 1690
+        },
+        {
+          "gameweek": 27,
+          "points": 46,
+          "total_points": 1736
+        },
+        {
+          "gameweek": 28,
+          "points": 81,
+          "total_points": 1817
+        },
+        {
+          "gameweek": 29,
+          "points": 47,
+          "total_points": 1864
+        },
+        {
+          "gameweek": 30,
+          "points": 62,
+          "total_points": 1926
+        },
+        {
+          "gameweek": 31,
+          "points": 68,
+          "total_points": 1994
+        },
+        {
+          "gameweek": 32,
+          "points": 67,
+          "total_points": 2061
+        },
+        {
+          "gameweek": 33,
+          "points": 120,
+          "total_points": 2181
+        },
+        {
+          "gameweek": 34,
+          "points": 65,
+          "total_points": 2246
+        },
+        {
+          "gameweek": 35,
+          "points": 79,
+          "total_points": 2325
+        },
+        {
+          "gameweek": 36,
+          "points": 75,
+          "total_points": 2400
+        },
+        {
+          "gameweek": 37,
+          "points": 58,
+          "total_points": 2458
+        },
+        {
+          "gameweek": 38,
+          "points": 80,
+          "total_points": 2538
+        }
+      ]
+    },
+    {
+      "id": 5093997,
+      "name": "Archive Manager 04",
+      "team_name": "2025/26 archive entry #4",
+      "joined_time": null,
+      "started_event": 1,
+      "current_event": 38,
+      "history": [
+        {
+          "gameweek": 1,
+          "points": 68,
+          "total_points": 68
+        },
+        {
+          "gameweek": 2,
+          "points": 51,
+          "total_points": 119
+        },
+        {
+          "gameweek": 3,
+          "points": 66,
+          "total_points": 185
+        },
+        {
+          "gameweek": 4,
+          "points": 69,
+          "total_points": 254
+        },
+        {
+          "gameweek": 5,
+          "points": 60,
+          "total_points": 314
+        },
+        {
+          "gameweek": 6,
+          "points": 86,
+          "total_points": 400
+        },
+        {
+          "gameweek": 7,
+          "points": 82,
+          "total_points": 482
+        },
+        {
+          "gameweek": 8,
+          "points": 96,
+          "total_points": 578
+        },
+        {
+          "gameweek": 9,
+          "points": 41,
+          "total_points": 619
+        },
+        {
+          "gameweek": 10,
+          "points": 92,
+          "total_points": 711
+        },
+        {
+          "gameweek": 11,
+          "points": 56,
+          "total_points": 767
+        },
+        {
+          "gameweek": 12,
+          "points": 59,
+          "total_points": 826
+        },
+        {
+          "gameweek": 13,
+          "points": 53,
+          "total_points": 879
+        },
+        {
+          "gameweek": 14,
+          "points": 73,
+          "total_points": 952
+        },
+        {
+          "gameweek": 15,
+          "points": 60,
+          "total_points": 1012
+        },
+        {
+          "gameweek": 16,
+          "points": 81,
+          "total_points": 1093
+        },
+        {
+          "gameweek": 17,
+          "points": 100,
+          "total_points": 1193
+        },
+        {
+          "gameweek": 18,
+          "points": 43,
+          "total_points": 1236
+        },
+        {
+          "gameweek": 19,
+          "points": 39,
+          "total_points": 1275
+        },
+        {
+          "gameweek": 20,
+          "points": 30,
+          "total_points": 1305
+        },
+        {
+          "gameweek": 21,
+          "points": 53,
+          "total_points": 1358
+        },
+        {
+          "gameweek": 22,
+          "points": 48,
+          "total_points": 1406
+        },
+        {
+          "gameweek": 23,
+          "points": 40,
+          "total_points": 1446
+        },
+        {
+          "gameweek": 24,
+          "points": 66,
+          "total_points": 1512
+        },
+        {
+          "gameweek": 25,
+          "points": 62,
+          "total_points": 1574
+        },
+        {
+          "gameweek": 26,
+          "points": 82,
+          "total_points": 1656
+        },
+        {
+          "gameweek": 27,
+          "points": 52,
+          "total_points": 1708
+        },
+        {
+          "gameweek": 28,
+          "points": 92,
+          "total_points": 1800
+        },
+        {
+          "gameweek": 29,
+          "points": 52,
+          "total_points": 1852
+        },
+        {
+          "gameweek": 30,
+          "points": 63,
+          "total_points": 1915
+        },
+        {
+          "gameweek": 31,
+          "points": 73,
+          "total_points": 1988
+        },
+        {
+          "gameweek": 32,
+          "points": 50,
+          "total_points": 2038
+        },
+        {
+          "gameweek": 33,
+          "points": 138,
+          "total_points": 2176
+        },
+        {
+          "gameweek": 34,
+          "points": 69,
+          "total_points": 2245
+        },
+        {
+          "gameweek": 35,
+          "points": 62,
+          "total_points": 2307
+        },
+        {
+          "gameweek": 36,
+          "points": 83,
+          "total_points": 2390
+        },
+        {
+          "gameweek": 37,
+          "points": 78,
+          "total_points": 2468
+        },
+        {
+          "gameweek": 38,
+          "points": 67,
+          "total_points": 2535
+        }
+      ]
+    },
+    {
+      "id": 785300,
+      "name": "Archive Manager 05",
+      "team_name": "2025/26 archive entry #5",
+      "joined_time": null,
+      "started_event": 1,
+      "current_event": 38,
+      "history": [
+        {
+          "gameweek": 1,
+          "points": 55,
+          "total_points": 55
+        },
+        {
+          "gameweek": 2,
+          "points": 41,
+          "total_points": 96
+        },
+        {
+          "gameweek": 3,
+          "points": 59,
+          "total_points": 155
+        },
+        {
+          "gameweek": 4,
+          "points": 77,
+          "total_points": 232
+        },
+        {
+          "gameweek": 5,
+          "points": 57,
+          "total_points": 289
+        },
+        {
+          "gameweek": 6,
+          "points": 49,
+          "total_points": 338
+        },
+        {
+          "gameweek": 7,
+          "points": 89,
+          "total_points": 427
+        },
+        {
+          "gameweek": 8,
+          "points": 128,
+          "total_points": 555
+        },
+        {
+          "gameweek": 9,
+          "points": 41,
+          "total_points": 596
+        },
+        {
+          "gameweek": 10,
+          "points": 80,
+          "total_points": 676
+        },
+        {
+          "gameweek": 11,
+          "points": 37,
+          "total_points": 713
+        },
+        {
+          "gameweek": 12,
+          "points": 48,
+          "total_points": 761
+        },
+        {
+          "gameweek": 13,
+          "points": 76,
+          "total_points": 837
+        },
+        {
+          "gameweek": 14,
+          "points": 88,
+          "total_points": 925
+        },
+        {
+          "gameweek": 15,
+          "points": 75,
+          "total_points": 1000
+        },
+        {
+          "gameweek": 16,
+          "points": 87,
+          "total_points": 1087
+        },
+        {
+          "gameweek": 17,
+          "points": 104,
+          "total_points": 1191
+        },
+        {
+          "gameweek": 18,
+          "points": 29,
+          "total_points": 1220
+        },
+        {
+          "gameweek": 19,
+          "points": 38,
+          "total_points": 1258
+        },
+        {
+          "gameweek": 20,
+          "points": 62,
+          "total_points": 1320
+        },
+        {
+          "gameweek": 21,
+          "points": 56,
+          "total_points": 1376
+        },
+        {
+          "gameweek": 22,
+          "points": 52,
+          "total_points": 1428
+        },
+        {
+          "gameweek": 23,
+          "points": 46,
+          "total_points": 1474
+        },
+        {
+          "gameweek": 24,
+          "points": 58,
+          "total_points": 1532
+        },
+        {
+          "gameweek": 25,
+          "points": 67,
+          "total_points": 1599
+        },
+        {
+          "gameweek": 26,
+          "points": 86,
+          "total_points": 1685
+        },
+        {
+          "gameweek": 27,
+          "points": 52,
+          "total_points": 1737
+        },
+        {
+          "gameweek": 28,
+          "points": 76,
+          "total_points": 1813
+        },
+        {
+          "gameweek": 29,
+          "points": 67,
+          "total_points": 1880
+        },
+        {
+          "gameweek": 30,
+          "points": 67,
+          "total_points": 1947
+        },
+        {
+          "gameweek": 31,
+          "points": 62,
+          "total_points": 2009
+        },
+        {
+          "gameweek": 32,
+          "points": 93,
+          "total_points": 2102
+        },
+        {
+          "gameweek": 33,
+          "points": 109,
+          "total_points": 2211
+        },
+        {
+          "gameweek": 34,
+          "points": 52,
+          "total_points": 2263
+        },
+        {
+          "gameweek": 35,
+          "points": 64,
+          "total_points": 2327
+        },
+        {
+          "gameweek": 36,
+          "points": 85,
+          "total_points": 2412
+        },
+        {
+          "gameweek": 37,
+          "points": 63,
+          "total_points": 2475
+        },
+        {
+          "gameweek": 38,
+          "points": 62,
+          "total_points": 2537
+        }
+      ]
+    },
+    {
+      "id": 6501155,
+      "name": "Archive Manager 06",
+      "team_name": "2025/26 archive entry #6",
+      "joined_time": null,
+      "started_event": 1,
+      "current_event": 38,
+      "history": [
+        {
+          "gameweek": 1,
+          "points": 70,
+          "total_points": 70
+        },
+        {
+          "gameweek": 2,
+          "points": 76,
+          "total_points": 146
+        },
+        {
+          "gameweek": 3,
+          "points": 62,
+          "total_points": 208
+        },
+        {
+          "gameweek": 4,
+          "points": 74,
+          "total_points": 282
+        },
+        {
+          "gameweek": 5,
+          "points": 59,
+          "total_points": 341
+        },
+        {
+          "gameweek": 6,
+          "points": 71,
+          "total_points": 412
+        },
+        {
+          "gameweek": 7,
+          "points": 83,
+          "total_points": 495
+        },
+        {
+          "gameweek": 8,
+          "points": 103,
+          "total_points": 598
+        },
+        {
+          "gameweek": 9,
+          "points": 51,
+          "total_points": 649
+        },
+        {
+          "gameweek": 10,
+          "points": 75,
+          "total_points": 724
+        },
+        {
+          "gameweek": 11,
+          "points": 58,
+          "total_points": 782
+        },
+        {
+          "gameweek": 12,
+          "points": 56,
+          "total_points": 838
+        },
+        {
+          "gameweek": 13,
+          "points": 47,
+          "total_points": 885
+        },
+        {
+          "gameweek": 14,
+          "points": 80,
+          "total_points": 965
+        },
+        {
+          "gameweek": 15,
+          "points": 53,
+          "total_points": 1018
+        },
+        {
+          "gameweek": 16,
+          "points": 85,
+          "total_points": 1103
+        },
+        {
+          "gameweek": 17,
+          "points": 80,
+          "total_points": 1183
+        },
+        {
+          "gameweek": 18,
+          "points": 65,
+          "total_points": 1248
+        },
+        {
+          "gameweek": 19,
+          "points": 60,
+          "total_points": 1308
+        },
+        {
+          "gameweek": 20,
+          "points": 66,
+          "total_points": 1374
+        },
+        {
+          "gameweek": 21,
+          "points": 68,
+          "total_points": 1442
+        },
+        {
+          "gameweek": 22,
+          "points": 33,
+          "total_points": 1475
+        },
+        {
+          "gameweek": 23,
+          "points": 46,
+          "total_points": 1521
+        },
+        {
+          "gameweek": 24,
+          "points": 64,
+          "total_points": 1585
+        },
+        {
+          "gameweek": 25,
+          "points": 67,
+          "total_points": 1652
+        },
+        {
+          "gameweek": 26,
+          "points": 85,
+          "total_points": 1737
+        },
+        {
+          "gameweek": 27,
+          "points": 50,
+          "total_points": 1787
+        },
+        {
+          "gameweek": 28,
+          "points": 73,
+          "total_points": 1860
+        },
+        {
+          "gameweek": 29,
+          "points": 52,
+          "total_points": 1912
+        },
+        {
+          "gameweek": 30,
+          "points": 60,
+          "total_points": 1972
+        },
+        {
+          "gameweek": 31,
+          "points": 51,
+          "total_points": 2023
+        },
+        {
+          "gameweek": 32,
+          "points": 62,
+          "total_points": 2085
+        },
+        {
+          "gameweek": 33,
+          "points": 124,
+          "total_points": 2209
+        },
+        {
+          "gameweek": 34,
+          "points": 43,
+          "total_points": 2252
+        },
+        {
+          "gameweek": 35,
+          "points": 78,
+          "total_points": 2330
+        },
+        {
+          "gameweek": 36,
+          "points": 85,
+          "total_points": 2415
+        },
+        {
+          "gameweek": 37,
+          "points": 72,
+          "total_points": 2487
+        },
+        {
+          "gameweek": 38,
+          "points": 54,
+          "total_points": 2541
+        }
+      ]
+    },
+    {
+      "id": 3649057,
+      "name": "Archive Manager 07",
+      "team_name": "2025/26 archive entry #7",
+      "joined_time": null,
+      "started_event": 1,
+      "current_event": 38,
+      "history": [
+        {
+          "gameweek": 1,
+          "points": 47,
+          "total_points": 47
+        },
+        {
+          "gameweek": 2,
+          "points": 66,
+          "total_points": 113
+        },
+        {
+          "gameweek": 3,
+          "points": 62,
+          "total_points": 175
+        },
+        {
+          "gameweek": 4,
+          "points": 74,
+          "total_points": 249
+        },
+        {
+          "gameweek": 5,
+          "points": 46,
+          "total_points": 295
+        },
+        {
+          "gameweek": 6,
+          "points": 79,
+          "total_points": 374
+        },
+        {
+          "gameweek": 7,
+          "points": 71,
+          "total_points": 445
+        },
+        {
+          "gameweek": 8,
+          "points": 82,
+          "total_points": 527
+        },
+        {
+          "gameweek": 9,
+          "points": 40,
+          "total_points": 567
+        },
+        {
+          "gameweek": 10,
+          "points": 81,
+          "total_points": 648
+        },
+        {
+          "gameweek": 11,
+          "points": 53,
+          "total_points": 701
+        },
+        {
+          "gameweek": 12,
+          "points": 79,
+          "total_points": 780
+        },
+        {
+          "gameweek": 13,
+          "points": 62,
+          "total_points": 842
+        },
+        {
+          "gameweek": 14,
+          "points": 86,
+          "total_points": 928
+        },
+        {
+          "gameweek": 15,
+          "points": 72,
+          "total_points": 1000
+        },
+        {
+          "gameweek": 16,
+          "points": 84,
+          "total_points": 1084
+        },
+        {
+          "gameweek": 17,
+          "points": 87,
+          "total_points": 1171
+        },
+        {
+          "gameweek": 18,
+          "points": 33,
+          "total_points": 1204
+        },
+        {
+          "gameweek": 19,
+          "points": 56,
+          "total_points": 1260
+        },
+        {
+          "gameweek": 20,
+          "points": 71,
+          "total_points": 1331
+        },
+        {
+          "gameweek": 21,
+          "points": 43,
+          "total_points": 1374
+        },
+        {
+          "gameweek": 22,
+          "points": 51,
+          "total_points": 1425
+        },
+        {
+          "gameweek": 23,
+          "points": 49,
+          "total_points": 1474
+        },
+        {
+          "gameweek": 24,
+          "points": 82,
+          "total_points": 1556
+        },
+        {
+          "gameweek": 25,
+          "points": 58,
+          "total_points": 1614
+        },
+        {
+          "gameweek": 26,
+          "points": 62,
+          "total_points": 1676
+        },
+        {
+          "gameweek": 27,
+          "points": 55,
+          "total_points": 1731
+        },
+        {
+          "gameweek": 28,
+          "points": 91,
+          "total_points": 1822
+        },
+        {
+          "gameweek": 29,
+          "points": 58,
+          "total_points": 1880
+        },
+        {
+          "gameweek": 30,
+          "points": 53,
+          "total_points": 1933
+        },
+        {
+          "gameweek": 31,
+          "points": 60,
+          "total_points": 1993
+        },
+        {
+          "gameweek": 32,
+          "points": 70,
+          "total_points": 2063
+        },
+        {
+          "gameweek": 33,
+          "points": 134,
+          "total_points": 2197
+        },
+        {
+          "gameweek": 34,
+          "points": 58,
+          "total_points": 2255
+        },
+        {
+          "gameweek": 35,
+          "points": 61,
+          "total_points": 2316
+        },
+        {
+          "gameweek": 36,
+          "points": 90,
+          "total_points": 2406
+        },
+        {
+          "gameweek": 37,
+          "points": 64,
+          "total_points": 2470
+        },
+        {
+          "gameweek": 38,
+          "points": 65,
+          "total_points": 2535
+        }
+      ]
+    },
+    {
+      "id": 2569513,
+      "name": "Archive Manager 08",
+      "team_name": "2025/26 archive entry #8",
+      "joined_time": null,
+      "started_event": 1,
+      "current_event": 38,
+      "history": [
+        {
+          "gameweek": 1,
+          "points": 73,
+          "total_points": 73
+        },
+        {
+          "gameweek": 2,
+          "points": 72,
+          "total_points": 145
+        },
+        {
+          "gameweek": 3,
+          "points": 49,
+          "total_points": 194
+        },
+        {
+          "gameweek": 4,
+          "points": 69,
+          "total_points": 263
+        },
+        {
+          "gameweek": 5,
+          "points": 37,
+          "total_points": 300
+        },
+        {
+          "gameweek": 6,
+          "points": 66,
+          "total_points": 366
+        },
+        {
+          "gameweek": 7,
+          "points": 79,
+          "total_points": 445
+        },
+        {
+          "gameweek": 8,
+          "points": 81,
+          "total_points": 526
+        },
+        {
+          "gameweek": 9,
+          "points": 55,
+          "total_points": 581
+        },
+        {
+          "gameweek": 10,
+          "points": 76,
+          "total_points": 657
+        },
+        {
+          "gameweek": 11,
+          "points": 38,
+          "total_points": 695
+        },
+        {
+          "gameweek": 12,
+          "points": 84,
+          "total_points": 779
+        },
+        {
+          "gameweek": 13,
+          "points": 63,
+          "total_points": 842
+        },
+        {
+          "gameweek": 14,
+          "points": 65,
+          "total_points": 907
+        },
+        {
+          "gameweek": 15,
+          "points": 37,
+          "total_points": 944
+        },
+        {
+          "gameweek": 16,
+          "points": 86,
+          "total_points": 1030
+        },
+        {
+          "gameweek": 17,
+          "points": 108,
+          "total_points": 1138
+        },
+        {
+          "gameweek": 18,
+          "points": 48,
+          "total_points": 1186
+        },
+        {
+          "gameweek": 19,
+          "points": 45,
+          "total_points": 1231
+        },
+        {
+          "gameweek": 20,
+          "points": 73,
+          "total_points": 1304
+        },
+        {
+          "gameweek": 21,
+          "points": 73,
+          "total_points": 1377
+        },
+        {
+          "gameweek": 22,
+          "points": 45,
+          "total_points": 1422
+        },
+        {
+          "gameweek": 23,
+          "points": 41,
+          "total_points": 1463
+        },
+        {
+          "gameweek": 24,
+          "points": 62,
+          "total_points": 1525
+        },
+        {
+          "gameweek": 25,
+          "points": 83,
+          "total_points": 1608
+        },
+        {
+          "gameweek": 26,
+          "points": 83,
+          "total_points": 1691
+        },
+        {
+          "gameweek": 27,
+          "points": 41,
+          "total_points": 1732
+        },
+        {
+          "gameweek": 28,
+          "points": 84,
+          "total_points": 1816
+        },
+        {
+          "gameweek": 29,
+          "points": 67,
+          "total_points": 1883
+        },
+        {
+          "gameweek": 30,
+          "points": 51,
+          "total_points": 1934
+        },
+        {
+          "gameweek": 31,
+          "points": 78,
+          "total_points": 2012
+        },
+        {
+          "gameweek": 32,
+          "points": 52,
+          "total_points": 2064
+        },
+        {
+          "gameweek": 33,
+          "points": 120,
+          "total_points": 2184
+        },
+        {
+          "gameweek": 34,
+          "points": 63,
+          "total_points": 2247
+        },
+        {
+          "gameweek": 35,
+          "points": 66,
+          "total_points": 2313
+        },
+        {
+          "gameweek": 36,
+          "points": 95,
+          "total_points": 2408
+        },
+        {
+          "gameweek": 37,
+          "points": 77,
+          "total_points": 2485
+        },
+        {
+          "gameweek": 38,
+          "points": 44,
+          "total_points": 2529
+        }
+      ]
+    },
+    {
+      "id": 4259553,
+      "name": "Archive Manager 09",
+      "team_name": "2025/26 archive entry #9",
+      "joined_time": null,
+      "started_event": 1,
+      "current_event": 38,
+      "history": [
+        {
+          "gameweek": 1,
+          "points": 81,
+          "total_points": 81
+        },
+        {
+          "gameweek": 2,
+          "points": 49,
+          "total_points": 130
+        },
+        {
+          "gameweek": 3,
+          "points": 60,
+          "total_points": 190
+        },
+        {
+          "gameweek": 4,
+          "points": 95,
+          "total_points": 285
+        },
+        {
+          "gameweek": 5,
+          "points": 55,
+          "total_points": 340
+        },
+        {
+          "gameweek": 6,
+          "points": 72,
+          "total_points": 412
+        },
+        {
+          "gameweek": 7,
+          "points": 73,
+          "total_points": 485
+        },
+        {
+          "gameweek": 8,
+          "points": 70,
+          "total_points": 555
+        },
+        {
+          "gameweek": 9,
+          "points": 64,
+          "total_points": 619
+        },
+        {
+          "gameweek": 10,
+          "points": 86,
+          "total_points": 705
+        },
+        {
+          "gameweek": 11,
+          "points": 36,
+          "total_points": 741
+        },
+        {
+          "gameweek": 12,
+          "points": 46,
+          "total_points": 787
+        },
+        {
+          "gameweek": 13,
+          "points": 48,
+          "total_points": 835
+        },
+        {
+          "gameweek": 14,
+          "points": 81,
+          "total_points": 916
+        },
+        {
+          "gameweek": 15,
+          "points": 69,
+          "total_points": 985
+        },
+        {
+          "gameweek": 16,
+          "points": 85,
+          "total_points": 1070
+        },
+        {
+          "gameweek": 17,
+          "points": 88,
+          "total_points": 1158
+        },
+        {
+          "gameweek": 18,
+          "points": 40,
+          "total_points": 1198
+        },
+        {
+          "gameweek": 19,
+          "points": 55,
+          "total_points": 1253
+        },
+        {
+          "gameweek": 20,
+          "points": 51,
+          "total_points": 1304
+        },
+        {
+          "gameweek": 21,
+          "points": 67,
+          "total_points": 1371
+        },
+        {
+          "gameweek": 22,
+          "points": 37,
+          "total_points": 1408
+        },
+        {
+          "gameweek": 23,
+          "points": 53,
+          "total_points": 1461
+        },
+        {
+          "gameweek": 24,
+          "points": 72,
+          "total_points": 1533
+        },
+        {
+          "gameweek": 25,
+          "points": 69,
+          "total_points": 1602
+        },
+        {
+          "gameweek": 26,
+          "points": 98,
+          "total_points": 1700
+        },
+        {
+          "gameweek": 27,
+          "points": 52,
+          "total_points": 1752
+        },
+        {
+          "gameweek": 28,
+          "points": 86,
+          "total_points": 1838
+        },
+        {
+          "gameweek": 29,
+          "points": 73,
+          "total_points": 1911
+        },
+        {
+          "gameweek": 30,
+          "points": 66,
+          "total_points": 1977
+        },
+        {
+          "gameweek": 31,
+          "points": 64,
+          "total_points": 2041
+        },
+        {
+          "gameweek": 32,
+          "points": 65,
+          "total_points": 2106
+        },
+        {
+          "gameweek": 33,
+          "points": 101,
+          "total_points": 2207
+        },
+        {
+          "gameweek": 34,
+          "points": 71,
+          "total_points": 2278
+        },
+        {
+          "gameweek": 35,
+          "points": 66,
+          "total_points": 2344
+        },
+        {
+          "gameweek": 36,
+          "points": 80,
+          "total_points": 2424
+        },
+        {
+          "gameweek": 37,
+          "points": 63,
+          "total_points": 2487
+        },
+        {
+          "gameweek": 38,
+          "points": 53,
+          "total_points": 2540
+        }
+      ]
+    },
+    {
+      "id": 5798417,
+      "name": "Archive Manager 10",
+      "team_name": "2025/26 archive entry #10",
+      "joined_time": null,
+      "started_event": 1,
+      "current_event": 38,
+      "history": [
+        {
+          "gameweek": 1,
+          "points": 66,
+          "total_points": 66
+        },
+        {
+          "gameweek": 2,
+          "points": 44,
+          "total_points": 110
+        },
+        {
+          "gameweek": 3,
+          "points": 66,
+          "total_points": 176
+        },
+        {
+          "gameweek": 4,
+          "points": 98,
+          "total_points": 274
+        },
+        {
+          "gameweek": 5,
+          "points": 49,
+          "total_points": 323
+        },
+        {
+          "gameweek": 6,
+          "points": 87,
+          "total_points": 410
+        },
+        {
+          "gameweek": 7,
+          "points": 67,
+          "total_points": 477
+        },
+        {
+          "gameweek": 8,
+          "points": 69,
+          "total_points": 546
+        },
+        {
+          "gameweek": 9,
+          "points": 85,
+          "total_points": 631
+        },
+        {
+          "gameweek": 10,
+          "points": 79,
+          "total_points": 710
+        },
+        {
+          "gameweek": 11,
+          "points": 50,
+          "total_points": 760
+        },
+        {
+          "gameweek": 12,
+          "points": 58,
+          "total_points": 818
+        },
+        {
+          "gameweek": 13,
+          "points": 70,
+          "total_points": 888
+        },
+        {
+          "gameweek": 14,
+          "points": 64,
+          "total_points": 952
+        },
+        {
+          "gameweek": 15,
+          "points": 73,
+          "total_points": 1025
+        },
+        {
+          "gameweek": 16,
+          "points": 87,
+          "total_points": 1112
+        },
+        {
+          "gameweek": 17,
+          "points": 76,
+          "total_points": 1188
+        },
+        {
+          "gameweek": 18,
+          "points": 45,
+          "total_points": 1233
+        },
+        {
+          "gameweek": 19,
+          "points": 54,
+          "total_points": 1287
+        },
+        {
+          "gameweek": 20,
+          "points": 58,
+          "total_points": 1345
+        },
+        {
+          "gameweek": 21,
+          "points": 66,
+          "total_points": 1411
+        },
+        {
+          "gameweek": 22,
+          "points": 56,
+          "total_points": 1467
+        },
+        {
+          "gameweek": 23,
+          "points": 50,
+          "total_points": 1517
+        },
+        {
+          "gameweek": 24,
+          "points": 72,
+          "total_points": 1589
+        },
+        {
+          "gameweek": 25,
+          "points": 68,
+          "total_points": 1657
+        },
+        {
+          "gameweek": 26,
+          "points": 68,
+          "total_points": 1725
+        },
+        {
+          "gameweek": 27,
+          "points": 61,
+          "total_points": 1786
+        },
+        {
+          "gameweek": 28,
+          "points": 83,
+          "total_points": 1869
+        },
+        {
+          "gameweek": 29,
+          "points": 60,
+          "total_points": 1929
+        },
+        {
+          "gameweek": 30,
+          "points": 56,
+          "total_points": 1985
+        },
+        {
+          "gameweek": 31,
+          "points": 56,
+          "total_points": 2041
+        },
+        {
+          "gameweek": 32,
+          "points": 55,
+          "total_points": 2096
+        },
+        {
+          "gameweek": 33,
+          "points": 128,
+          "total_points": 2224
+        },
+        {
+          "gameweek": 34,
+          "points": 68,
+          "total_points": 2292
+        },
+        {
+          "gameweek": 35,
+          "points": 48,
+          "total_points": 2340
+        },
+        {
+          "gameweek": 36,
+          "points": 76,
+          "total_points": 2416
+        },
+        {
+          "gameweek": 37,
+          "points": 69,
+          "total_points": 2485
+        },
+        {
+          "gameweek": 38,
+          "points": 46,
+          "total_points": 2531
+        }
+      ]
+    }
+  ]
+}
