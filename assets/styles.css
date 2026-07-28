@@ -2,19 +2,19 @@
 
 :root {
   color-scheme: dark;
-  --bg: #06100c;
-  --bg-soft: #0a1711;
-  --panel: rgba(12, 27, 20, 0.84);
-  --panel-strong: #0d1d16;
-  --panel-hover: #11261c;
-  --line: rgba(215, 255, 224, 0.11);
-  --line-strong: rgba(215, 255, 224, 0.2);
-  --text: #eff8f1;
-  --muted: #8fa89a;
-  --muted-bright: #b7c9bd;
+  --bg: #080811;
+  --bg-soft: #10101d;
+  --panel: rgba(20, 20, 41, 0.88);
+  --panel-strong: #15152a;
+  --panel-hover: #1d1d38;
+  --line: rgba(211, 207, 255, 0.12);
+  --line-strong: rgba(211, 207, 255, 0.22);
+  --text: #f5f4ff;
+  --muted: #a5a4c4;
+  --muted-bright: #c7c6e3;
   --lime: #b7ff45;
   --lime-strong: #ccff7b;
-  --ink: #07110d;
+  --ink: #10101d;
   --danger: #ff8e8e;
   --success: #6fffc0;
   --radius-lg: 24px;
@@ -38,8 +38,9 @@ body {
   margin: 0;
   overflow-x: hidden;
   background:
-    radial-gradient(circle at 38% 8%, rgba(83, 192, 111, 0.08), transparent 25%),
-    linear-gradient(180deg, #07120e 0%, var(--bg) 45%, #050b08 100%);
+    radial-gradient(circle at 7% 0%, rgba(107, 51, 215, 0.25), transparent 32%),
+    radial-gradient(circle at 93% 6%, rgba(70, 57, 183, 0.14), transparent 28%),
+    linear-gradient(180deg, #0c0b18 0%, var(--bg) 48%, #06060e 100%);
   color: var(--text);
 }
 
@@ -91,13 +92,13 @@ a:focus-visible,
 .ambient-one {
   top: 80px;
   right: -220px;
-  background: #b7ff45;
+  background: #6d38d7;
 }
 
 .ambient-two {
   top: 620px;
   left: -280px;
-  background: #28c58e;
+  background: #4032a4;
 }
 
 .app-shell {
@@ -287,7 +288,7 @@ a:focus-visible,
 .hero h1 {
   max-width: 920px;
   margin: 0;
-  color: #f2f9f3;
+  color: #f7f6ff;
   font-size: clamp(46px, 5.5vw, 82px);
   font-weight: 500;
   letter-spacing: -0.064em;
@@ -344,10 +345,10 @@ a:focus-visible,
   justify-content: space-between;
   overflow: hidden;
   padding: 28px;
-  border: 1px solid rgba(183, 255, 69, 0.18);
+  border: 1px solid rgba(139, 92, 246, 0.26);
   border-radius: var(--radius-lg);
   background:
-    linear-gradient(145deg, rgba(183, 255, 69, 0.065), transparent 44%),
+    linear-gradient(145deg, rgba(126, 87, 211, 0.18), transparent 52%),
     var(--panel-strong);
   box-shadow: var(--shadow);
 }
@@ -358,7 +359,7 @@ a:focus-visible,
   bottom: -80px;
   width: 240px;
   height: 240px;
-  border: 45px solid rgba(183, 255, 69, 0.025);
+  border: 45px solid rgba(139, 92, 246, 0.08);
   border-radius: 50%;
   content: "";
 }
@@ -375,7 +376,7 @@ a:focus-visible,
 }
 
 .leader-position {
-  color: rgba(183, 255, 69, 0.18);
+  color: rgba(167, 139, 250, 0.28);
   font-family: "DM Mono", monospace;
   font-size: 34px;
   font-weight: 500;
@@ -400,7 +401,7 @@ a:focus-visible,
 }
 
 .leader-score strong {
-  color: var(--lime);
+  color: var(--text);
   font-family: "DM Mono", monospace;
   font-size: clamp(54px, 5vw, 76px);
   font-weight: 500;
@@ -475,7 +476,7 @@ a:focus-visible,
   margin-bottom: 22px;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
-  background: rgba(9, 22, 15, 0.7);
+  background: rgba(20, 20, 41, 0.74);
   grid-template-columns: repeat(4, 1fr);
 }
 
@@ -494,7 +495,7 @@ a:focus-visible,
   position: absolute;
   top: 21px;
   right: 22px;
-  color: rgba(183, 255, 69, 0.18);
+  color: rgba(167, 139, 250, 0.3);
   font-family: "DM Mono", monospace;
   font-size: 17px;
 }
@@ -606,10 +607,10 @@ a:focus-visible,
 .gameweek-badge {
   flex: 0 0 auto;
   padding: 7px 9px;
-  border: 1px solid rgba(183, 255, 69, 0.2);
+  border: 1px solid rgba(139, 92, 246, 0.3);
   border-radius: 7px;
-  background: rgba(183, 255, 69, 0.06);
-  color: var(--lime);
+  background: rgba(139, 92, 246, 0.12);
+  color: #c4b5fd;
   font-size: 8px;
 }
 
@@ -627,12 +628,12 @@ a:focus-visible,
 }
 
 .chart-grid {
-  stroke: rgba(215, 255, 224, 0.07);
+  stroke: rgba(211, 207, 255, 0.09);
   stroke-dasharray: 3 7;
 }
 
 .chart-label {
-  fill: #6f8879;
+  fill: #9290b7;
   font-family: "DM Mono", monospace;
   font-size: 9px;
 }
@@ -662,7 +663,7 @@ a:focus-visible,
   border: 1px solid var(--line-strong);
   border-left: 3px solid var(--tooltip-color, var(--lime));
   border-radius: 8px;
-  background: #102019;
+  background: #1b1a33;
   box-shadow: 0 16px 35px rgba(0, 0, 0, 0.38);
   opacity: 0;
   pointer-events: none;
@@ -797,7 +798,7 @@ a:focus-visible,
   height: 24px;
   place-items: center;
   border-radius: 6px;
-  background: rgba(183, 255, 69, 0.06);
+  background: rgba(139, 92, 246, 0.12);
   color: var(--muted-bright);
   font-family: "DM Mono", monospace;
   font-size: 8px;
@@ -855,7 +856,7 @@ tbody tr {
 }
 
 tbody tr:hover {
-  background: rgba(183, 255, 69, 0.025);
+  background: rgba(139, 92, 246, 0.07);
 }
 
 tbody tr:last-child td {
