@@ -1,0 +1,10 @@
+{
+  "default_season": "2025/26",
+  "seasons": [
+    {
+      "season": "2025/26",
+      "path": "data/managers.json",
+      "label": "2025/26 — Archive sample"
+    }
+  ]
+}
