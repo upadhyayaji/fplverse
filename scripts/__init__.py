@@ -1,0 +1,2 @@
+"""FPLVerse automation package."""
+
