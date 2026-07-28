@@ -1,0 +1,121 @@
+{
+  "season": "2025/26",
+  "generated_at": "2026-05-25T18:00:00+00:00",
+  "source": "Fictional FPLVerse demo data",
+  "league_id": null,
+  "manager_count": 5,
+  "failures": [],
+  "demo": true,
+  "managers": [
+    {
+      "id": 100001,
+      "name": "Priya",
+      "team_name": "Expected Goals FC",
+      "joined_time": null,
+      "started_event": 1,
+      "current_event": 12,
+      "history": [
+        {"gameweek": 1, "points": 59, "total_points": 59, "overall_rank": 4210000, "gameweek_rank": 5100000, "transfers": 0, "transfer_cost": 0, "points_on_bench": 7, "team_value": 1000, "bank": 0},
+        {"gameweek": 2, "points": 83, "total_points": 142, "overall_rank": 2050000, "gameweek_rank": 950000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 5, "team_value": 1002, "bank": 1},
+        {"gameweek": 3, "points": 62, "total_points": 204, "overall_rank": 2210000, "gameweek_rank": 3100000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 9, "team_value": 1004, "bank": 0},
+        {"gameweek": 4, "points": 70, "total_points": 274, "overall_rank": 1900000, "gameweek_rank": 2400000, "transfers": 2, "transfer_cost": 0, "points_on_bench": 11, "team_value": 1005, "bank": 2},
+        {"gameweek": 5, "points": 76, "total_points": 350, "overall_rank": 1510000, "gameweek_rank": 1700000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 4, "team_value": 1007, "bank": 1},
+        {"gameweek": 6, "points": 55, "total_points": 405, "overall_rank": 1810000, "gameweek_rank": 4400000, "transfers": 2, "transfer_cost": 4, "points_on_bench": 8, "team_value": 1008, "bank": 0},
+        {"gameweek": 7, "points": 89, "total_points": 494, "overall_rank": 1050000, "gameweek_rank": 620000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 3, "team_value": 1011, "bank": 2},
+        {"gameweek": 8, "points": 67, "total_points": 561, "overall_rank": 1010000, "gameweek_rank": 2500000, "transfers": 0, "transfer_cost": 0, "points_on_bench": 6, "team_value": 1013, "bank": 2},
+        {"gameweek": 9, "points": 71, "total_points": 632, "overall_rank": 910000, "gameweek_rank": 2100000, "transfers": 2, "transfer_cost": 0, "points_on_bench": 10, "team_value": 1014, "bank": 0},
+        {"gameweek": 10, "points": 58, "total_points": 690, "overall_rank": 1040000, "gameweek_rank": 3900000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 6, "team_value": 1015, "bank": 1},
+        {"gameweek": 11, "points": 77, "total_points": 767, "overall_rank": 820000, "gameweek_rank": 1400000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 4, "team_value": 1016, "bank": 1},
+        {"gameweek": 12, "points": 84, "total_points": 851, "overall_rank": 610000, "gameweek_rank": 780000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 5, "team_value": 1018, "bank": 0}
+      ]
+    },
+    {
+      "id": 100002,
+      "name": "Maya",
+      "team_name": "No Kane, No Gain",
+      "joined_time": null,
+      "started_event": 1,
+      "current_event": 12,
+      "history": [
+        {"gameweek": 1, "points": 65, "total_points": 65, "overall_rank": 3100000, "gameweek_rank": 3900000, "transfers": 0, "transfer_cost": 0, "points_on_bench": 9, "team_value": 1000, "bank": 0},
+        {"gameweek": 2, "points": 77, "total_points": 142, "overall_rank": 2010000, "gameweek_rank": 1600000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 7, "team_value": 1001, "bank": 2},
+        {"gameweek": 3, "points": 54, "total_points": 196, "overall_rank": 2680000, "gameweek_rank": 4800000, "transfers": 2, "transfer_cost": 0, "points_on_bench": 13, "team_value": 1003, "bank": 0},
+        {"gameweek": 4, "points": 86, "total_points": 282, "overall_rank": 1620000, "gameweek_rank": 810000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 3, "team_value": 1005, "bank": 1},
+        {"gameweek": 5, "points": 61, "total_points": 343, "overall_rank": 1750000, "gameweek_rank": 3300000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 8, "team_value": 1006, "bank": 1},
+        {"gameweek": 6, "points": 73, "total_points": 416, "overall_rank": 1490000, "gameweek_rank": 1900000, "transfers": 2, "transfer_cost": 0, "points_on_bench": 5, "team_value": 1008, "bank": 0},
+        {"gameweek": 7, "points": 80, "total_points": 496, "overall_rank": 1090000, "gameweek_rank": 1100000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 4, "team_value": 1009, "bank": 1},
+        {"gameweek": 8, "points": 52, "total_points": 548, "overall_rank": 1380000, "gameweek_rank": 5100000, "transfers": 2, "transfer_cost": 4, "points_on_bench": 12, "team_value": 1010, "bank": 0},
+        {"gameweek": 9, "points": 92, "total_points": 640, "overall_rank": 790000, "gameweek_rank": 410000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 2, "team_value": 1013, "bank": 2},
+        {"gameweek": 10, "points": 64, "total_points": 704, "overall_rank": 810000, "gameweek_rank": 3000000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 6, "team_value": 1014, "bank": 1},
+        {"gameweek": 11, "points": 75, "total_points": 779, "overall_rank": 710000, "gameweek_rank": 1600000, "transfers": 0, "transfer_cost": 0, "points_on_bench": 9, "team_value": 1015, "bank": 1},
+        {"gameweek": 12, "points": 68, "total_points": 847, "overall_rank": 650000, "gameweek_rank": 2600000, "transfers": 2, "transfer_cost": 0, "points_on_bench": 7, "team_value": 1017, "bank": 0}
+      ]
+    },
+    {
+      "id": 100003,
+      "name": "Apoorv",
+      "team_name": "Ctrl Alt De Ligt",
+      "joined_time": null,
+      "started_event": 1,
+      "current_event": 12,
+      "history": [
+        {"gameweek": 1, "points": 72, "total_points": 72, "overall_rank": 2200000, "gameweek_rank": 2400000, "transfers": 0, "transfer_cost": 0, "points_on_bench": 5, "team_value": 1000, "bank": 0},
+        {"gameweek": 2, "points": 58, "total_points": 130, "overall_rank": 2700000, "gameweek_rank": 4300000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 10, "team_value": 1001, "bank": 1},
+        {"gameweek": 3, "points": 81, "total_points": 211, "overall_rank": 1750000, "gameweek_rank": 980000, "transfers": 2, "transfer_cost": 0, "points_on_bench": 4, "team_value": 1003, "bank": 0},
+        {"gameweek": 4, "points": 66, "total_points": 277, "overall_rank": 1710000, "gameweek_rank": 2700000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 6, "team_value": 1004, "bank": 2},
+        {"gameweek": 5, "points": 49, "total_points": 326, "overall_rank": 2290000, "gameweek_rank": 5700000, "transfers": 2, "transfer_cost": 4, "points_on_bench": 15, "team_value": 1005, "bank": 0},
+        {"gameweek": 6, "points": 91, "total_points": 417, "overall_rank": 1390000, "gameweek_rank": 490000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 2, "team_value": 1007, "bank": 1},
+        {"gameweek": 7, "points": 62, "total_points": 479, "overall_rank": 1510000, "gameweek_rank": 3100000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 8, "team_value": 1008, "bank": 0},
+        {"gameweek": 8, "points": 74, "total_points": 553, "overall_rank": 1300000, "gameweek_rank": 1800000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 5, "team_value": 1010, "bank": 2},
+        {"gameweek": 9, "points": 55, "total_points": 608, "overall_rank": 1590000, "gameweek_rank": 4700000, "transfers": 2, "transfer_cost": 0, "points_on_bench": 11, "team_value": 1011, "bank": 0},
+        {"gameweek": 10, "points": 88, "total_points": 696, "overall_rank": 980000, "gameweek_rank": 680000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 3, "team_value": 1014, "bank": 1},
+        {"gameweek": 11, "points": 67, "total_points": 763, "overall_rank": 990000, "gameweek_rank": 2600000, "transfers": 0, "transfer_cost": 0, "points_on_bench": 7, "team_value": 1015, "bank": 1},
+        {"gameweek": 12, "points": 79, "total_points": 842, "overall_rank": 760000, "gameweek_rank": 1200000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 4, "team_value": 1017, "bank": 0}
+      ]
+    },
+    {
+      "id": 100004,
+      "name": "Dev",
+      "team_name": "Back of the Neto",
+      "joined_time": null,
+      "started_event": 1,
+      "current_event": 12,
+      "history": [
+        {"gameweek": 1, "points": 74, "total_points": 74, "overall_rank": 2050000, "gameweek_rank": 2100000, "transfers": 0, "transfer_cost": 0, "points_on_bench": 6, "team_value": 1000, "bank": 0},
+        {"gameweek": 2, "points": 64, "total_points": 138, "overall_rank": 2300000, "gameweek_rank": 3500000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 8, "team_value": 1001, "bank": 1},
+        {"gameweek": 3, "points": 73, "total_points": 211, "overall_rank": 1720000, "gameweek_rank": 1800000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 5, "team_value": 1003, "bank": 0},
+        {"gameweek": 4, "points": 47, "total_points": 258, "overall_rank": 2510000, "gameweek_rank": 6100000, "transfers": 2, "transfer_cost": 4, "points_on_bench": 16, "team_value": 1004, "bank": 0},
+        {"gameweek": 5, "points": 82, "total_points": 340, "overall_rank": 1880000, "gameweek_rank": 900000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 3, "team_value": 1006, "bank": 1},
+        {"gameweek": 6, "points": 69, "total_points": 409, "overall_rank": 1730000, "gameweek_rank": 2300000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 6, "team_value": 1007, "bank": 1},
+        {"gameweek": 7, "points": 58, "total_points": 467, "overall_rank": 1980000, "gameweek_rank": 4200000, "transfers": 2, "transfer_cost": 0, "points_on_bench": 10, "team_value": 1008, "bank": 0},
+        {"gameweek": 8, "points": 79, "total_points": 546, "overall_rank": 1630000, "gameweek_rank": 1300000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 4, "team_value": 1010, "bank": 1},
+        {"gameweek": 9, "points": 66, "total_points": 612, "overall_rank": 1600000, "gameweek_rank": 2900000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 7, "team_value": 1011, "bank": 1},
+        {"gameweek": 10, "points": 81, "total_points": 693, "overall_rank": 1110000, "gameweek_rank": 1050000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 4, "team_value": 1013, "bank": 0},
+        {"gameweek": 11, "points": 61, "total_points": 754, "overall_rank": 1250000, "gameweek_rank": 3600000, "transfers": 2, "transfer_cost": 0, "points_on_bench": 9, "team_value": 1014, "bank": 0},
+        {"gameweek": 12, "points": 72, "total_points": 826, "overall_rank": 990000, "gameweek_rank": 2000000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 5, "team_value": 1016, "bank": 1}
+      ]
+    },
+    {
+      "id": 100005,
+      "name": "Rohan",
+      "team_name": "Saka Potatoes",
+      "joined_time": null,
+      "started_event": 1,
+      "current_event": 12,
+      "history": [
+        {"gameweek": 1, "points": 88, "total_points": 88, "overall_rank": 880000, "gameweek_rank": 710000, "transfers": 0, "transfer_cost": 0, "points_on_bench": 3, "team_value": 1000, "bank": 0},
+        {"gameweek": 2, "points": 51, "total_points": 139, "overall_rank": 2200000, "gameweek_rank": 5200000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 12, "team_value": 1001, "bank": 1},
+        {"gameweek": 3, "points": 69, "total_points": 208, "overall_rank": 1900000, "gameweek_rank": 2400000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 6, "team_value": 1002, "bank": 1},
+        {"gameweek": 4, "points": 72, "total_points": 280, "overall_rank": 1590000, "gameweek_rank": 2000000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 5, "team_value": 1004, "bank": 0},
+        {"gameweek": 5, "points": 57, "total_points": 337, "overall_rank": 1990000, "gameweek_rank": 4100000, "transfers": 2, "transfer_cost": 0, "points_on_bench": 9, "team_value": 1005, "bank": 0},
+        {"gameweek": 6, "points": 78, "total_points": 415, "overall_rank": 1540000, "gameweek_rank": 1400000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 4, "team_value": 1007, "bank": 1},
+        {"gameweek": 7, "points": 63, "total_points": 478, "overall_rank": 1600000, "gameweek_rank": 3000000, "transfers": 0, "transfer_cost": 0, "points_on_bench": 7, "team_value": 1008, "bank": 1},
+        {"gameweek": 8, "points": 85, "total_points": 563, "overall_rank": 1210000, "gameweek_rank": 720000, "transfers": 2, "transfer_cost": 0, "points_on_bench": 3, "team_value": 1010, "bank": 0},
+        {"gameweek": 9, "points": 48, "total_points": 611, "overall_rank": 1680000, "gameweek_rank": 5900000, "transfers": 2, "transfer_cost": 4, "points_on_bench": 14, "team_value": 1011, "bank": 0},
+        {"gameweek": 10, "points": 70, "total_points": 681, "overall_rank": 1570000, "gameweek_rank": 2300000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 7, "team_value": 1012, "bank": 1},
+        {"gameweek": 11, "points": 82, "total_points": 763, "overall_rank": 1010000, "gameweek_rank": 920000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 4, "team_value": 1014, "bank": 1},
+        {"gameweek": 12, "points": 60, "total_points": 823, "overall_rank": 1040000, "gameweek_rank": 3700000, "transfers": 1, "transfer_cost": 0, "points_on_bench": 8, "team_value": 1015, "bank": 0}
+      ]
+    }
+  ]
+}
