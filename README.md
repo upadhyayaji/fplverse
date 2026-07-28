@@ -13,7 +13,8 @@ The repository is deliberately simple: static HTML, CSS, and JavaScript on GitHu
 - JSON upload for private/offline analysis
 - CSV export
 - Responsive and keyboard-accessible interface
-- Fictional demo dataset that works without FPL credentials
+- Complete 2025/26 archive sample with 10 anonymized real manager histories
+- Season selector designed for additional archived and live seasons
 - Current-season collection from a classic mini-league or explicit entry IDs
 - Last-known-good protection, bounded archives, retries, and strict configuration checks
 
@@ -101,7 +102,13 @@ Then run:
 python scripts/fetch_fpl.py
 ```
 
-The collector is disabled by default, so the repository safely deploys fictional data until configuration is intentional.
+The collector is disabled by default, so the repository preserves the included historical sample until configuration is intentional.
+
+## Included 2025/26 archive
+
+The default site now launches with a complete 38-gameweek 2025/26 sample of ten anonymized real manager histories. It is derived from the MIT-licensed [fpl-luck-or-skill archive](https://github.com/zakariae-boui/fpl-luck-or-skill), which captured manager histories before the FPL reset. The archive provides gameweek scores, so this starter intentionally leaves transfer, bench, rank, and team-value fields blank rather than inventing them.
+
+`data/seasons.json` is the catalog used by the season selector. Add a new row there only after the corresponding dataset has been collected and validated.
 
 ## Historical-season limitation
 
