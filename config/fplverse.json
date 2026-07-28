@@ -1,0 +1,12 @@
+{
+  "enabled": false,
+  "season": "2026/27",
+  "league_id": null,
+  "manager_ids": [],
+  "aliases": {},
+  "publish_real_manager_names": false,
+  "request_delay_seconds": 0.25,
+  "allow_partial": false,
+  "archive_limit": 120
+}
+
