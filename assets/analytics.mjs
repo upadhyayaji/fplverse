@@ -28,7 +28,6 @@ export function validateDataset(payload) {
     }
 
     let lastGameweek = 0;
-    let lastTotal = -1;
     manager.history.forEach((row) => {
       for (const field of REQUIRED_HISTORY_FIELDS) {
         if (!Number.isInteger(row[field])) {
@@ -38,11 +37,7 @@ export function validateDataset(payload) {
       if (row.gameweek <= lastGameweek || row.gameweek < 1 || row.gameweek > 38) {
         throw new Error(`${manager.name} has unordered or invalid gameweeks.`);
       }
-      if (row.total_points < lastTotal) {
-        throw new Error(`${manager.name} has decreasing cumulative points.`);
-      }
       lastGameweek = row.gameweek;
-      lastTotal = row.total_points;
     });
   });
 
@@ -186,4 +181,3 @@ export function datasetToCsv(payload) {
   }
   return rows.map((row) => row.map(csvCell).join(",")).join("\n");
 }
-
