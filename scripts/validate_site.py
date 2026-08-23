@@ -79,6 +79,11 @@ def main() -> int:
     except (OSError, json.JSONDecodeError) as exc:
         errors.append(f"Invalid config/fplverse.json: {exc}")
 
+    worker_paths = [ROOT / "worker" / "src" / "index.js", ROOT / "worker" / "wrangler.jsonc"]
+    for worker_path in worker_paths:
+        if not worker_path.is_file():
+            errors.append(f"Missing live API file: {worker_path.relative_to(ROOT)}")
+
     if errors:
         print("\n".join(f"ERROR: {error}" for error in errors), file=sys.stderr)
         return 1
