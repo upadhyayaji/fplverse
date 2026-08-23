@@ -1,0 +1,9 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "fplverse-api",
+  "main": "src/index.js",
+  "compatibility_date": "2026-08-23",
+  "vars": {
+    "ALLOWED_ORIGIN": "https://upadhyayaji.github.io"
+  }
+}
