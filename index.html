@@ -86,6 +86,33 @@
           </aside>
         </section>
 
+        <section class="league-connect panel" aria-labelledby="connectTitle">
+          <div class="league-connect-copy">
+            <span class="section-kicker">Your live league</span>
+            <h2 id="connectTitle">Connect your FPL team</h2>
+            <p>Enter the number from your FPL team URL. We’ll find your classic mini-leagues and load the one you choose.</p>
+          </div>
+          <form class="entry-form" id="entryForm">
+            <label for="entryId">
+              <span>Entry ID</span>
+              <input id="entryId" name="entryId" type="number" min="1" max="100000000" inputmode="numeric" placeholder="e.g. 218806" required />
+            </label>
+            <button class="button button-primary" id="findLeaguesButton" type="submit">Find my leagues</button>
+          </form>
+          <div class="league-choice" id="leagueChoice" hidden>
+            <div class="connected-manager">
+              <span class="connected-avatar" id="connectedAvatar">AU</span>
+              <span><strong id="connectedName">Apoorv Upadhyaya</strong><small id="connectedTeam">Entry 218806</small></span>
+            </div>
+            <label for="leaguePicker">
+              <span>Classic mini-league</span>
+              <select id="leaguePicker" disabled><option>Select a league</option></select>
+            </label>
+            <button class="button button-primary" id="loadLeagueButton" type="button" disabled>Load dashboard</button>
+          </div>
+          <p class="connect-note">Your Entry ID is public FPL information. FPLVerse does not ask for your password.</p>
+        </section>
+
         <div id="status" class="status" role="status" aria-live="polite"></div>
 
         <section class="metric-strip" aria-label="League highlights">
@@ -120,7 +147,7 @@
             <div class="panel-header">
               <div>
                 <span class="section-kicker">The title race</span>
-                <h2>Season trajectory</h2>
+                <h2 id="leagueTitle">Season trajectory</h2>
                 <p id="chartDescription">Cumulative points after each gameweek</p>
               </div>
               <div class="segmented" aria-label="Chart metric">
@@ -185,6 +212,7 @@
       </footer>
     </div>
 
+    <script src="assets/config.js"></script>
     <script type="module" src="assets/app.js"></script>
   </body>
 </html>

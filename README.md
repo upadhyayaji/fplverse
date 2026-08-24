@@ -16,6 +16,7 @@ The repository is deliberately simple: static HTML, CSS, and JavaScript on GitHu
 - Complete 2025/26 archive sample with 10 anonymized real manager histories
 - Season selector designed for additional archived and live seasons
 - Current-season collection from a classic mini-league or explicit entry IDs
+- Entry ID lookup, personal classic mini-league selection, and live dashboard loading
 - Last-known-good protection, bounded archives, retries, and strict configuration checks
 
 ## Architecture
@@ -24,6 +25,12 @@ The repository is deliberately simple: static HTML, CSS, and JavaScript on GitHu
 FPL API → scripts/fetch_fpl.py → data/managers.json
                                   ↓
 index.html + assets/analytics.mjs + assets/app.js → GitHub Pages
+```
+
+Live lookups use a small Cloudflare Worker because the FPL API does not permit direct browser requests from GitHub Pages:
+
+```text
+Browser → worker/ (CORS + route-limited proxy) → public FPL API
 ```
 
 ```text
@@ -67,6 +74,7 @@ python -m unittest discover -s tests -p "test_*.py" -v
 node --check assets/analytics.mjs
 node --check assets/app.js
 node tests/analytics.test.mjs
+node tests/worker.test.mjs
 ```
 
 ## Configure real FPL data
@@ -103,6 +111,19 @@ python scripts/fetch_fpl.py
 ```
 
 The collector is disabled by default, so the repository preserves the included historical sample until configuration is intentional.
+
+## Deploy the live Entry ID API
+
+The site remains on GitHub Pages. The Worker only proxies three public, read-only FPL routes and caches responses briefly.
+
+```bash
+cd worker
+npm install
+npx wrangler login
+npm run deploy
+```
+
+Copy the deployed `https://...workers.dev` URL into `assets/config.js` as `apiBaseUrl`, commit the change, and let GitHub Pages redeploy. The Worker is restricted to the FPL entry, entry-history, and classic-league standings routes; it never accepts FPL passwords or authentication cookies.
 
 ## Included 2025/26 archive
 

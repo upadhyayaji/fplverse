@@ -27,4 +27,8 @@ const duplicate = structuredClone(payload);
 duplicate.managers[1].id = duplicate.managers[0].id;
 assert.throws(() => validateDataset(duplicate), /appears more than once/);
 
+const negativeWeek = structuredClone(payload);
+negativeWeek.managers[0].history[1].total_points = negativeWeek.managers[0].history[0].total_points - 1;
+assert.equal(validateDataset(negativeWeek), negativeWeek);
+
 console.log("Frontend analytics tests passed.");

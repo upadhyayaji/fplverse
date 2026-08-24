@@ -6,7 +6,17 @@ import {
 } from "./analytics.mjs";
 
 const COLORS = ["#a78bfa", "#67d6ff", "#f472b6", "#fbbf24", "#818cf8", "#2dd4bf", "#fb7185"];
-const state = { payload: null, mode: "cumulative", hiddenManagers: new Set(), seasons: [] };
+const API_BASE = String(window.FPLVERSE_CONFIG?.apiBaseUrl || "").replace(/\/$/, "");
+const MAX_LEAGUE_MANAGERS = 50;
+const state = {
+  payload: null,
+  mode: "cumulative",
+  hiddenManagers: new Set(),
+  seasons: [],
+  entry: null,
+  livePayload: null,
+  selectedLeague: null,
+};
 
 const elements = {
   analyticsTable: document.querySelector("#analyticsTable"),
@@ -23,12 +33,19 @@ const elements = {
   consistentValue: document.querySelector("#consistentValue"),
   dataNote: document.querySelector("#dataNote"),
   downloadButton: document.querySelector("#downloadButton"),
+  entryForm: document.querySelector("#entryForm"),
+  entryId: document.querySelector("#entryId"),
+  findLeaguesButton: document.querySelector("#findLeaguesButton"),
   gameweekCount: document.querySelector("#gameweekCount"),
   heroLeaderName: document.querySelector("#heroLeaderName"),
   heroLeaderScore: document.querySelector("#heroLeaderScore"),
   heroLeaderTeam: document.querySelector("#heroLeaderTeam"),
   jsonUpload: document.querySelector("#jsonUpload"),
   leaderboard: document.querySelector("#leaderboard"),
+  leagueChoice: document.querySelector("#leagueChoice"),
+  leaguePicker: document.querySelector("#leaguePicker"),
+  leagueTitle: document.querySelector("#leagueTitle"),
+  loadLeagueButton: document.querySelector("#loadLeagueButton"),
   leagueAverage: document.querySelector("#leagueAverage"),
   legend: document.querySelector("#legend"),
   managerCount: document.querySelector("#managerCount"),
@@ -38,7 +55,78 @@ const elements = {
   status: document.querySelector("#status"),
   updatedLabel: document.querySelector("#updatedLabel"),
   winningGap: document.querySelector("#winningGap"),
+  connectedAvatar: document.querySelector("#connectedAvatar"),
+  connectedName: document.querySelector("#connectedName"),
+  connectedTeam: document.querySelector("#connectedTeam"),
 };
+
+function apiUrl(path) {
+  if (!API_BASE) {
+    throw new Error("Live league lookup is awaiting its API deployment.");
+  }
+  return `${API_BASE}${path}`;
+}
+
+async function fetchJson(path) {
+  const response = await fetch(apiUrl(path), { cache: "no-store" });
+  let payload = null;
+  try {
+    payload = await response.json();
+  } catch {
+    // The status-specific error below is more useful than a JSON parse error.
+  }
+  if (!response.ok) {
+    throw new Error(payload?.error || `FPL request failed with status ${response.status}.`);
+  }
+  return payload;
+}
+
+function initials(name) {
+  return String(name || "FPL")
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0].toUpperCase())
+    .join("");
+}
+
+function currentSeasonLabel() {
+  const now = new Date();
+  const startYear = now.getMonth() >= 6 ? now.getFullYear() : now.getFullYear() - 1;
+  return `${startYear}/${String(startYear + 1).slice(-2)}`;
+}
+
+function normalizeLiveManager(row, historyPayload) {
+  const history = Array.isArray(historyPayload.current) ? historyPayload.current : [];
+  return {
+    id: Number(row.entry),
+    name: String(row.player_name || `Manager ${row.entry}`),
+    team_name: String(row.entry_name || `Entry ${row.entry}`),
+    history: history.map((gameweek) => ({
+      gameweek: Number(gameweek.event),
+      points: Number(gameweek.points),
+      total_points: Number(gameweek.total_points),
+      overall_rank: Number(gameweek.overall_rank || 0),
+      transfers: Number(gameweek.event_transfers || 0),
+      transfer_cost: Number(gameweek.event_transfers_cost || 0),
+      points_on_bench: Number(gameweek.points_on_bench || 0),
+    })),
+  };
+}
+
+async function mapWithConcurrency(items, limit, mapper) {
+  const results = new Array(items.length);
+  let nextIndex = 0;
+  async function worker() {
+    while (nextIndex < items.length) {
+      const index = nextIndex;
+      nextIndex += 1;
+      results[index] = await mapper(items[index], index);
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
+  return results;
+}
 
 function escapeHtml(value) {
   const node = document.createElement("span");
@@ -84,7 +172,10 @@ function renderSummary(summary) {
   elements.dataNote.textContent =
     state.payload.demo === true
       ? "Showing fictional demo data."
-      : `Tracking ${standings.length} configured managers.`;
+      : state.selectedLeague
+        ? `${state.selectedLeague.name} · ${standings.length} managers · live FPL data.`
+        : `Tracking ${standings.length} configured managers.`;
+  elements.leagueTitle.textContent = state.selectedLeague?.name || "Season trajectory";
 }
 
 function renderLeaderboard(standings) {
@@ -95,7 +186,7 @@ function renderLeaderboard(standings) {
         ? manager.history.at(-1).points - manager.history.at(-2).points
         : manager.history.at(-1).points;
       return `
-        <article class="leaderboard-row">
+        <article class="leaderboard-row ${manager.id === state.entry?.id ? "is-you" : ""}">
           <span class="rank ${index < 3 ? "rank-top" : ""}">${String(manager.rank).padStart(2, "0")}</span>
           <span class="manager-swatch" style="--manager-color:${COLORS[index % COLORS.length]}"></span>
           <span class="manager-name">
@@ -119,7 +210,7 @@ function renderTable(standings) {
       (manager) => `
         <tr>
           <td><span class="table-rank">${manager.rank}</span></td>
-          <td>
+          <td class="${manager.id === state.entry?.id ? "is-you" : ""}">
             <div class="table-manager">
               <strong>${escapeHtml(manager.name)}</strong>
               <span>${escapeHtml(manager.team_name || `Entry ${manager.id}`)}</span>
@@ -327,6 +418,12 @@ async function loadDefaultData() {
 
 async function loadSeason(path) {
   try {
+    if (path === "live" && state.livePayload) {
+      state.payload = state.livePayload;
+      state.hiddenManagers.clear();
+      render();
+      return;
+    }
     const response = await fetch(path, { cache: "no-store" });
     if (!response.ok) throw new Error(`Data request failed with status ${response.status}.`);
     state.payload = validateDataset(await response.json());
@@ -334,6 +431,100 @@ async function loadSeason(path) {
     render();
   } catch (error) {
     setStatus(`FPLVerse could not load this season. ${error.message}`, "error");
+  }
+}
+
+function setLiveSeasonOption() {
+  let option = [...elements.seasonPicker.options].find((item) => item.value === "live");
+  if (!option) {
+    option = document.createElement("option");
+    option.value = "live";
+    elements.seasonPicker.prepend(option);
+  }
+  option.textContent = `${state.livePayload.season} · Live`;
+  elements.seasonPicker.value = "live";
+}
+
+async function findLeagues(entryId) {
+  const profile = await fetchJson(`/api/entry/${entryId}`);
+  const leagues = (profile.leagues?.classic || [])
+    .filter((league) => league.scoring === "c" && league.league_type === "x")
+    .sort((a, b) => a.name.localeCompare(b.name));
+  if (!leagues.length) throw new Error("This entry has no classic invitational mini-leagues.");
+
+  state.entry = { id: Number(profile.id), name: `${profile.player_first_name} ${profile.player_last_name}`.trim() };
+  elements.connectedName.textContent = state.entry.name || `Entry ${profile.id}`;
+  elements.connectedTeam.textContent = `${profile.name || "FPL team"} · Entry ${profile.id}`;
+  elements.connectedAvatar.textContent = initials(state.entry.name);
+  elements.leaguePicker.replaceChildren(
+    new Option("Choose a mini-league…", ""),
+    ...leagues.map((league) => new Option(`${league.name} · ${league.rank_count || "—"} managers`, league.id))
+  );
+  elements.leaguePicker.disabled = false;
+  elements.loadLeagueButton.disabled = true;
+  elements.leagueChoice.hidden = false;
+  localStorage.setItem("fplverse-entry-id", String(profile.id));
+  setStatus(`Found ${leagues.length} classic mini-league${leagues.length === 1 ? "" : "s"}.`, "success");
+}
+
+async function fetchLeagueRows(leagueId) {
+  const rows = [];
+  let page = 1;
+  let league = null;
+  let truncated = false;
+  while (rows.length < MAX_LEAGUE_MANAGERS) {
+    const payload = await fetchJson(`/api/league/${leagueId}?page=${page}`);
+    league ||= payload.league;
+    const pageRows = payload.standings?.results || [];
+    rows.push(...pageRows.slice(0, MAX_LEAGUE_MANAGERS - rows.length));
+    if (!payload.standings?.has_next) break;
+    if (rows.length >= MAX_LEAGUE_MANAGERS) truncated = true;
+    page += 1;
+  }
+  return { league, rows, truncated };
+}
+
+async function loadLiveLeague() {
+  const leagueId = Number(elements.leaguePicker.value);
+  if (!leagueId || !state.entry) return;
+  elements.loadLeagueButton.disabled = true;
+  elements.leaguePicker.disabled = true;
+  setStatus("Loading league standings and gameweek histories…");
+  try {
+    const { league, rows, truncated } = await fetchLeagueRows(leagueId);
+    if (!rows.some((row) => Number(row.entry) === state.entry.id)) {
+      throw new Error("Your entry was not found in the selected league standings.");
+    }
+    const managers = await mapWithConcurrency(rows, 6, async (row) =>
+      normalizeLiveManager(row, await fetchJson(`/api/entry/${row.entry}/history`))
+    );
+    const withHistory = managers.filter((manager) => manager.history.length);
+    if (!withHistory.length) throw new Error("This league does not have completed gameweek data yet.");
+
+    state.selectedLeague = { id: leagueId, name: league?.name || `League ${leagueId}` };
+    state.livePayload = validateDataset({
+      season: currentSeasonLabel(),
+      generated_at: new Date().toISOString(),
+      source: "live-fpl-api",
+      league: state.selectedLeague,
+      managers: withHistory,
+    });
+    state.payload = state.livePayload;
+    state.hiddenManagers.clear();
+    setLiveSeasonOption();
+    render();
+    setStatus(
+      truncated
+        ? `Loaded the first ${MAX_LEAGUE_MANAGERS} managers in ${state.selectedLeague.name}.`
+        : `Loaded ${state.selectedLeague.name}.`,
+      "success"
+    );
+    document.querySelector(".metric-strip").scrollIntoView({ behavior: "smooth", block: "start" });
+  } catch (error) {
+    setStatus(error.message, "error");
+  } finally {
+    elements.leaguePicker.disabled = false;
+    elements.loadLeagueButton.disabled = !elements.leaguePicker.value;
   }
 }
 
@@ -357,6 +548,29 @@ elements.seasonPicker.addEventListener("change", async () => {
   await loadSeason(elements.seasonPicker.value);
   if (state.payload) setStatus("");
 });
+
+elements.entryForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const entryId = Number(elements.entryId.value);
+  if (!Number.isInteger(entryId) || entryId <= 0 || entryId > 100000000) {
+    setStatus("Enter a valid positive FPL Entry ID.", "error");
+    return;
+  }
+  elements.findLeaguesButton.disabled = true;
+  setStatus("Finding your FPL profile and classic mini-leagues…");
+  try {
+    await findLeagues(entryId);
+  } catch (error) {
+    setStatus(error.message, "error");
+  } finally {
+    elements.findLeaguesButton.disabled = false;
+  }
+});
+
+elements.leaguePicker.addEventListener("change", () => {
+  elements.loadLeagueButton.disabled = !elements.leaguePicker.value;
+});
+elements.loadLeagueButton.addEventListener("click", loadLiveLeague);
 
 elements.downloadButton.addEventListener("click", () => {
   if (!state.payload) return;
@@ -399,4 +613,6 @@ const resizeObserver = new ResizeObserver(() => {
 });
 resizeObserver.observe(elements.chartWrap);
 
+const savedEntryId = localStorage.getItem("fplverse-entry-id");
+if (savedEntryId) elements.entryId.value = savedEntryId;
 loadDefaultData();
