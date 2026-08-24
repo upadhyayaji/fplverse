@@ -1,3 +1,3 @@
 window.FPLVERSE_CONFIG = {
-  apiBaseUrl: "",
+  apiBaseUrl: "https://fplverse-api.upadhyaya-apoorv.workers.dev",
 };
