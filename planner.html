@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Plan future FPL gameweeks and test transfers without changing your official team." />
+    <meta name="theme-color" content="#080811" />
+    <title>Squad Planner — FPLVerse</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="assets/styles.css" />
+    <link rel="stylesheet" href="assets/planner.css" />
+  </head>
+  <body class="planner-page">
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
+
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="index.html" aria-label="FPLVerse home">
+          <span class="brand-mark" aria-hidden="true">FV</span>
+          <span class="brand-copy"><strong>FPLVerse</strong><small>Friends. Family. FPL.</small></span>
+        </a>
+
+        <nav class="site-nav" aria-label="Primary navigation">
+          <a class="site-nav-link" href="index.html">League Dashboard</a>
+          <a class="site-nav-link active" href="planner.html" aria-current="page">Squad Planner</a>
+        </nav>
+
+        <div class="planner-top-actions">
+          <span class="draft-state" id="draftState">No squad loaded</span>
+          <button class="button button-quiet reset-button" id="resetDraft" type="button" disabled>Reset draft</button>
+        </div>
+      </header>
+
+      <main class="planner-main">
+        <section class="planner-intro">
+          <div>
+            <p class="eyebrow"><span></span> Future gameweek workspace</p>
+            <h1>Plan the next move.<br /><em>Keep it hypothetical.</em></h1>
+            <p>Load any public FPL squad, scan upcoming fixtures, and test transfers without touching the official team.</p>
+          </div>
+          <form class="planner-entry panel" id="plannerEntryForm">
+            <label for="plannerEntryId"><span>FPL Entry ID</span><input id="plannerEntryId" type="number" min="1" max="100000000" inputmode="numeric" placeholder="e.g. 218806" required /></label>
+            <button class="button button-primary" id="loadSquadButton" type="submit">Load squad</button>
+            <small>No login needed. Pending transfers made after the deadline are not visible.</small>
+          </form>
+        </section>
+
+        <div id="plannerStatus" class="status" role="status" aria-live="polite"></div>
+
+        <section id="plannerWorkspace" class="planner-workspace" hidden>
+          <div class="planner-summary panel">
+            <div class="manager-identity">
+              <span class="connected-avatar" id="plannerAvatar">AU</span>
+              <div><span class="section-kicker">Planning for</span><h2 id="plannerTeamName">—</h2><p id="plannerManagerName">—</p></div>
+            </div>
+            <div class="planner-stat"><span>Squad source</span><strong id="sourceGameweek">—</strong></div>
+            <div class="planner-stat"><span>Estimated bank</span><strong id="plannerBank">—</strong></div>
+            <div class="planner-stat"><span>Draft changes</span><strong id="transferCount">0</strong></div>
+          </div>
+
+          <section class="gameweek-panel panel" aria-labelledby="gameweekTitle">
+            <div class="gameweek-copy"><span class="section-kicker">Fixture horizon</span><h2 id="gameweekTitle">Choose a future gameweek</h2><p>Player cards update to show the selected round.</p></div>
+            <div class="gameweek-tabs" id="gameweekTabs" role="tablist" aria-label="Future gameweeks"></div>
+          </section>
+
+          <div class="planner-grid">
+            <section class="pitch-panel panel" aria-labelledby="pitchTitle">
+              <div class="panel-header planner-panel-header">
+                <div><span class="section-kicker">Your draft</span><h2 id="pitchTitle">Squad view</h2><p id="pitchSubtitle">Select a player to explore replacements.</p></div>
+                <div class="fixture-key" aria-label="Fixture difficulty key"><span>Easy</span><i class="fdr fdr-2"></i><i class="fdr fdr-3"></i><i class="fdr fdr-4"></i><span>Hard</span></div>
+              </div>
+              <div class="pitch" id="pitch"></div>
+              <div class="bench-wrap"><span class="section-kicker">Bench</span><div class="bench" id="bench"></div></div>
+            </section>
+
+            <aside class="transfer-panel panel" aria-labelledby="transferTitle">
+              <div class="panel-header planner-panel-header">
+                <div><span class="section-kicker">Transfer sandbox</span><h2 id="transferTitle">Choose a player</h2><p id="transferHint">Select Remove on a squad card to see replacements.</p></div>
+              </div>
+              <div id="transferTools" class="transfer-tools" hidden>
+                <label for="playerSearch"><span>Search replacements</span><input id="playerSearch" type="search" placeholder="Player or club" autocomplete="off" /></label>
+                <label for="playerSort"><span>Sort by</span><select id="playerSort"><option value="form">Form</option><option value="points">Total points</option><option value="price">Price</option><option value="fixture">Fixture</option></select></label>
+              </div>
+              <div class="replacement-list" id="replacementList">
+                <div class="transfer-empty"><strong>No player selected</strong><span>Your current squad stays intact until you confirm a replacement.</span></div>
+              </div>
+            </aside>
+          </div>
+
+          <p class="planner-disclaimer">Budget uses current market prices because public Entry ID data does not expose each player’s exact selling price. This planner never submits transfers to FPL.</p>
+        </section>
+      </main>
+
+      <footer><div><strong>FPLVerse</strong><span>Independent fan project. Not affiliated with the Premier League.</span></div><span>Drafts are stored only in this browser.</span></footer>
+    </div>
+
+    <script src="assets/config.js"></script>
+    <script type="module" src="assets/planner.js"></script>
+  </body>
+</html>
