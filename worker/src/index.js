@@ -1,6 +1,7 @@
 const FPL_ORIGIN = "https://fantasy.premierleague.com/api";
 const ENTRY_RE = /^\/api\/entry\/(\d{1,8})(\/history)?\/?$/;
 const LEAGUE_RE = /^\/api\/league\/(\d{1,8})\/?$/;
+const PICKS_RE = /^\/api\/entry\/(\d{1,8})\/event\/(\d{1,2})\/picks\/?$/;
 
 function corsHeaders(origin, env) {
   const configured = String(env.ALLOWED_ORIGIN || "https://upadhyayaji.github.io");
@@ -56,12 +57,23 @@ export default {
       return proxy(`/entry/${entryId}/${entryMatch[2] ? "history/" : ""}`, origin, env);
     }
 
+    const picksMatch = url.pathname.match(PICKS_RE);
+    if (picksMatch) {
+      const entryId = Number(picksMatch[1]);
+      const gameweek = Number(picksMatch[2]);
+      if (gameweek < 1 || gameweek > 38) return json({ error: "Gameweek must be between 1 and 38." }, 400, origin, env);
+      return proxy(`/entry/${entryId}/event/${gameweek}/picks/`, origin, env);
+    }
+
     const leagueMatch = url.pathname.match(LEAGUE_RE);
     if (leagueMatch) {
       const leagueId = Number(leagueMatch[1]);
       const page = Math.max(1, Math.min(1000, Number(url.searchParams.get("page")) || 1));
       return proxy(`/leagues-classic/${leagueId}/standings/?page_standings=${page}`, origin, env);
     }
+
+    if (url.pathname === "/api/bootstrap") return proxy("/bootstrap-static/", origin, env);
+    if (url.pathname === "/api/fixtures") return proxy("/fixtures/", origin, env);
 
     if (url.pathname === "/health") return json({ ok: true, service: "fplverse-api" }, 200, origin, env);
     return json({ error: "Route not found." }, 404, origin, env);
