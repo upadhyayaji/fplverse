@@ -161,6 +161,35 @@ a:focus-visible,
   gap: 9px;
 }
 
+.site-nav {
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.025);
+  gap: 3px;
+}
+
+.site-nav-link {
+  padding: 9px 13px;
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.site-nav-link:hover {
+  color: var(--text);
+}
+
+.site-nav-link.active {
+  background: rgba(139, 92, 246, 0.16);
+  color: #ddd6fe;
+}
+
 .season-picker {
   display: grid;
   gap: 2px;
@@ -1070,6 +1099,22 @@ footer strong {
   .analytics-panel {
     grid-column: auto;
   }
+
+  .topbar {
+    flex-wrap: wrap;
+    padding: 18px 0;
+    gap: 14px;
+  }
+
+  .site-nav {
+    order: 3;
+    width: 100%;
+  }
+
+  .site-nav-link {
+    flex: 1;
+    text-align: center;
+  }
 }
 
 @media (max-width: 680px) {
@@ -1079,6 +1124,11 @@ footer strong {
 
   .topbar {
     min-height: 80px;
+  }
+
+  .top-actions .season-picker,
+  .top-actions .file-label {
+    display: none;
   }
 
   .brand-copy small {

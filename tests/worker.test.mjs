@@ -30,6 +30,21 @@ assert.equal(entryResponse.headers.get("Access-Control-Allow-Origin"), "https://
 await worker.fetch(new Request("https://api.example/api/entry/218806/history"), env);
 assert.equal(upstreamUrl, "https://fantasy.premierleague.com/api/entry/218806/history/");
 
+await worker.fetch(new Request("https://api.example/api/entry/218806/event/3/picks"), env);
+assert.equal(upstreamUrl, "https://fantasy.premierleague.com/api/entry/218806/event/3/picks/");
+
+const invalidGameweek = await worker.fetch(
+  new Request("https://api.example/api/entry/218806/event/39/picks"),
+  env
+);
+assert.equal(invalidGameweek.status, 400);
+
+await worker.fetch(new Request("https://api.example/api/bootstrap"), env);
+assert.equal(upstreamUrl, "https://fantasy.premierleague.com/api/bootstrap-static/");
+
+await worker.fetch(new Request("https://api.example/api/fixtures"), env);
+assert.equal(upstreamUrl, "https://fantasy.premierleague.com/api/fixtures/");
+
 await worker.fetch(new Request("https://api.example/api/league/385739?page=2"), env);
 assert.equal(
   upstreamUrl,

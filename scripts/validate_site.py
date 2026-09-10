@@ -34,10 +34,11 @@ class AssetParser(HTMLParser):
 
 def main() -> int:
     errors: list[str] = []
-    index_path = ROOT / "index.html"
-    if not index_path.exists():
-        errors.append("index.html does not exist.")
-    else:
+    for page_name in ("index.html", "planner.html"):
+        index_path = ROOT / page_name
+        if not index_path.exists():
+            errors.append(f"{page_name} does not exist.")
+            continue
         parser = AssetParser()
         try:
             parser.feed(index_path.read_text(encoding="utf-8"))
@@ -50,7 +51,7 @@ def main() -> int:
                     continue
                 asset_path = ROOT / parsed.path
                 if not asset_path.is_file():
-                    errors.append(f"HTML references missing asset: {reference}")
+                    errors.append(f"{page_name} references missing asset: {reference}")
 
     data_path = ROOT / "data" / "managers.json"
     try:
