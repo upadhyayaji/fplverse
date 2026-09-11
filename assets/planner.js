@@ -41,6 +41,40 @@ const state = {
 
 const positionLabels = { 1: "GK", 2: "DEF", 3: "MID", 4: "FWD" };
 
+const clubPalettes = {
+  ARS: ["#ef233c", "#063672", "#ffffff"],
+  AVL: ["#670e36", "#95bfe5", "#ffffff"],
+  BOU: ["#d71920", "#151515", "#ffffff"],
+  BRE: ["#e30613", "#ffffff", "#ffffff"],
+  BHA: ["#0057b8", "#ffffff", "#ffffff"],
+  CHE: ["#034694", "#dba111", "#ffffff"],
+  COV: ["#69b3e7", "#17365d", "#10243c"],
+  CRY: ["#1b458f", "#c4122e", "#ffffff"],
+  EVE: ["#003399", "#ffffff", "#ffffff"],
+  FUL: ["#171717", "#cc0000", "#ffffff"],
+  HUL: ["#f5a12d", "#171717", "#171717"],
+  IPS: ["#0044aa", "#ffffff", "#ffffff"],
+  LEE: ["#ffcd00", "#1d428a", "#172b4d"],
+  LIV: ["#c8102e", "#00b2a9", "#ffffff"],
+  MCI: ["#6cabdd", "#1c2c5b", "#10243c"],
+  MUN: ["#da291c", "#fbe122", "#ffffff"],
+  NEW: ["#202020", "#ffffff", "#ffffff"],
+  NFO: ["#dd0000", "#ffffff", "#ffffff"],
+  TOT: ["#132257", "#ffffff", "#ffffff"],
+  SUN: ["#eb172b", "#171717", "#ffffff"],
+};
+
+function clubPalette(team) {
+  return clubPalettes[team?.short_name] || ["#6d5bd0", "#67d6ff", "#ffffff"];
+}
+
+function applyClubPalette(node, team) {
+  const [primary, secondary, text] = clubPalette(team);
+  node.style.setProperty("--club-primary", primary);
+  node.style.setProperty("--club-secondary", secondary);
+  node.style.setProperty("--club-text", text);
+}
+
 function apiUrl(path) {
   if (!API_BASE) throw new Error("The live FPL service is not configured.");
   return `${API_BASE}${path}`;
@@ -161,6 +195,7 @@ function cardFor(slot, slotIndex) {
   const fixture = fixtureFor(player.team);
   const card = document.createElement("article");
   card.className = "player-card";
+  applyClubPalette(card, team);
 
   const position = document.createElement("span");
   position.className = "player-position";
@@ -183,7 +218,13 @@ function cardFor(slot, slotIndex) {
 
   const meta = document.createElement("span");
   meta.className = "player-meta";
-  meta.textContent = `${team?.short_name || "—"} · ${formatMoney(player.now_cost)}`;
+  const club = document.createElement("b");
+  club.className = "club-chip";
+  club.textContent = team?.short_name || "—";
+  const price = document.createElement("span");
+  price.className = "player-price";
+  price.textContent = formatMoney(player.now_cost);
+  meta.append(club, price);
   card.append(meta);
 
   const fixtureNode = document.createElement("i");
@@ -294,10 +335,15 @@ function renderReplacements() {
     const reason = candidateStatus(candidate, outgoing);
     const row = document.createElement("div");
     row.className = "replacement";
+    applyClubPalette(row, teamMap.get(candidate.team));
     const copy = document.createElement("div");
     copy.className = "replacement-copy";
     const name = document.createElement("strong");
-    name.textContent = candidate.web_name;
+    const swatch = document.createElement("i");
+    swatch.className = "club-swatch";
+    const nameText = document.createElement("span");
+    nameText.textContent = candidate.web_name;
+    name.append(swatch, nameText);
     const detail = document.createElement("span");
     detail.textContent = `${teamMap.get(candidate.team)?.short_name || "—"} · ${fixture.label} · Form ${candidate.form || "0.0"}`;
     copy.append(name, detail);
