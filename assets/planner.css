@@ -309,6 +309,16 @@
   text-align: center;
 }
 
+.player-card::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 6px;
+  background: linear-gradient(90deg, var(--club-primary), var(--club-primary) 64%, var(--club-secondary));
+  content: "";
+}
+
 .player-card .player-position {
   position: absolute;
   top: 5px;
@@ -316,6 +326,7 @@
   color: rgba(255,255,255,0.45);
   font-family: "DM Mono", monospace;
   font-size: 7px;
+  z-index: 2;
 }
 
 .player-name {
@@ -328,10 +339,33 @@
 }
 
 .player-meta {
-  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 6px;
   color: var(--muted);
   font-family: "DM Mono", monospace;
   font-size: 7px;
+  gap: 5px;
+}
+
+.club-chip {
+  display: inline-flex;
+  min-width: 27px;
+  height: 16px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
+  border-radius: 4px;
+  background: var(--club-primary);
+  box-shadow: inset 0 -2px 0 var(--club-secondary);
+  color: var(--club-text);
+  font-size: 7px;
+  letter-spacing: 0.02em;
+}
+
+.player-price {
+  white-space: nowrap;
 }
 
 .player-fixture {
@@ -378,6 +412,7 @@
   font-family: "DM Mono", monospace;
   font-size: 7px;
   font-weight: 700;
+  z-index: 2;
 }
 
 .bench-wrap {
@@ -448,6 +483,18 @@
   grid-template-columns: minmax(0, 1fr) auto auto;
 }
 
+.replacement::before {
+  width: 4px;
+  height: 36px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, var(--club-primary), var(--club-secondary));
+  content: "";
+}
+
+.replacement {
+  grid-template-columns: 4px minmax(0, 1fr) auto auto;
+}
+
 .replacement-copy {
   display: grid;
   min-width: 0;
@@ -461,8 +508,28 @@
   white-space: nowrap;
 }
 
-.replacement-copy strong { font-size: 11px; }
+.replacement-copy strong {
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  gap: 6px;
+}
 .replacement-copy span { color: var(--muted); font-size: 8px; }
+
+.replacement-copy strong span {
+  color: inherit;
+  font-size: inherit;
+}
+
+.club-swatch {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border: 1px solid color-mix(in srgb, var(--club-secondary) 65%, transparent);
+  border-radius: 50%;
+  background: var(--club-primary);
+  box-shadow: 3px 0 0 var(--club-secondary);
+}
 
 .replacement-price {
   color: var(--muted-bright);
