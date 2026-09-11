@@ -84,12 +84,18 @@
               <div class="panel-header planner-panel-header">
                 <div><span class="section-kicker">Transfer sandbox</span><h2 id="transferTitle">Choose a player</h2><p id="transferHint">Select Remove on a squad card to see replacements.</p></div>
               </div>
-              <div id="transferTools" class="transfer-tools" hidden>
+              <div id="transferTools" class="transfer-tools">
+                <div class="position-filter" aria-label="Filter replacements by position">
+                  <button type="button" data-position-filter="1">Goalkeepers</button>
+                  <button type="button" data-position-filter="2">Defenders</button>
+                  <button type="button" data-position-filter="3">Midfielders</button>
+                  <button type="button" data-position-filter="4">Forwards</button>
+                </div>
                 <label for="playerSearch"><span>Search replacements</span><input id="playerSearch" type="search" placeholder="Player or club" autocomplete="off" /></label>
                 <label for="playerSort"><span>Sort by</span><select id="playerSort"><option value="form">Form</option><option value="points">Total points</option><option value="price">Price</option><option value="fixture">Fixture</option></select></label>
               </div>
               <div class="replacement-list" id="replacementList">
-                <div class="transfer-empty"><strong>No player selected</strong><span>Your current squad stays intact until you confirm a replacement.</span></div>
+                <div class="transfer-empty"><strong>Browse by position</strong><span>Select a position above or choose Find replacement on a squad player.</span></div>
               </div>
             </aside>
           </div>
