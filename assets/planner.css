@@ -252,12 +252,12 @@
 .pitch {
   position: relative;
   display: grid;
-  min-height: 660px;
-  align-content: space-around;
+  min-height: 610px;
+  align-content: space-between;
   overflow: hidden;
-  padding: 34px 28px;
+  padding: 60px 28px 42px;
   background:
-    linear-gradient(90deg, transparent 49.7%, rgba(255, 255, 255, 0.09) 49.8%, rgba(255, 255, 255, 0.09) 50.2%, transparent 50.3%),
+    radial-gradient(circle at 50% 112%, transparent 0 94px, rgba(255,255,255,0.11) 95px 96px, transparent 97px),
     repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0 12.5%, rgba(0,0,0,0.02) 12.5% 25%),
     linear-gradient(180deg, #182c2d, #132629);
 }
@@ -273,11 +273,11 @@
 }
 
 .pitch::before {
-  top: 50%;
-  width: 94px;
-  height: 94px;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
+  top: 15px;
+  width: min(52%, 320px);
+  height: 126px;
+  border-top: 0;
+  border-radius: 0 0 3px 3px;
 }
 
 .pitch::after {
@@ -298,10 +298,10 @@
   display: grid;
   width: min(118px, 21%);
   min-width: 82px;
-  min-height: 98px;
+  min-height: 156px;
   align-content: start;
   overflow: hidden;
-  padding: 11px 8px 8px;
+  padding: 8px 8px;
   border: 1px solid rgba(255,255,255,0.16);
   border-radius: 11px;
   background: rgba(13, 13, 28, 0.9);
@@ -309,14 +309,32 @@
   text-align: center;
 }
 
-.player-card::after {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: 6px;
-  background: linear-gradient(90deg, var(--club-primary), var(--club-primary) 64%, var(--club-secondary));
-  content: "";
+.player-jersey {
+  display: block;
+  width: 48px;
+  height: 48px;
+  margin: 5px auto 0;
+  overflow: visible;
+  filter: drop-shadow(0 5px 5px rgba(0,0,0,0.28));
+}
+
+.jersey-body {
+  fill: var(--club-primary);
+  stroke: color-mix(in srgb, var(--club-secondary) 52%, rgba(255,255,255,0.35));
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+}
+
+.jersey-stripe {
+  fill: var(--club-secondary);
+  opacity: 0.92;
+}
+
+.jersey-collar {
+  fill: none;
+  stroke: var(--club-secondary);
+  stroke-width: 2.5;
+  stroke-linecap: round;
 }
 
 .player-card .player-position {
@@ -331,7 +349,7 @@
 
 .player-name {
   overflow: hidden;
-  margin-top: 8px;
+  margin-top: 1px;
   font-size: 11px;
   font-weight: 800;
   text-overflow: ellipsis;
@@ -447,6 +465,33 @@
   grid-template-columns: 1fr 115px;
 }
 
+.position-filter {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 6px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.position-filter button {
+  min-height: 34px;
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.025);
+  color: var(--muted-bright);
+  cursor: pointer;
+  font-size: 9px;
+  font-weight: 700;
+  transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+.position-filter button:hover,
+.position-filter button.active {
+  border-color: rgba(183,255,69,0.48);
+  background: rgba(183,255,69,0.1);
+  color: var(--lime);
+}
+
 .replacement-list {
   max-height: calc(100vh - 230px);
   overflow-y: auto;
@@ -480,19 +525,19 @@
   padding: 10px 4px;
   border-bottom: 1px solid var(--line);
   gap: 9px;
-  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-columns: 36px minmax(0, 1fr) auto auto;
 }
 
-.replacement::before {
-  width: 4px;
-  height: 36px;
-  border-radius: 4px;
-  background: linear-gradient(180deg, var(--club-primary), var(--club-secondary));
-  content: "";
+.replacement.is-pending {
+  border-radius: 9px;
+  background: rgba(183,255,69,0.07);
+  box-shadow: inset 0 0 0 1px rgba(183,255,69,0.24);
 }
 
-.replacement {
-  grid-template-columns: 4px minmax(0, 1fr) auto auto;
+.replacement-jersey {
+  width: 34px;
+  height: 34px;
+  margin: 0;
 }
 
 .replacement-copy {
@@ -582,7 +627,7 @@ html[data-theme="light"] .gameweek-tab.active {
 
 html[data-theme="light"] .pitch {
   background:
-    linear-gradient(90deg, transparent 49.7%, rgba(255, 255, 255, 0.72) 49.8%, rgba(255, 255, 255, 0.72) 50.2%, transparent 50.3%),
+    radial-gradient(circle at 50% 112%, transparent 0 94px, rgba(255,255,255,0.82) 95px 96px, transparent 97px),
     repeating-linear-gradient(90deg, rgba(255,255,255,0.16) 0 12.5%, rgba(8,103,209,0.035) 12.5% 25%),
     linear-gradient(180deg, #dfe9ec, #d5e2e8);
 }
@@ -622,6 +667,22 @@ html[data-theme="light"] .replacement button {
   color: #0758ad;
 }
 
+html[data-theme="light"] .position-filter button {
+  background: rgba(18,24,32,0.025);
+}
+
+html[data-theme="light"] .position-filter button:hover,
+html[data-theme="light"] .position-filter button.active {
+  border-color: rgba(8,103,209,0.38);
+  background: rgba(8,103,209,0.08);
+  color: #0758ad;
+}
+
+html[data-theme="light"] .replacement.is-pending {
+  background: rgba(8,103,209,0.055);
+  box-shadow: inset 0 0 0 1px rgba(8,103,209,0.2);
+}
+
 @media (max-width: 1120px) {
   .planner-intro,
   .planner-grid { grid-template-columns: 1fr; }
@@ -640,7 +701,7 @@ html[data-theme="light"] .replacement button {
   .planner-summary { grid-template-columns: repeat(3, 1fr); }
   .gameweek-panel { grid-template-columns: 1fr; }
   .gameweek-tabs { overflow-x: auto; grid-template-columns: repeat(6, minmax(75px, 1fr)); }
-  .pitch { min-height: 570px; padding-inline: 12px; }
+  .pitch { min-height: 570px; padding: 54px 12px 36px; }
   .player-card { min-width: 68px; padding-inline: 5px; }
   .player-name { font-size: 9px; }
   .player-remove { font-size: 7px; }
@@ -655,9 +716,10 @@ html[data-theme="light"] .replacement button {
   .planner-stat { padding-left: 12px; }
   .planner-stat:last-child { border-left: 0; padding-left: 0; }
   .fixture-key { display: none; }
-  .pitch { min-height: 520px; }
+  .pitch { min-height: 550px; padding: 48px 7px 30px; }
   .position-row { gap: 3px; }
-  .player-card { width: 24%; min-width: 58px; min-height: 91px; }
+  .player-card { width: 24%; min-width: 58px; min-height: 130px; }
+  .player-jersey { width: 40px; height: 40px; }
   .player-position, .player-meta { display: none; }
   .bench { padding: 10px 4px; gap: 4px; }
   .transfer-tools { grid-template-columns: 1fr; }
