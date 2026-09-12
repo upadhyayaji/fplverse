@@ -88,7 +88,7 @@ function syncPositionButtons() {
 
 function choosePosition(value) {
   if (value === "all") {
-    state.selectedPositions = state.selectedPositions.size === 4 ? new Set() : new Set([1, 2, 3, 4]);
+    state.selectedPositions = new Set([1, 2, 3, 4]);
   } else {
     const position = Number(value);
     if (state.selectedPositions.has(position)) state.selectedPositions.delete(position);
