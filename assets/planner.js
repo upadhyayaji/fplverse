@@ -453,7 +453,7 @@ function renderReplacements() {
   elements.metricHeader.textContent = activeMetricLabel(sort);
 
   let candidates = (state.bootstrap?.elements || []).filter((player) => {
-    if (player.element_type !== state.positionFilter || selectedIds.has(player.id)) return false;
+    if (player.element_type !== state.positionFilter) return false;
     const team = teamMap.get(player.team);
     return !query || `${player.web_name} ${player.first_name} ${player.second_name} ${team?.name || ""}`.toLowerCase().includes(query);
   });
@@ -469,9 +469,10 @@ function renderReplacements() {
   elements.replacements.replaceChildren();
   candidates.slice(0, 80).forEach((candidate) => {
     const fixture = fixtureFor(candidate.team);
-    const reason = candidateStatus(candidate);
+    const isInSquad = selectedIds.has(candidate.id);
+    const reason = isInSquad ? "In squad" : candidateStatus(candidate);
     const row = document.createElement("div");
-    row.className = "replacement";
+    row.className = `replacement${isInSquad ? " is-in-squad" : ""}`;
     applyClubPalette(row, teamMap.get(candidate.team));
     const copy = document.createElement("div");
     copy.className = "replacement-copy";
@@ -498,7 +499,9 @@ function renderReplacements() {
     choose.type = "button";
     choose.className = "replacement-add";
     choose.textContent = reason || "+ Add";
-    choose.title = reason || `Add ${candidate.web_name} for ${formatMoney(candidate.now_cost)}`;
+    choose.title = isInSquad
+      ? `${candidate.web_name} is already in your squad`
+      : reason || `Add ${candidate.web_name} for ${formatMoney(candidate.now_cost)}`;
     choose.disabled = Boolean(reason);
     choose.addEventListener("click", () => {
       addPlayer(candidate.id);
