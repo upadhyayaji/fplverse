@@ -743,6 +743,14 @@
   opacity: 0.35;
 }
 
+.replacement.is-in-squad {
+  background: rgba(139, 92, 246, 0.045);
+}
+
+.replacement.is-in-squad button:disabled {
+  opacity: 0.68;
+}
+
 .planner-disclaimer {
   margin: -4px 0 0;
   color: var(--muted);
@@ -816,6 +824,10 @@ html[data-theme="light"] .player-add {
 
 html[data-theme="light"] .player-restore:hover {
   color: #0758ad;
+}
+
+html[data-theme="light"] .replacement.is-in-squad {
+  background: rgba(8, 103, 209, 0.035);
 }
 
 html[data-theme="light"] .captain-badge {
