@@ -22,6 +22,7 @@ const elements = {
   search: document.querySelector("#playerSearch"),
   sort: document.querySelector("#playerSort"),
   positionButtons: [...document.querySelectorAll("[data-position-filter]")],
+  metricHeader: document.querySelector("#replacementMetricHeader"),
   replacements: document.querySelector("#replacementList"),
   reset: document.querySelector("#resetDraft"),
   draftState: document.querySelector("#draftState"),
@@ -168,7 +169,8 @@ function slotType(slot) {
 }
 
 function formatMoney(tenths) {
-  return `£${(Number(tenths || 0) / 10).toFixed(1)}m`;
+  const value = Number(tenths || 0) / 10;
+  return `${value < 0 ? "-" : ""}£${Math.abs(value).toFixed(1)}m`;
 }
 
 function draftKey() {
@@ -406,9 +408,9 @@ function restorePlayer(slotIndex) {
   const reason = candidateStatus(originalPlayer);
   if (reason) {
     elements.transferTitle.textContent = `${originalPlayer.web_name} cannot be restored`;
-    elements.transferHint.textContent = reason === "Over budget"
-      ? "Restoring this player would exceed the estimated budget."
-      : "Restoring this player would exceed the three-player-per-club limit.";
+    elements.transferHint.textContent = reason === "Club limit"
+      ? "Restoring this player would exceed the three-player-per-club limit."
+      : "This original player cannot be restored into the selected slot.";
     renderSquad();
     renderReplacements();
     return;
@@ -426,7 +428,6 @@ function clubCount(teamId) {
 function candidateStatus(candidate) {
   if (state.selectedSlot === null || state.squad[state.selectedSlot]?.element !== null) return "Remove first";
   if (candidate.element_type !== slotType(state.squad[state.selectedSlot])) return "Position mismatch";
-  if (Number(candidate.now_cost) > currentDraftBank()) return "Over budget";
   if (clubCount(candidate.team) >= 3) return "Club limit";
   return "";
 }
@@ -439,12 +440,17 @@ function sortMetric(player, fixture, sort) {
   return { label: "Form", value: Number(player.form || 0).toFixed(1) };
 }
 
+function activeMetricLabel(sort) {
+  return ({ points: "Total points", selected: "% selected by", price: "Price", fixture: "Fixture difficulty", form: "Form" })[sort] || "Form";
+}
+
 function renderReplacements() {
   if (!state.bootstrap) return;
   const selectedIds = new Set(state.squad.map((slot) => slot.element).filter(Boolean));
   const teamMap = teamsById();
   const query = elements.search.value.trim().toLowerCase();
   const sort = elements.sort.value;
+  elements.metricHeader.textContent = activeMetricLabel(sort);
 
   let candidates = (state.bootstrap?.elements || []).filter((player) => {
     if (player.element_type !== state.positionFilter || selectedIds.has(player.id)) return false;
@@ -482,8 +488,9 @@ function renderReplacements() {
     const metric = sortMetric(candidate, fixture, sort);
     const metricNode = document.createElement("span");
     metricNode.className = "replacement-sort-metric";
-    metricNode.textContent = `${metric.label}: ${metric.value}`;
-    copy.append(name, detail, metricNode);
+    metricNode.textContent = metric.value;
+    metricNode.title = `${metric.label}: ${metric.value}`;
+    copy.append(name, detail);
     const price = document.createElement("span");
     price.className = "replacement-price";
     price.textContent = formatMoney(candidate.now_cost);
@@ -496,7 +503,19 @@ function renderReplacements() {
     choose.addEventListener("click", () => {
       addPlayer(candidate.id);
     });
-    row.append(jersey, copy, price, choose);
+    const action = document.createElement("div");
+    action.className = "replacement-action";
+    action.append(choose);
+    if (!reason && state.selectedSlot !== null) {
+      const bankAfter = currentDraftBank() - Number(candidate.now_cost || 0);
+      if (bankAfter < 0) {
+        const warning = document.createElement("small");
+        warning.className = "negative-bank";
+        warning.textContent = `Bank ${formatMoney(bankAfter)}`;
+        action.append(warning);
+      }
+    }
+    row.append(jersey, copy, price, metricNode, action);
     elements.replacements.append(row);
   });
 
@@ -542,7 +561,7 @@ function addPlayer(elementId) {
   renderSquad();
   renderSummary();
   elements.transferTitle.textContent = `${player.web_name} added`;
-  elements.transferHint.textContent = `${formatMoney(player.now_cost)} current price · remove another player to continue.`;
+  elements.transferHint.textContent = `${formatMoney(currentDraftBank())} estimated bank after this change.`;
   elements.replacements.innerHTML = '<div class="transfer-empty"><strong>Draft updated</strong><span>Your change is saved on this device.</span></div>';
   return true;
 }
