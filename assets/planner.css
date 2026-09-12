@@ -311,8 +311,8 @@
 
 .player-shirt-picture {
   display: grid;
-  width: 68px;
-  height: 70px;
+  width: 52px;
+  height: 52px;
   align-items: end;
   justify-items: center;
   margin: 1px auto 0;
@@ -320,8 +320,8 @@
 
 .player-shirt {
   display: block;
-  width: 66px;
-  max-height: 70px;
+  width: 50px;
+  max-height: 52px;
   margin: 0 auto;
   object-fit: contain;
   overflow: visible;
@@ -329,8 +329,8 @@
 }
 
 .fallback-shirt {
-  height: 58px;
-  margin-top: 6px;
+  height: 46px;
+  margin-top: 4px;
 }
 
 .jersey-body {
@@ -366,52 +366,71 @@
 .player-name {
   overflow: hidden;
   margin-top: 1px;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 800;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .player-meta {
-  display: flex;
+  display: grid;
   align-items: center;
   justify-content: center;
-  margin-top: 6px;
+  margin-top: 5px;
   color: var(--muted);
   font-family: "DM Mono", monospace;
-  font-size: 7px;
-  gap: 5px;
+  font-size: 9px;
+  gap: 2px;
 }
 
 .club-chip {
   display: inline-flex;
-  min-width: 27px;
-  height: 16px;
+  min-width: 0;
+  max-width: 96px;
+  height: auto;
   align-items: center;
   justify-content: center;
-  padding: 0 5px;
-  border-radius: 4px;
-  background: var(--club-primary);
-  box-shadow: inset 0 -2px 0 var(--club-secondary);
-  color: var(--club-text);
-  font-size: 7px;
+  overflow: hidden;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  color: var(--muted-bright);
+  font-size: 9px;
+  font-weight: 700;
+  justify-self: center;
   letter-spacing: 0.02em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.club-chip::before {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
+  border: 1px solid var(--club-secondary);
+  border-radius: 50%;
+  background: var(--club-primary);
+  content: "";
 }
 
 .player-price {
+  color: var(--text);
+  font-size: 9px;
+  font-weight: 700;
   white-space: nowrap;
 }
 
 .player-fixture {
   display: inline-flex;
-  min-height: 23px;
+  min-height: 27px;
   align-items: center;
   justify-content: center;
   margin-top: 8px;
   padding: 3px 5px;
   border-radius: 6px;
   font-family: "DM Mono", monospace;
-  font-size: 8px;
+  font-size: 9px;
+  font-weight: 700;
   font-style: normal;
 }
 
@@ -475,6 +494,21 @@
   cursor: pointer;
   font-size: 8px;
   font-weight: 700;
+}
+
+.player-restore {
+  padding: 2px 4px;
+  border: 0;
+  background: transparent;
+  color: var(--muted-bright);
+  cursor: pointer;
+  font-size: 8px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.player-restore:hover {
+  color: var(--lime);
 }
 
 .captain-badge {
@@ -752,6 +786,10 @@ html[data-theme="light"] .player-add {
   color: #0758ad;
 }
 
+html[data-theme="light"] .player-restore:hover {
+  color: #0758ad;
+}
+
 html[data-theme="light"] .captain-badge {
   color: #fff;
 }
@@ -793,7 +831,7 @@ html[data-theme="light"] .position-filter button.active {
   .gameweek-tabs { overflow-x: auto; grid-template-columns: repeat(6, minmax(75px, 1fr)); }
   .pitch { min-height: 570px; padding: 54px 12px 36px; }
   .player-card { min-width: 68px; padding-inline: 5px; }
-  .player-name { font-size: 9px; }
+  .player-name { font-size: 11px; }
   .squad-remove { width: 18px; height: 18px; font-size: 12px; }
   .planner-top-actions .draft-state { display: none; }
   .reset-button { width: auto; padding-inline: 12px; font-size: 10px; }
@@ -809,8 +847,8 @@ html[data-theme="light"] .position-filter button.active {
   .pitch { min-height: 550px; padding: 48px 7px 30px; }
   .position-row { gap: 3px; }
   .player-card { width: 24%; min-width: 58px; min-height: 130px; }
-  .player-shirt-picture { width: 54px; height: 58px; }
-  .player-shirt { width: 52px; max-height: 58px; }
+  .player-shirt-picture { width: 44px; height: 45px; }
+  .player-shirt { width: 42px; max-height: 45px; }
   .player-position, .player-meta { display: none; }
   .bench { padding: 10px 4px; gap: 4px; }
   .transfer-tools { grid-template-columns: 1fr; }
