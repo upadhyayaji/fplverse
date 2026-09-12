@@ -445,11 +445,11 @@ function cardFor(slot, slotIndex) {
 }
 
 function renderSquad() {
-  const weeks = (state.bootstrap?.events || []).filter((event) => event.id >= state.activeGw).slice(0, 3);
+  const selectedWeek = (state.bootstrap?.events || []).find((event) => event.id === state.activeGw);
   const xi = state.squad.filter((slot) => slot.position <= 11 && playerFor(slot));
-  const total = xi.reduce((sum, slot) => sum + weeks.reduce((points, week) => points + predictionFor(playerFor(slot), week.id), 0), 0);
-  document.querySelector("#squadForecast").textContent = weeks.length
-    ? `${total.toFixed(1)} predicted pts · GW ${weeks.map((week) => week.id).join(", ")} · Starting XI (${xi.length}/11), excludes bench and captain doubling`
+  const total = xi.reduce((sum, slot) => sum + predictionFor(playerFor(slot), state.activeGw), 0);
+  document.querySelector("#squadForecast").textContent = selectedWeek
+    ? `${total.toFixed(1)} predicted pts · GW ${selectedWeek.id} · Starting XI (${xi.length}/11), excludes bench and captain doubling`
     : "No remaining gameweeks to predict.";
   elements.pitch.replaceChildren();
   elements.bench.replaceChildren();
