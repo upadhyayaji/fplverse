@@ -34,7 +34,7 @@ class AssetParser(HTMLParser):
 
 def main() -> int:
     errors: list[str] = []
-    for page_name in ("index.html", "planner.html"):
+    for page_name in ("index.html", "planner.html", "predictor.html"):
         index_path = ROOT / page_name
         if not index_path.exists():
             errors.append(f"{page_name} does not exist.")
