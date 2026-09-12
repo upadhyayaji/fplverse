@@ -404,10 +404,22 @@ function cardFor(slot, slotIndex) {
   meta.append(club, price);
   card.append(meta);
 
-  const fixtureNode = document.createElement("i");
-  fixtureNode.className = `player-fixture fdr-${fixture.difficulty}`;
-  fixtureNode.textContent = fixture.label;
-  card.append(fixtureNode);
+  const outlook = document.createElement("div");
+  outlook.className = "player-outlook";
+  fixtureHorizon(player.team).slice(0, 3).forEach((item) => {
+    const tile = document.createElement("div");
+    tile.className = `player-outlook-tile fdr-${item.difficulty}`;
+    tile.title = `GW ${item.gameweek}: ${item.label}. Predicted points (estimate).`;
+    const week = document.createElement("small");
+    week.textContent = `GW ${item.gameweek}`;
+    const points = document.createElement("strong");
+    points.textContent = predictionFor(player, item.gameweek).toFixed(1);
+    const opponent = document.createElement("span");
+    opponent.textContent = item.label;
+    tile.append(week, points, opponent);
+    outlook.append(tile);
+  });
+  card.append(outlook);
 
   if (slot.position > 11) {
     const substitute = document.createElement("button");
@@ -433,6 +445,12 @@ function cardFor(slot, slotIndex) {
 }
 
 function renderSquad() {
+  const weeks = (state.bootstrap?.events || []).filter((event) => event.id >= state.activeGw).slice(0, 3);
+  const xi = state.squad.filter((slot) => slot.position <= 11 && playerFor(slot));
+  const total = xi.reduce((sum, slot) => sum + weeks.reduce((points, week) => points + predictionFor(playerFor(slot), week.id), 0), 0);
+  document.querySelector("#squadForecast").textContent = weeks.length
+    ? `${total.toFixed(1)} predicted pts · GW ${weeks.map((week) => week.id).join(", ")} · Starting XI (${xi.length}/11), excludes bench and captain doubling`
+    : "No remaining gameweeks to predict.";
   elements.pitch.replaceChildren();
   elements.bench.replaceChildren();
   const starters = state.squad.map((slot, index) => ({ slot, index })).filter(({ slot }) => slot.position <= 11);

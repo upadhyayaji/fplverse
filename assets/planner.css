@@ -434,6 +434,36 @@
   font-style: normal;
 }
 
+.player-outlook {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2px;
+  margin-top: 8px;
+  width: 100%;
+}
+
+.player-outlook-tile {
+  display: grid;
+  align-content: start;
+  gap: 3px;
+  border-radius: 4px;
+  padding: 5px 1px;
+  min-width: 0;
+}
+
+.player-outlook-tile small { font-size: 7px; }
+.player-outlook-tile strong { font-size: 12px; font-variant-numeric: tabular-nums; }
+.player-outlook-tile span { font-size: 8px; overflow-wrap: anywhere; line-height: 1.3; }
+.squad-forecast { margin-top: 12px; color: var(--lime); font-size: 12px; font-weight: 700; line-height: 1.6; }
+
+/* Keep three fixture cells readable even in a five-player formation. */
+.pitch-panel { min-width: 0; }
+.pitch { overflow-x: auto; }
+.position-row { min-width: 610px; }
+.player-card { flex-shrink: 0; width: 118px; }
+.bench { overflow-x: auto; }
+.bench .player-card { min-width: 118px; }
+
 .substitute-button,
 .swap-button {
   width: 100%;
