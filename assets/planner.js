@@ -256,6 +256,7 @@ function cardFor(slot, slotIndex) {
 
   if (!player) {
     card.classList.add("player-vacancy");
+    const originalPlayer = playersById().get(state.original[slotIndex]?.element);
     const plus = document.createElement("span");
     plus.className = "vacancy-plus";
     plus.textContent = "+";
@@ -268,6 +269,15 @@ function cardFor(slot, slotIndex) {
     add.textContent = "Add player";
     add.addEventListener("click", () => selectVacancy(slotIndex));
     card.append(plus, name, add);
+    if (originalPlayer) {
+      const restore = document.createElement("button");
+      restore.className = "player-restore";
+      restore.type = "button";
+      restore.textContent = "Restore player";
+      restore.title = `Restore ${originalPlayer.web_name}`;
+      restore.addEventListener("click", () => restorePlayer(slotIndex));
+      card.append(restore);
+    }
     return card;
   }
 
@@ -305,7 +315,7 @@ function cardFor(slot, slotIndex) {
   meta.className = "player-meta";
   const club = document.createElement("b");
   club.className = "club-chip";
-  club.textContent = team?.short_name || "—";
+  club.textContent = team?.name || team?.short_name || "—";
   const price = document.createElement("span");
   price.className = "player-price";
   price.textContent = formatMoney(player.now_cost);
@@ -387,6 +397,26 @@ function removePlayer(slotIndex) {
   saveDraft();
   selectVacancy(slotIndex);
   renderSummary();
+}
+
+function restorePlayer(slotIndex) {
+  const originalPlayer = playersById().get(state.original[slotIndex]?.element);
+  if (!originalPlayer) return;
+  state.selectedSlot = slotIndex;
+  const reason = candidateStatus(originalPlayer);
+  if (reason) {
+    elements.transferTitle.textContent = `${originalPlayer.web_name} cannot be restored`;
+    elements.transferHint.textContent = reason === "Over budget"
+      ? "Restoring this player would exceed the estimated budget."
+      : "Restoring this player would exceed the three-player-per-club limit.";
+    renderSquad();
+    renderReplacements();
+    return;
+  }
+  if (addPlayer(originalPlayer.id)) {
+    elements.transferTitle.textContent = `${originalPlayer.web_name} restored`;
+    elements.transferHint.textContent = "The original player is back in this squad slot.";
+  }
 }
 
 function clubCount(teamId) {
@@ -487,10 +517,10 @@ function choosePosition(type) {
 }
 
 function addPlayer(elementId) {
-  if (state.selectedSlot === null) return;
+  if (state.selectedSlot === null) return false;
   const player = playersById().get(elementId);
   const reason = candidateStatus(player);
-  if (reason) return;
+  if (reason) return false;
   const slot = { ...state.squad[state.selectedSlot], element: elementId };
   delete slot.replacement_type;
   state.squad[state.selectedSlot] = slot;
@@ -501,6 +531,7 @@ function addPlayer(elementId) {
   elements.transferTitle.textContent = `${player.web_name} added`;
   elements.transferHint.textContent = `${formatMoney(player.now_cost)} current price · remove another player to continue.`;
   elements.replacements.innerHTML = '<div class="transfer-empty"><strong>Draft updated</strong><span>Your change is saved on this device.</span></div>';
+  return true;
 }
 
 function resetDraft() {
