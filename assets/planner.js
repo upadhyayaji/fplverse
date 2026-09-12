@@ -315,7 +315,7 @@ function cardFor(slot, slotIndex) {
   meta.className = "player-meta";
   const club = document.createElement("b");
   club.className = "club-chip";
-  club.textContent = team?.name || team?.short_name || "—";
+  club.textContent = team?.short_name || "—";
   const price = document.createElement("span");
   price.className = "player-price";
   price.textContent = formatMoney(player.now_cost);
