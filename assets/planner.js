@@ -39,6 +39,8 @@ const state = {
   original: [],
   squad: [],
   selectedSlot: null,
+  substituteFrom: null,
+  expandedPlayerId: null,
   positionFilter: 1,
 };
 
@@ -245,6 +247,68 @@ function fixtureFor(teamId, gameweek = state.activeGw) {
   };
 }
 
+function fixtureHorizon(teamId) {
+  return (state.bootstrap?.events || [])
+    .filter((event) => event.id >= state.activeGw)
+    .slice(0, 5)
+    .map((event) => ({ gameweek: event.id, ...fixtureFor(teamId, event.id) }));
+}
+
+function canSubstitute(benchIndex, starterIndex) {
+  const benchSlot = state.squad[benchIndex];
+  const starterSlot = state.squad[starterIndex];
+  if (!benchSlot || !starterSlot || benchSlot.position <= 11 || starterSlot.position > 11) return false;
+  if (!playerFor(benchSlot) || !playerFor(starterSlot)) return false;
+
+  const counts = { 1: 0, 2: 0, 3: 0, 4: 0 };
+  state.squad.forEach((slot, index) => {
+    if (slot.position > 11) return;
+    const type = index === starterIndex ? slotType(benchSlot) : slotType(slot);
+    counts[type] += 1;
+  });
+  return counts[1] === 1 && counts[2] >= 3 && counts[2] <= 5 && counts[3] >= 2 && counts[3] <= 5 && counts[4] >= 1 && counts[4] <= 3;
+}
+
+function chooseSubstitute(slotIndex) {
+  if (state.substituteFrom === slotIndex) {
+    state.substituteFrom = null;
+    elements.transferTitle.textContent = "Choose a player";
+    elements.transferHint.textContent = "Remove a squad player, then add a replacement.";
+  } else {
+    const player = playerFor(state.squad[slotIndex]);
+    if (!player || state.squad[slotIndex].position <= 11) return;
+    state.substituteFrom = slotIndex;
+    state.selectedSlot = null;
+    elements.transferTitle.textContent = `Substitute ${player.web_name}`;
+    elements.transferHint.textContent = "Choose an eligible starter to move to the bench.";
+  }
+  renderSquad();
+}
+
+function substitutePlayer(starterIndex) {
+  const benchIndex = state.substituteFrom;
+  if (benchIndex === null || !canSubstitute(benchIndex, starterIndex)) return;
+  const benchSlot = state.squad[benchIndex];
+  const starterSlot = state.squad[starterIndex];
+  const starterName = playerFor(starterSlot)?.web_name || "Starter";
+  const benchName = playerFor(benchSlot)?.web_name || "Bench player";
+  const playerKeys = ["element", "is_captain", "is_vice_captain"];
+  const nextBench = { ...benchSlot };
+  const nextStarter = { ...starterSlot };
+  playerKeys.forEach((key) => {
+    nextBench[key] = starterSlot[key];
+    nextStarter[key] = benchSlot[key];
+  });
+  state.squad[benchIndex] = nextBench;
+  state.squad[starterIndex] = nextStarter;
+  state.substituteFrom = null;
+  saveDraft();
+  renderSquad();
+  renderSummary();
+  elements.transferTitle.textContent = `${benchName} moved into the XI`;
+  elements.transferHint.textContent = `${starterName} is now on the bench. This lineup change is saved on this device.`;
+}
+
 function cardFor(slot, slotIndex) {
   const player = playerFor(slot);
   const type = slotType(slot);
@@ -329,6 +393,26 @@ function cardFor(slot, slotIndex) {
   fixtureNode.textContent = fixture.label;
   card.append(fixtureNode);
 
+  if (slot.position > 11) {
+    const substitute = document.createElement("button");
+    substitute.className = "substitute-button";
+    substitute.type = "button";
+    substitute.textContent = state.substituteFrom === slotIndex ? "Cancel" : "Substitute";
+    substitute.setAttribute("aria-pressed", String(state.substituteFrom === slotIndex));
+    substitute.addEventListener("click", () => chooseSubstitute(slotIndex));
+    card.classList.toggle("is-substitute-source", state.substituteFrom === slotIndex);
+    card.append(substitute);
+  } else if (state.substituteFrom !== null && canSubstitute(state.substituteFrom, slotIndex)) {
+    const swap = document.createElement("button");
+    swap.className = "swap-button";
+    swap.type = "button";
+    swap.textContent = "Swap";
+    swap.title = `Move ${player.web_name} to the bench`;
+    swap.addEventListener("click", () => substitutePlayer(slotIndex));
+    card.classList.add("is-swap-target");
+    card.append(swap);
+  }
+
   return card;
 }
 
@@ -381,6 +465,7 @@ function selectVacancy(slotIndex) {
   const slot = state.squad[slotIndex];
   if (slot.element !== null) return;
   state.selectedSlot = slotIndex;
+  state.substituteFrom = null;
   state.positionFilter = slotType(slot);
   elements.transferTitle.textContent = `Add a ${positionNames[state.positionFilter]}`;
   elements.transferHint.textContent = `${formatMoney(currentDraftBank())} available at current prices.`;
@@ -395,6 +480,7 @@ function removePlayer(slotIndex) {
   const slot = state.squad[slotIndex];
   const player = playerFor(slot);
   if (!player) return selectVacancy(slotIndex);
+  state.substituteFrom = null;
   state.squad[slotIndex] = { ...slot, element: null, replacement_type: player.element_type };
   saveDraft();
   selectVacancy(slotIndex);
@@ -472,7 +558,12 @@ function renderReplacements() {
     const isInSquad = selectedIds.has(candidate.id);
     const reason = isInSquad ? "In squad" : candidateStatus(candidate);
     const row = document.createElement("div");
-    row.className = `replacement${isInSquad ? " is-in-squad" : ""}`;
+    const isExpanded = state.expandedPlayerId === candidate.id;
+    row.className = `replacement${isInSquad ? " is-in-squad" : ""}${isExpanded ? " is-expanded" : ""}`;
+    row.tabIndex = 0;
+    row.setAttribute("role", "button");
+    row.setAttribute("aria-expanded", String(isExpanded));
+    row.setAttribute("aria-label", `${candidate.web_name}. ${isExpanded ? "Hide" : "Show"} next five fixtures.`);
     applyClubPalette(row, teamMap.get(candidate.team));
     const copy = document.createElement("div");
     copy.className = "replacement-copy";
@@ -483,7 +574,11 @@ function renderReplacements() {
     swatch.className = "club-swatch";
     const nameText = document.createElement("span");
     nameText.textContent = candidate.web_name;
-    name.append(swatch, nameText);
+    const chevron = document.createElement("i");
+    chevron.className = "replacement-chevron";
+    chevron.setAttribute("aria-hidden", "true");
+    chevron.textContent = "⌄";
+    name.append(swatch, nameText, chevron);
     const detail = document.createElement("span");
     detail.textContent = `${teamMap.get(candidate.team)?.short_name || "—"} · ${fixture.label}`;
     const metric = sortMetric(candidate, fixture, sort);
@@ -519,6 +614,35 @@ function renderReplacements() {
       }
     }
     row.append(jersey, copy, price, metricNode, action);
+    if (isExpanded) {
+      const fixtures = document.createElement("div");
+      fixtures.className = "replacement-fixtures";
+      fixtureHorizon(candidate.team).forEach((item) => {
+        const tile = document.createElement("span");
+        tile.className = `replacement-fixture fdr-${item.difficulty}`;
+        tile.title = `Gameweek ${item.gameweek}: ${item.label}`;
+        const gameweek = document.createElement("small");
+        gameweek.textContent = `GW ${item.gameweek}`;
+        const opponent = document.createElement("b");
+        opponent.textContent = item.label;
+        tile.append(gameweek, opponent);
+        fixtures.append(tile);
+      });
+      row.append(fixtures);
+    }
+    const toggleFixtures = () => {
+      state.expandedPlayerId = state.expandedPlayerId === candidate.id ? null : candidate.id;
+      renderReplacements();
+    };
+    row.addEventListener("click", (event) => {
+      if (!event.target.closest("button")) toggleFixtures();
+    });
+    row.addEventListener("keydown", (event) => {
+      if ((event.key === "Enter" || event.key === " ") && !event.target.closest("button")) {
+        event.preventDefault();
+        toggleFixtures();
+      }
+    });
     elements.replacements.append(row);
   });
 
@@ -540,6 +664,7 @@ function renderPositionFilters() {
 
 function choosePosition(type) {
   state.positionFilter = type;
+  state.expandedPlayerId = null;
   if (state.selectedSlot !== null && slotType(state.squad[state.selectedSlot]) !== type) state.selectedSlot = null;
   elements.transferTitle.textContent = `Browse ${type === 1 ? "goalkeepers" : type === 2 ? "defenders" : type === 3 ? "midfielders" : "forwards"}`;
   elements.transferHint.textContent = state.selectedSlot === null
@@ -572,6 +697,8 @@ function addPlayer(elementId) {
 function resetDraft() {
   state.squad = state.original.map((slot) => ({ ...slot }));
   state.selectedSlot = null;
+  state.substituteFrom = null;
+  state.expandedPlayerId = null;
   localStorage.removeItem(draftKey());
   elements.transferTitle.textContent = "Choose a player";
   elements.transferHint.textContent = "Remove a squad player, then add a replacement.";
@@ -603,6 +730,8 @@ async function loadPlanner(entryId) {
     state.original = published.data.picks.map((slot) => ({ ...slot }));
     state.squad = state.original.map((slot) => ({ ...slot }));
     state.selectedSlot = null;
+    state.substituteFrom = null;
+    state.expandedPlayerId = null;
     state.positionFilter = 1;
     restoreDraft();
 
