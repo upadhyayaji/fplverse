@@ -17,6 +17,8 @@ The repository is deliberately simple: static HTML, CSS, and JavaScript on GitHu
 - Season selector designed for additional archived and live seasons
 - Current-season collection from a classic mini-league or explicit entry IDs
 - Entry ID lookup, personal classic mini-league selection, and live dashboard loading
+- Squad planner with legal transfer drafts, bench substitutions, and future fixture previews
+- Multi-position, multi-gameweek player points prediction matrix
 - Last-known-good protection, bounded archives, retries, and strict configuration checks
 
 ## Architecture
@@ -43,6 +45,8 @@ fplverse/
 │   ├── analytics.mjs
 │   ├── app.js
 │   ├── favicon.svg
+│   ├── predictions.mjs
+│   ├── predictor.js
 │   └── styles.css
 ├── config/fplverse.json
 ├── data/managers.json
@@ -52,6 +56,8 @@ fplverse/
 │   └── validate_site.py
 ├── tests/
 ├── index.html
+├── planner.html
+├── predictor.html
 └── requirements.txt
 ```
 
@@ -74,6 +80,8 @@ python -m unittest discover -s tests -p "test_*.py" -v
 node --check assets/analytics.mjs
 node --check assets/app.js
 node tests/analytics.test.mjs
+node tests/predictions.test.mjs
+node tests/predictor-data.test.mjs
 node tests/worker.test.mjs
 ```
 

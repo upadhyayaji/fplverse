@@ -1,4 +1,5 @@
 import { predictPlayerPoints, predictionMethodology } from "./predictions.mjs";
+import { fixtureInfoForTeam, rankPlayersForWeeks } from "./predictor-data.mjs";
 
 const API_BASE = String(window.FPLVERSE_CONFIG?.apiBaseUrl || "").replace(/\/$/, "");
 
@@ -58,27 +59,7 @@ function nextGameweek() {
 }
 
 function fixtureInfo(teamId, gameweek) {
-  const teams = teamsById();
-  const matches = state.fixtures.filter(
-    (fixture) => fixture.event === gameweek && (fixture.team_h === teamId || fixture.team_a === teamId)
-  );
-
-  if (!matches.length) return { label: "Blank", difficulty: 3, blank: true };
-
-  const items = matches.map((fixture) => {
-    const home = fixture.team_h === teamId;
-    const opponent = teams.get(home ? fixture.team_a : fixture.team_h)?.short_name || "TBC";
-    return {
-      label: `${opponent} (${home ? "H" : "A"})`,
-      difficulty: Number(home ? fixture.team_h_difficulty : fixture.team_a_difficulty) || 3,
-    };
-  });
-
-  return {
-    label: items.map((item) => item.label).join(" + "),
-    difficulty: Math.max(1, Math.min(5, Math.round(items.reduce((sum, item) => sum + item.difficulty, 0) / items.length))),
-    blank: false,
-  };
+  return fixtureInfoForTeam(state.fixtures, teamsById(), teamId, gameweek);
 }
 
 function predictionFor(player, gameweek) {
@@ -195,13 +176,12 @@ function renderTable() {
   const weeks = selectedWeeks();
   makeHeader(weeks);
 
-  const players = (state.bootstrap?.elements || [])
-    .filter((player) => state.selectedPositions.has(player.element_type))
-    .map((player) => ({
-      player,
-      total: weeks.reduce((sum, event) => sum + predictionFor(player, event.id), 0),
-    }))
-    .sort((a, b) => b.total - a.total || Number(b.player.total_points || 0) - Number(a.player.total_points || 0));
+  const players = rankPlayersForWeeks(
+    state.bootstrap?.elements || [],
+    state.selectedPositions,
+    weeks.map((event) => event.id),
+    predictionFor
+  );
 
   elements.body.replaceChildren();
   if (!state.selectedPositions.size || !weeks.length) {
