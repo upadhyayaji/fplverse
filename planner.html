@@ -74,7 +74,7 @@
             <section class="pitch-panel panel" aria-labelledby="pitchTitle">
               <div class="panel-header planner-panel-header">
                 <div><span class="section-kicker">Your draft</span><h2 id="pitchTitle">Squad view</h2><p id="pitchSubtitle">Select a player to explore replacements.</p></div>
-                <div class="fixture-key" aria-label="Fixture difficulty key"><span>Easy</span><i class="fdr fdr-2"></i><i class="fdr fdr-3"></i><i class="fdr fdr-4"></i><span>Hard</span></div>
+                <div class="fixture-key" aria-label="Fixture difficulty key"><span>V easy</span><i class="fdr fdr-1" title="Very easy"></i><i class="fdr fdr-2" title="Easy"></i><i class="fdr fdr-3" title="Medium"></i><i class="fdr fdr-4" title="Hard"></i><i class="fdr fdr-5" title="Very hard"></i><span>V hard</span></div>
               </div>
               <div class="pitch" id="pitch"></div>
               <div class="bench-wrap"><span class="section-kicker">Bench</span><div class="bench" id="bench"></div></div>
@@ -82,7 +82,7 @@
 
             <aside class="transfer-panel panel" aria-labelledby="transferTitle">
               <div class="panel-header planner-panel-header">
-                <div><span class="section-kicker">Transfer sandbox</span><h2 id="transferTitle">Choose a player</h2><p id="transferHint">Select Remove on a squad card to see replacements.</p></div>
+                <div><span class="section-kicker">Transfer sandbox</span><h2 id="transferTitle">Choose a player</h2><p id="transferHint">Remove a squad player, then add a replacement.</p></div>
               </div>
               <div id="transferTools" class="transfer-tools">
                 <div class="position-filter" aria-label="Filter replacements by position">
@@ -94,8 +94,9 @@
                 <label for="playerSearch"><span>Search replacements</span><input id="playerSearch" type="search" placeholder="Player or club" autocomplete="off" /></label>
                 <label for="playerSort"><span>Sort by</span><select id="playerSort"><option value="form">Form</option><option value="points">Total points</option><option value="price">Price</option><option value="fixture">Fixture</option></select></label>
               </div>
+              <div class="replacement-list-header" aria-hidden="true"><span>Player</span><span>Current price</span><span>Action</span></div>
               <div class="replacement-list" id="replacementList">
-                <div class="transfer-empty"><strong>Browse by position</strong><span>Select a position above or choose Find replacement on a squad player.</span></div>
+                <div class="transfer-empty"><strong>Browse by position</strong><span>Remove a player from the squad to open a slot, then select Add.</span></div>
               </div>
             </aside>
           </div>
