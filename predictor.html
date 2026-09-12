@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Compare explainable FPL player point predictions across future gameweeks." />
+    <meta name="theme-color" content="#080811" />
+    <title>Points Predictor — FPLVerse</title>
+    <script>try{document.documentElement.dataset.theme=localStorage.getItem("fplverse-theme")||"dark"}catch(e){document.documentElement.dataset.theme="dark"}</script>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="assets/styles.css" />
+    <link rel="stylesheet" href="assets/predictor.css" />
+  </head>
+  <body class="predictor-page">
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
+
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="index.html" aria-label="FPLVerse home">
+          <span class="brand-mark" aria-hidden="true">FV</span>
+          <span class="brand-copy"><strong>FPLVerse</strong><small>Friends. Family. FPL.</small></span>
+        </a>
+
+        <nav class="site-nav" aria-label="Primary navigation">
+          <a class="site-nav-link" href="index.html">League Dashboard</a>
+          <a class="site-nav-link" href="planner.html">Squad Planner</a>
+          <a class="site-nav-link active" href="predictor.html" aria-current="page">Points Predictor</a>
+        </nav>
+
+        <button class="theme-toggle" data-theme-toggle type="button" aria-label="Switch to light mode" title="Switch to light mode">
+          <svg class="theme-icon theme-icon-sun" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"></path></svg>
+          <svg class="theme-icon theme-icon-moon" aria-hidden="true" viewBox="0 0 24 24"><path d="M20.5 14.1A8.5 8.5 0 0 1 9.9 3.5 8.5 8.5 0 1 0 20.5 14.1Z"></path></svg>
+          <span data-theme-label>Light</span>
+        </button>
+      </header>
+
+      <main class="predictor-main">
+        <section class="predictor-intro">
+          <p class="eyebrow"><span></span> Multi-gameweek player outlook</p>
+          <h1>See the fixtures.<br /><em>Forecast the points.</em></h1>
+          <p>Compare every player across the weeks that matter to you. Predictions respond instantly to position and gameweek selections.</p>
+        </section>
+
+        <div id="predictorStatus" class="status" role="status" aria-live="polite">Loading live FPL players and fixtures…</div>
+
+        <section id="predictorWorkspace" class="predictor-workspace" hidden>
+          <section class="predictor-controls panel" aria-label="Prediction filters">
+            <div class="filter-block">
+              <div class="filter-heading"><span class="section-kicker">Position</span><strong>Choose player roles</strong></div>
+              <div class="position-multiselect" id="positionFilters">
+                <button type="button" data-position="all" aria-pressed="true">Select all</button>
+                <button type="button" data-position="1" aria-pressed="true">Goalkeepers</button>
+                <button type="button" data-position="2" aria-pressed="true">Defenders</button>
+                <button type="button" data-position="3" aria-pressed="true">Midfielders</button>
+                <button type="button" data-position="4" aria-pressed="true">Forwards</button>
+              </div>
+            </div>
+
+            <div class="filter-block gameweek-filter-block">
+              <div class="filter-heading"><span class="section-kicker">Gameweeks</span><strong>Select one or more weeks</strong></div>
+              <div class="gameweek-scroll" id="predictorGameweeks" aria-label="Select gameweeks"></div>
+            </div>
+          </section>
+
+          <section class="prediction-board panel" aria-labelledby="predictionTitle">
+            <div class="prediction-board-head">
+              <div>
+                <span class="section-kicker">Player forecast</span>
+                <h2 id="predictionTitle">Predicted points by gameweek</h2>
+                <p id="predictionSummary">Players are ranked by total predicted points across the selected weeks.</p>
+              </div>
+              <div class="fixture-key" aria-label="Fixture difficulty key"><span>V easy</span><i class="fdr fdr-1" title="Very easy"></i><i class="fdr fdr-2" title="Easy"></i><i class="fdr fdr-3" title="Medium"></i><i class="fdr fdr-4" title="Hard"></i><i class="fdr fdr-5" title="Very hard"></i><span>V hard</span></div>
+            </div>
+
+            <div class="prediction-table-wrap" id="predictionTableWrap">
+              <table class="prediction-table">
+                <thead id="predictionHead"></thead>
+                <tbody id="predictionBody"></tbody>
+              </table>
+            </div>
+
+            <p class="prediction-method" id="predictionMethod"></p>
+          </section>
+        </section>
+      </main>
+
+      <footer><div><strong>FPLVerse</strong><span>Independent fan project. Not affiliated with the Premier League.</span></div><span>Predictions are estimates, not guarantees.</span></footer>
+    </div>
+
+    <script src="assets/theme.js"></script>
+    <script src="assets/config.js"></script>
+    <script type="module" src="assets/predictor.js"></script>
+  </body>
+</html>

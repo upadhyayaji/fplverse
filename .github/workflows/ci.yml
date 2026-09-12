@@ -43,8 +43,11 @@ jobs:
           node --check assets/app.js
           node --check assets/planner.js
           node --check assets/predictions.mjs
+          node --check assets/predictor-data.mjs
+          node --check assets/predictor.js
 
       - name: Run frontend analytics tests
         run: |
           node tests/analytics.test.mjs
           node tests/predictions.test.mjs
+          node tests/predictor-data.test.mjs

@@ -1,0 +1,497 @@
+.predictor-main {
+  padding: 54px 0 72px;
+}
+
+.predictor-intro {
+  max-width: 860px;
+  margin-bottom: 34px;
+}
+
+.predictor-intro .eyebrow {
+  margin-bottom: 17px;
+}
+
+.predictor-intro h1 {
+  margin: 0;
+  font-size: clamp(42px, 5vw, 70px);
+  font-weight: 500;
+  letter-spacing: -0.06em;
+  line-height: 1;
+}
+
+.predictor-intro h1 em {
+  color: var(--lime);
+  font-style: normal;
+  font-weight: 800;
+}
+
+.predictor-intro > p:last-child {
+  max-width: 720px;
+  margin: 22px 0 0;
+  color: var(--muted-bright);
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.predictor-workspace {
+  display: grid;
+  gap: 22px;
+}
+
+.predictor-controls {
+  display: grid;
+  padding: 22px 24px;
+  gap: 22px;
+}
+
+.filter-block {
+  display: grid;
+  gap: 12px;
+}
+
+.filter-heading {
+  display: grid;
+  gap: 4px;
+}
+
+.filter-heading strong {
+  font-size: 14px;
+}
+
+.position-multiselect {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.position-multiselect button,
+.predictor-gameweek {
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.025);
+  color: var(--muted-bright);
+  cursor: pointer;
+  font-weight: 700;
+  transition: background 150ms ease, border-color 150ms ease, color 150ms ease, transform 150ms ease;
+}
+
+.position-multiselect button {
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 9px;
+  font-size: 10px;
+}
+
+.position-multiselect button::before {
+  display: inline-grid;
+  width: 14px;
+  height: 14px;
+  place-items: center;
+  margin-right: 7px;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  content: "";
+  font-size: 9px;
+  vertical-align: -2px;
+}
+
+.position-multiselect button.active,
+.predictor-gameweek.active {
+  border-color: rgba(183,255,69,0.52);
+  background: rgba(183,255,69,0.11);
+  color: var(--lime);
+}
+
+.position-multiselect button.active::before {
+  border-color: var(--lime);
+  background: var(--lime);
+  color: var(--ink);
+  content: "✓";
+}
+
+.gameweek-filter-block {
+  min-width: 0;
+}
+
+.gameweek-scroll {
+  display: flex;
+  overflow-x: auto;
+  padding: 0 0 7px;
+  gap: 8px;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+.predictor-gameweek {
+  display: grid;
+  min-width: 82px;
+  min-height: 54px;
+  flex: 0 0 82px;
+  place-content: center;
+  border-radius: 10px;
+  text-align: center;
+  gap: 4px;
+}
+
+.predictor-gameweek:hover,
+.position-multiselect button:hover {
+  border-color: var(--line-strong);
+  transform: translateY(-1px);
+}
+
+.predictor-gameweek strong {
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+}
+
+.predictor-gameweek span {
+  color: var(--muted);
+  font-family: "DM Mono", monospace;
+  font-size: 8px;
+}
+
+.prediction-board {
+  overflow: hidden;
+}
+
+.prediction-board-head {
+  display: flex;
+  min-height: 105px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px;
+  border-bottom: 1px solid var(--line);
+  gap: 24px;
+}
+
+.prediction-board-head h2,
+.prediction-board-head p {
+  margin: 0;
+}
+
+.prediction-board-head h2 {
+  margin-top: 5px;
+  font-size: 20px;
+}
+
+.prediction-board-head p {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.fixture-key {
+  display: flex;
+  align-items: center;
+  color: var(--muted);
+  font-family: "DM Mono", monospace;
+  font-size: 8px;
+  gap: 5px;
+}
+
+.fdr {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+.fdr-1 { background: #b7f7d4; color: #123126; }
+.fdr-2 { background: #2f9e62; color: #fff; }
+.fdr-3 { background: #f5f7fa; color: #17202a; }
+.fdr-4 { background: #f3a6b2; color: #50131f; }
+.fdr-5 { background: #a91532; color: #fff; }
+
+.prediction-table-wrap {
+  width: 100%;
+  max-height: min(720px, calc(100vh - 100px));
+  overflow: auto;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+.prediction-table {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+.prediction-table th,
+.prediction-table td {
+  min-width: 132px;
+  padding: 9px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  text-align: center;
+}
+
+.prediction-table thead th {
+  position: sticky;
+  z-index: 4;
+  top: 0;
+  height: 62px;
+  background: var(--panel-strong);
+  color: var(--muted);
+  font-family: "DM Mono", monospace;
+  font-size: 8px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.prediction-table thead th strong,
+.prediction-table thead th span {
+  display: block;
+}
+
+.prediction-table thead th strong {
+  color: var(--text);
+  font-size: 10px;
+}
+
+.prediction-table thead th span {
+  margin-top: 4px;
+}
+
+.prediction-table .player-column {
+  position: sticky;
+  z-index: 3;
+  left: 0;
+  width: 230px;
+  min-width: 230px;
+  max-width: 230px;
+  background: var(--panel-strong);
+  text-align: left;
+}
+
+.prediction-table thead .player-column {
+  z-index: 6;
+}
+
+.prediction-table .total-column {
+  position: sticky;
+  z-index: 3;
+  left: 230px;
+  width: 90px;
+  min-width: 90px;
+  max-width: 90px;
+  background: var(--panel-strong);
+}
+
+.prediction-table thead .total-column {
+  z-index: 6;
+}
+
+.prediction-table tbody tr:hover td,
+.prediction-table tbody tr:hover .player-column,
+.prediction-table tbody tr:hover .total-column {
+  background-color: var(--panel-hover);
+}
+
+.prediction-player {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.position-marker {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  place-items: center;
+  border: 1px solid rgba(183,255,69,0.28);
+  border-radius: 9px;
+  background: rgba(183,255,69,0.07);
+  color: var(--lime);
+  font-family: "DM Mono", monospace;
+  font-size: 8px;
+  font-weight: 700;
+}
+
+.prediction-player > div {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+}
+
+.prediction-player strong,
+.prediction-player span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.prediction-player strong {
+  color: var(--text);
+  font-size: 12px;
+}
+
+.prediction-player span {
+  color: var(--muted);
+  font-family: "DM Mono", monospace;
+  font-size: 8px;
+}
+
+.prediction-total strong,
+.prediction-total span {
+  display: block;
+}
+
+.prediction-total strong {
+  color: var(--lime);
+  font-family: "DM Mono", monospace;
+  font-size: 16px;
+}
+
+.prediction-total span {
+  margin-top: 4px;
+  color: var(--muted);
+  font-family: "DM Mono", monospace;
+  font-size: 7px;
+  text-transform: uppercase;
+}
+
+.prediction-fixture {
+  display: grid;
+  min-height: 62px;
+  place-content: center;
+  padding: 7px;
+  border-radius: 9px;
+  gap: 2px;
+}
+
+.prediction-fixture > span {
+  overflow: hidden;
+  font-size: 9px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.prediction-fixture strong {
+  font-family: "DM Mono", monospace;
+  font-size: 17px;
+  line-height: 1.1;
+}
+
+.prediction-fixture small {
+  font-size: 7px;
+  font-weight: 700;
+  opacity: 0.72;
+  text-transform: uppercase;
+}
+
+.prediction-fixture.is-blank {
+  opacity: 0.58;
+}
+
+.prediction-empty {
+  height: 260px;
+  color: var(--muted);
+  font-size: 12px;
+  text-align: center;
+}
+
+.prediction-method {
+  margin: 0;
+  padding: 14px 24px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.55;
+}
+
+html[data-theme="light"] .position-multiselect button,
+html[data-theme="light"] .predictor-gameweek {
+  background: rgba(255,255,255,0.72);
+}
+
+html[data-theme="light"] .position-multiselect button.active,
+html[data-theme="light"] .predictor-gameweek.active {
+  border-color: rgba(8,103,209,0.46);
+  background: rgba(8,103,209,0.08);
+  color: #0758ad;
+}
+
+html[data-theme="light"] .position-multiselect button.active::before {
+  border-color: #0867d1;
+  background: #0867d1;
+  color: #fff;
+}
+
+html[data-theme="light"] .position-marker {
+  border-color: rgba(8,103,209,0.22);
+  background: rgba(8,103,209,0.07);
+  color: #0758ad;
+}
+
+html[data-theme="light"] .prediction-total strong {
+  color: #0758ad;
+}
+
+@media (max-width: 980px) {
+  .predictor-page .topbar {
+    flex-wrap: wrap;
+    padding: 16px 0;
+    gap: 12px;
+  }
+
+  .predictor-page .site-nav {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .predictor-page .site-nav-link {
+    flex: 1 0 auto;
+    text-align: center;
+  }
+}
+
+@media (max-width: 680px) {
+  .predictor-main {
+    padding-top: 34px;
+  }
+
+  .predictor-controls,
+  .prediction-board-head {
+    padding: 18px;
+  }
+
+  .prediction-board-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .position-multiselect {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .position-multiselect button:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .prediction-table .player-column {
+    width: 165px;
+    min-width: 165px;
+    max-width: 165px;
+  }
+
+  .prediction-table .total-column {
+    left: 165px;
+    width: 72px;
+    min-width: 72px;
+    max-width: 72px;
+  }
+
+  .prediction-table th,
+  .prediction-table td {
+    min-width: 118px;
+    padding: 7px;
+  }
+
+  .position-marker {
+    width: 29px;
+    height: 29px;
+    flex-basis: 29px;
+  }
+}
