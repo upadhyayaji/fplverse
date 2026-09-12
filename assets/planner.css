@@ -434,6 +434,32 @@
   font-style: normal;
 }
 
+.substitute-button,
+.swap-button {
+  width: 100%;
+  margin-top: 6px;
+  padding: 5px 6px;
+  border: 1px solid rgba(183,255,69,0.34);
+  border-radius: 6px;
+  background: rgba(183,255,69,0.09);
+  color: var(--lime);
+  cursor: pointer;
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.player-card.is-substitute-source,
+.player-card.is-swap-target {
+  border-color: rgba(183,255,69,0.62);
+  box-shadow: 0 0 0 2px rgba(183,255,69,0.12), 0 10px 24px rgba(0,0,0,0.2);
+}
+
+.player-card.is-substitute-source .substitute-button {
+  border-color: rgba(251,113,133,0.45);
+  background: rgba(251,113,133,0.1);
+  color: #fb7185;
+}
+
 .squad-remove {
   position: absolute;
   top: 4px;
@@ -650,6 +676,15 @@
   grid-template-columns: 38px minmax(120px, 1fr) 70px 82px 72px;
 }
 
+.replacement[role="button"] {
+  cursor: pointer;
+}
+
+.replacement[role="button"]:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: -2px;
+}
+
 .replacement .player-shirt-picture,
 .replacement .player-shirt {
   width: 36px;
@@ -676,6 +711,18 @@
   align-items: center;
   font-size: 11px;
   gap: 6px;
+}
+
+.replacement-chevron {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 11px;
+  font-style: normal;
+  transition: transform 150ms ease;
+}
+
+.replacement.is-expanded .replacement-chevron {
+  transform: rotate(180deg);
 }
 .replacement-copy span { color: var(--muted); font-size: 8px; }
 
@@ -751,6 +798,39 @@
   opacity: 0.68;
 }
 
+.replacement-fixtures {
+  display: grid;
+  grid-column: 1 / -1;
+  padding: 4px 2px 2px;
+  gap: 5px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.replacement-fixture {
+  display: grid;
+  min-height: 38px;
+  place-content: center;
+  padding: 5px 3px;
+  border-radius: 6px;
+  font-family: "DM Mono", monospace;
+  text-align: center;
+}
+
+.replacement-fixture small {
+  font-size: 6px;
+  line-height: 1;
+  opacity: 0.72;
+}
+
+.replacement-fixture b {
+  overflow: hidden;
+  margin-top: 4px;
+  font-size: 7px;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .planner-disclaimer {
   margin: -4px 0 0;
   color: var(--muted);
@@ -824,6 +904,19 @@ html[data-theme="light"] .player-add {
 
 html[data-theme="light"] .player-restore:hover {
   color: #0758ad;
+}
+
+html[data-theme="light"] .substitute-button,
+html[data-theme="light"] .swap-button {
+  border-color: rgba(8,103,209,0.3);
+  background: rgba(8,103,209,0.07);
+  color: #0758ad;
+}
+
+html[data-theme="light"] .player-card.is-substitute-source,
+html[data-theme="light"] .player-card.is-swap-target {
+  border-color: rgba(8,103,209,0.56);
+  box-shadow: 0 0 0 2px rgba(8,103,209,0.1), 0 10px 24px rgba(27,31,36,0.1);
 }
 
 html[data-theme="light"] .replacement.is-in-squad {
