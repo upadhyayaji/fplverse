@@ -1,3 +1,5 @@
+import { predictPlayerPoints, predictionMethodology } from "./predictions.mjs";
+
 const API_BASE = String(window.FPLVERSE_CONFIG?.apiBaseUrl || "").replace(/\/$/, "");
 
 const elements = {
@@ -23,6 +25,7 @@ const elements = {
   sort: document.querySelector("#playerSort"),
   positionButtons: [...document.querySelectorAll("[data-position-filter]")],
   metricHeader: document.querySelector("#replacementMetricHeader"),
+  predictionNote: document.querySelector("#predictionNote"),
   replacements: document.querySelector("#replacementList"),
   reset: document.querySelector("#resetDraft"),
   draftState: document.querySelector("#draftState"),
@@ -252,6 +255,19 @@ function fixtureHorizon(teamId) {
     .filter((event) => event.id >= state.activeGw)
     .slice(0, 5)
     .map((event) => ({ gameweek: event.id, ...fixtureFor(teamId, event.id) }));
+}
+
+function predictionFor(player, gameweek = state.activeGw) {
+  const events = state.bootstrap?.events || [];
+  const completedGameweeks = events.filter((event) => event.finished).length;
+  const nextGameweek = events.find((event) => !event.finished)?.id;
+  return predictPlayerPoints({
+    player,
+    fixtures: state.fixtures,
+    gameweek,
+    completedGameweeks,
+    isNextGameweek: gameweek === nextGameweek,
+  });
 }
 
 function canSubstitute(benchIndex, starterIndex) {
@@ -519,6 +535,7 @@ function candidateStatus(candidate) {
 }
 
 function sortMetric(player, fixture, sort) {
+  if (sort === "predicted") return { label: "Predicted points", value: predictionFor(player).toFixed(1) };
   if (sort === "points") return { label: "Total points", value: String(Number(player.total_points || 0)) };
   if (sort === "selected") return { label: "Selected by", value: `${Number(player.selected_by_percent || 0).toFixed(1)}%` };
   if (sort === "price") return { label: "Current price", value: formatMoney(player.now_cost) };
@@ -527,7 +544,7 @@ function sortMetric(player, fixture, sort) {
 }
 
 function activeMetricLabel(sort) {
-  return ({ points: "Total points", selected: "% selected by", price: "Price", fixture: "Fixture difficulty", form: "Form" })[sort] || "Form";
+  return ({ predicted: "Predicted points", points: "Total points", selected: "% selected by", price: "Price", fixture: "Fixture difficulty", form: "Form" })[sort] || "Form";
 }
 
 function renderReplacements() {
@@ -537,6 +554,8 @@ function renderReplacements() {
   const query = elements.search.value.trim().toLowerCase();
   const sort = elements.sort.value;
   elements.metricHeader.textContent = activeMetricLabel(sort);
+  elements.predictionNote.hidden = sort !== "predicted";
+  elements.predictionNote.textContent = predictionMethodology;
 
   let candidates = (state.bootstrap?.elements || []).filter((player) => {
     if (player.element_type !== state.positionFilter) return false;
@@ -545,6 +564,7 @@ function renderReplacements() {
   });
 
   candidates.sort((a, b) => {
+    if (sort === "predicted") return predictionFor(b) - predictionFor(a);
     if (sort === "price") return b.now_cost - a.now_cost;
     if (sort === "points") return b.total_points - a.total_points;
     if (sort === "selected") return Number(b.selected_by_percent || 0) - Number(a.selected_by_percent || 0);
