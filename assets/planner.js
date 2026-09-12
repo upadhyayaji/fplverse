@@ -431,6 +431,14 @@ function candidateStatus(candidate) {
   return "";
 }
 
+function sortMetric(player, fixture, sort) {
+  if (sort === "points") return { label: "Total points", value: String(Number(player.total_points || 0)) };
+  if (sort === "selected") return { label: "Selected by", value: `${Number(player.selected_by_percent || 0).toFixed(1)}%` };
+  if (sort === "price") return { label: "Current price", value: formatMoney(player.now_cost) };
+  if (sort === "fixture") return { label: "Fixture difficulty", value: fixture.label === "Blank" ? "Blank" : `${fixture.difficulty} / 5` };
+  return { label: "Form", value: Number(player.form || 0).toFixed(1) };
+}
+
 function renderReplacements() {
   if (!state.bootstrap) return;
   const selectedIds = new Set(state.squad.map((slot) => slot.element).filter(Boolean));
@@ -447,6 +455,7 @@ function renderReplacements() {
   candidates.sort((a, b) => {
     if (sort === "price") return b.now_cost - a.now_cost;
     if (sort === "points") return b.total_points - a.total_points;
+    if (sort === "selected") return Number(b.selected_by_percent || 0) - Number(a.selected_by_percent || 0);
     if (sort === "fixture") return fixtureFor(a.team).sortDifficulty - fixtureFor(b.team).sortDifficulty;
     return Number(b.form || 0) - Number(a.form || 0);
   });
@@ -469,8 +478,12 @@ function renderReplacements() {
     nameText.textContent = candidate.web_name;
     name.append(swatch, nameText);
     const detail = document.createElement("span");
-    detail.textContent = `${teamMap.get(candidate.team)?.short_name || "—"} · ${fixture.label} · Form ${candidate.form || "0.0"}`;
-    copy.append(name, detail);
+    detail.textContent = `${teamMap.get(candidate.team)?.short_name || "—"} · ${fixture.label}`;
+    const metric = sortMetric(candidate, fixture, sort);
+    const metricNode = document.createElement("span");
+    metricNode.className = "replacement-sort-metric";
+    metricNode.textContent = `${metric.label}: ${metric.value}`;
+    copy.append(name, detail, metricNode);
     const price = document.createElement("span");
     price.className = "replacement-price";
     price.textContent = formatMoney(candidate.now_cost);
