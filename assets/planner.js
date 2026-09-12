@@ -38,11 +38,11 @@ const state = {
   original: [],
   squad: [],
   selectedSlot: null,
-  pendingCandidate: null,
   positionFilter: 1,
 };
 
 const positionLabels = { 1: "GK", 2: "DEF", 3: "MID", 4: "FWD" };
+const positionNames = { 1: "goalkeeper", 2: "defender", 3: "midfielder", 4: "forward" };
 
 const clubPalettes = {
   ARS: ["#ef233c", "#063672", "#ffffff"],
@@ -78,9 +78,9 @@ function applyClubPalette(node, team) {
   node.style.setProperty("--club-text", text);
 }
 
-function jerseyFor(team) {
+function fallbackShirtFor(team) {
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg.setAttribute("class", "player-jersey");
+  svg.setAttribute("class", "player-shirt fallback-shirt");
   svg.setAttribute("viewBox", "0 0 64 64");
   svg.setAttribute("aria-hidden", "true");
 
@@ -98,6 +98,31 @@ function jerseyFor(team) {
 
   svg.append(body, stripe, collar);
   return svg;
+}
+
+function shirtFor(player, team) {
+  const settings = state.bootstrap?.game_settings || {};
+  const exclusions = settings.ui_special_shirt_exclusions || [];
+  const variant = settings.ui_use_special_shirts && !exclusions.includes(player.code) ? "special" : "standard";
+  const teamCode = player.has_temporary_code ? 0 : team?.code;
+  if (!teamCode) return fallbackShirtFor(team);
+  const goalkeeperSuffix = player.element_type === 1 ? "_1" : "";
+  const path = `https://fantasy.premierleague.com/dist/img/shirts/${variant}/shirt_${teamCode}${goalkeeperSuffix}`;
+  const picture = document.createElement("picture");
+  picture.className = "player-shirt-picture";
+  const source = document.createElement("source");
+  source.type = "image/webp";
+  source.srcset = `${path}-66.webp 66w, ${path}-110.webp 110w, ${path}-220.webp 220w`;
+  const image = document.createElement("img");
+  image.className = "player-shirt";
+  image.src = `${path}-110.png`;
+  image.srcset = `${path}-66.png 66w, ${path}-110.png 110w, ${path}-220.png 220w`;
+  image.sizes = "(max-width: 520px) 52px, 66px";
+  image.alt = `${team.name} ${player.element_type === 1 ? "goalkeeper " : ""}shirt`;
+  image.loading = "lazy";
+  image.addEventListener("error", () => picture.replaceWith(fallbackShirtFor(team)), { once: true });
+  picture.append(source, image);
+  return picture;
 }
 
 function apiUrl(path) {
@@ -138,6 +163,10 @@ function playerFor(slot) {
   return playersById().get(slot.element);
 }
 
+function slotType(slot) {
+  return playerFor(slot)?.element_type || Number(slot.replacement_type);
+}
+
 function formatMoney(tenths) {
   return `£${(Number(tenths || 0) / 10).toFixed(1)}m`;
 }
@@ -169,7 +198,7 @@ function restoreDraft() {
       saved?.sourceGw === state.sourceGw &&
       Array.isArray(saved.squad) &&
       saved.squad.length === 15 &&
-      saved.squad.every((slot) => validIds.has(slot.element))
+      saved.squad.every((slot) => validIds.has(slot.element) || (slot.element === null && [1, 2, 3, 4].includes(Number(slot.replacement_type))))
     ) {
       state.squad = saved.squad.map((slot) => ({ ...slot }));
     }
@@ -216,16 +245,44 @@ function fixtureFor(teamId, gameweek = state.activeGw) {
 
 function cardFor(slot, slotIndex) {
   const player = playerFor(slot);
-  const team = teamsById().get(player.team);
-  const fixture = fixtureFor(player.team);
+  const type = slotType(slot);
   const card = document.createElement("article");
-  card.className = "player-card";
-  applyClubPalette(card, team);
+  card.className = `player-card${state.selectedSlot === slotIndex ? " is-selected" : ""}`;
 
   const position = document.createElement("span");
   position.className = "player-position";
-  position.textContent = positionLabels[player.element_type];
+  position.textContent = positionLabels[type];
   card.append(position);
+
+  if (!player) {
+    card.classList.add("player-vacancy");
+    const plus = document.createElement("span");
+    plus.className = "vacancy-plus";
+    plus.textContent = "+";
+    const name = document.createElement("strong");
+    name.className = "player-name";
+    name.textContent = `Open ${positionLabels[type]} slot`;
+    const add = document.createElement("button");
+    add.className = "player-add";
+    add.type = "button";
+    add.textContent = "Add player";
+    add.addEventListener("click", () => selectVacancy(slotIndex));
+    card.append(plus, name, add);
+    return card;
+  }
+
+  const team = teamsById().get(player.team);
+  const fixture = fixtureFor(player.team);
+  applyClubPalette(card, team);
+
+  const remove = document.createElement("button");
+  remove.className = "squad-remove";
+  remove.type = "button";
+  remove.textContent = "×";
+  remove.title = `Remove ${player.web_name}`;
+  remove.setAttribute("aria-label", `Remove ${player.web_name} from squad`);
+  remove.addEventListener("click", () => removePlayer(slotIndex));
+  card.append(remove);
 
   if (slot.is_captain || slot.is_vice_captain) {
     const badge = document.createElement("span");
@@ -236,7 +293,7 @@ function cardFor(slot, slotIndex) {
   }
 
 
-  card.append(jerseyFor(team));
+  card.append(shirtFor(player, team));
 
   const name = document.createElement("strong");
   name.className = "player-name";
@@ -260,30 +317,6 @@ function cardFor(slot, slotIndex) {
   fixtureNode.textContent = fixture.label;
   card.append(fixtureNode);
 
-  const remove = document.createElement("button");
-  remove.className = "player-remove";
-  remove.type = "button";
-  const pending = state.pendingCandidate ? playersById().get(state.pendingCandidate) : null;
-  const canUsePending = pending?.element_type === player.element_type;
-  remove.textContent = canUsePending ? `Replace with ${pending.web_name}` : "Find replacement";
-  remove.disabled = Boolean(pending && !canUsePending);
-  remove.addEventListener("click", () => {
-    if (canUsePending) {
-      const reason = candidateStatus(pending, player);
-      if (reason) {
-        elements.transferTitle.textContent = `${pending.web_name} cannot be added`;
-        elements.transferHint.textContent = reason === "Over budget"
-          ? "This move exceeds your estimated transfer budget."
-          : "This move would exceed the three-player-per-club limit.";
-        return;
-      }
-      state.selectedSlot = slotIndex;
-      replacePlayer(pending.id);
-    } else {
-      selectSlot(slotIndex);
-    }
-  });
-  card.append(remove);
   return card;
 }
 
@@ -296,7 +329,7 @@ function renderSquad() {
   [1, 2, 3, 4].forEach((type) => {
     const row = document.createElement("div");
     row.className = "position-row";
-    starters.filter(({ slot }) => playerFor(slot)?.element_type === type).forEach(({ slot, index }) => row.append(cardFor(slot, index)));
+    starters.filter(({ slot }) => slotType(slot) === type).forEach(({ slot, index }) => row.append(cardFor(slot, index)));
     if (row.children.length) elements.pitch.append(row);
   });
   bench.forEach(({ slot, index }) => elements.bench.append(cardFor(slot, index)));
@@ -332,13 +365,13 @@ function renderSummary() {
   elements.reset.disabled = changes === 0;
 }
 
-function selectSlot(slotIndex) {
+function selectVacancy(slotIndex) {
+  const slot = state.squad[slotIndex];
+  if (slot.element !== null) return;
   state.selectedSlot = slotIndex;
-  state.pendingCandidate = null;
-  const player = playerFor(state.squad[slotIndex]);
-  state.positionFilter = player.element_type;
-  elements.transferTitle.textContent = `Replace ${player.web_name}`;
-  elements.transferHint.textContent = `${positionLabels[player.element_type]} · ${formatMoney(player.now_cost)} at current price`;
+  state.positionFilter = slotType(slot);
+  elements.transferTitle.textContent = `Add a ${positionNames[state.positionFilter]}`;
+  elements.transferHint.textContent = `${formatMoney(currentDraftBank())} available at current prices.`;
   elements.search.value = "";
   renderPositionFilters();
   renderSquad();
@@ -346,22 +379,31 @@ function selectSlot(slotIndex) {
   if (window.innerWidth < 1120) elements.transferTitle.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+function removePlayer(slotIndex) {
+  const slot = state.squad[slotIndex];
+  const player = playerFor(slot);
+  if (!player) return selectVacancy(slotIndex);
+  state.squad[slotIndex] = { ...slot, element: null, replacement_type: player.element_type };
+  saveDraft();
+  selectVacancy(slotIndex);
+  renderSummary();
+}
+
 function clubCount(teamId) {
   return state.squad.reduce((count, slot) => count + (playerFor(slot)?.team === teamId ? 1 : 0), 0);
 }
 
-function candidateStatus(candidate, outgoing) {
-  if (!outgoing) return "";
-  const bankAfter = currentDraftBank() + Number(outgoing.now_cost) - Number(candidate.now_cost);
-  if (bankAfter < 0) return "Over budget";
-  if (candidate.team !== outgoing.team && clubCount(candidate.team) >= 3) return "Club limit";
+function candidateStatus(candidate) {
+  if (state.selectedSlot === null || state.squad[state.selectedSlot]?.element !== null) return "Remove first";
+  if (candidate.element_type !== slotType(state.squad[state.selectedSlot])) return "Position mismatch";
+  if (Number(candidate.now_cost) > currentDraftBank()) return "Over budget";
+  if (clubCount(candidate.team) >= 3) return "Club limit";
   return "";
 }
 
 function renderReplacements() {
   if (!state.bootstrap) return;
-  const outgoing = state.selectedSlot === null ? null : playerFor(state.squad[state.selectedSlot]);
-  const selectedIds = new Set(state.squad.map((slot) => slot.element));
+  const selectedIds = new Set(state.squad.map((slot) => slot.element).filter(Boolean));
   const teamMap = teamsById();
   const query = elements.search.value.trim().toLowerCase();
   const sort = elements.sort.value;
@@ -382,14 +424,14 @@ function renderReplacements() {
   elements.replacements.replaceChildren();
   candidates.slice(0, 80).forEach((candidate) => {
     const fixture = fixtureFor(candidate.team);
-    const reason = candidateStatus(candidate, outgoing);
+    const reason = candidateStatus(candidate);
     const row = document.createElement("div");
-    row.className = `replacement${state.pendingCandidate === candidate.id ? " is-pending" : ""}`;
+    row.className = "replacement";
     applyClubPalette(row, teamMap.get(candidate.team));
     const copy = document.createElement("div");
     copy.className = "replacement-copy";
-    const jersey = jerseyFor(teamMap.get(candidate.team));
-    jersey.classList.add("replacement-jersey");
+    const jersey = shirtFor(candidate, teamMap.get(candidate.team));
+    jersey.classList.add("replacement-shirt");
     const name = document.createElement("strong");
     const swatch = document.createElement("i");
     swatch.className = "club-swatch";
@@ -404,11 +446,12 @@ function renderReplacements() {
     price.textContent = formatMoney(candidate.now_cost);
     const choose = document.createElement("button");
     choose.type = "button";
-    choose.textContent = reason || (outgoing ? "Add" : state.pendingCandidate === candidate.id ? "Selected" : "Choose");
+    choose.className = "replacement-add";
+    choose.textContent = reason || "+ Add";
+    choose.title = reason || `Add ${candidate.web_name} for ${formatMoney(candidate.now_cost)}`;
     choose.disabled = Boolean(reason);
     choose.addEventListener("click", () => {
-      if (outgoing) replacePlayer(candidate.id);
-      else chooseCandidate(candidate.id);
+      addPlayer(candidate.id);
     });
     row.append(jersey, copy, price, choose);
     elements.replacements.append(row);
@@ -432,45 +475,40 @@ function renderPositionFilters() {
 
 function choosePosition(type) {
   state.positionFilter = type;
-  state.selectedSlot = null;
-  state.pendingCandidate = null;
+  if (state.selectedSlot !== null && slotType(state.squad[state.selectedSlot]) !== type) state.selectedSlot = null;
   elements.transferTitle.textContent = `Browse ${type === 1 ? "goalkeepers" : type === 2 ? "defenders" : type === 3 ? "midfielders" : "forwards"}`;
-  elements.transferHint.textContent = `Choose a candidate, then select the ${positionLabels[type]} leaving your squad.`;
+  elements.transferHint.textContent = state.selectedSlot === null
+    ? `Remove a ${positionNames[type]} from your squad to enable Add.`
+    : `${formatMoney(currentDraftBank())} available for this open slot.`;
   elements.search.value = "";
   renderPositionFilters();
   renderSquad();
   renderReplacements();
 }
 
-function chooseCandidate(elementId) {
-  const candidate = playersById().get(elementId);
-  state.pendingCandidate = elementId;
-  elements.transferTitle.textContent = `${candidate.web_name} selected`;
-  elements.transferHint.textContent = `Now choose a ${positionLabels[candidate.element_type]} from your squad to replace.`;
-  renderSquad();
-  renderReplacements();
-}
-
-function replacePlayer(elementId) {
-  state.squad[state.selectedSlot] = { ...state.squad[state.selectedSlot], element: elementId };
+function addPlayer(elementId) {
+  if (state.selectedSlot === null) return;
+  const player = playersById().get(elementId);
+  const reason = candidateStatus(player);
+  if (reason) return;
+  const slot = { ...state.squad[state.selectedSlot], element: elementId };
+  delete slot.replacement_type;
+  state.squad[state.selectedSlot] = slot;
   state.selectedSlot = null;
-  state.pendingCandidate = null;
   saveDraft();
   renderSquad();
   renderSummary();
-  const player = playersById().get(elementId);
   elements.transferTitle.textContent = `${player.web_name} added`;
-  elements.transferHint.textContent = "Choose another squad player to keep planning.";
+  elements.transferHint.textContent = `${formatMoney(player.now_cost)} current price · remove another player to continue.`;
   elements.replacements.innerHTML = '<div class="transfer-empty"><strong>Draft updated</strong><span>Your change is saved on this device.</span></div>';
 }
 
 function resetDraft() {
   state.squad = state.original.map((slot) => ({ ...slot }));
   state.selectedSlot = null;
-  state.pendingCandidate = null;
   localStorage.removeItem(draftKey());
   elements.transferTitle.textContent = "Choose a player";
-  elements.transferHint.textContent = "Filter the player list or select Find replacement on a squad card.";
+  elements.transferHint.textContent = "Remove a squad player, then add a replacement.";
   renderPositionFilters();
   renderReplacements();
   renderSquad();
@@ -499,7 +537,6 @@ async function loadPlanner(entryId) {
     state.original = published.data.picks.map((slot) => ({ ...slot }));
     state.squad = state.original.map((slot) => ({ ...slot }));
     state.selectedSlot = null;
-    state.pendingCandidate = null;
     state.positionFilter = 1;
     restoreDraft();
 
