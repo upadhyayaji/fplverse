@@ -23,9 +23,9 @@
         </a>
 
         <nav class="site-nav" aria-label="Primary navigation">
-          <a class="site-nav-link" href="index.html">League Dashboard</a>
           <a class="site-nav-link active" href="planner.html" aria-current="page">Squad Planner</a>
           <a class="site-nav-link" href="predictor.html">Points Predictor</a>
+          <a class="site-nav-link" href="index.html">League Dashboard</a>
         </nav>
 
         <div class="planner-top-actions">
@@ -74,7 +74,7 @@
           <div class="planner-grid">
             <section class="pitch-panel panel" aria-labelledby="pitchTitle">
               <div class="panel-header planner-panel-header">
-                <div><span class="section-kicker">Your draft</span><h2 id="pitchTitle">Squad view</h2><p id="pitchSubtitle">Select a player to explore replacements.</p></div>
+                <div><span class="section-kicker">Your draft</span><h2 id="pitchTitle">Squad view</h2><p id="pitchSubtitle">Select a player to explore replacements.</p><div class="squad-forecast" id="squadForecast" role="status" aria-live="polite"></div></div>
                 <div class="fixture-key" aria-label="Fixture difficulty key"><span>V easy</span><i class="fdr fdr-1" title="Very easy"></i><i class="fdr fdr-2" title="Easy"></i><i class="fdr fdr-3" title="Medium"></i><i class="fdr fdr-4" title="Hard"></i><i class="fdr fdr-5" title="Very hard"></i><span>V hard</span></div>
               </div>
               <div class="pitch" id="pitch"></div>
