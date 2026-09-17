@@ -30,9 +30,10 @@ try {
     const body=document.createElement("tbody");
     for(const report of [...summary.reports].reverse()){
       for(const [name,stats] of [["All",report.all],["Appeared",report.appeared],
+        ...[ ["v1 comparison (all)",report.comparison], ["v1 comparison (appeared)",report.comparisonAppeared] ].filter(([,stats])=>stats),
         ...[["GK",1],["DEF",2],["MID",3],["FWD",4]].map(([name,id])=>[name,report.positions[id]])]){
         const tr=document.createElement("tr");
-        for(const value of [`${report.season} GW ${report.gameweek} / ${report.modelHash.slice(0,8)}`,
+        for(const value of [`${report.season} GW ${report.gameweek} / ${report.modelVersion || "heuristic-v1"} ${report.modelHash.slice(0,8)}`,
           name,stats?.count||0,fmt(stats?.mae),fmt(stats?.rmse),fmt(stats?.bias),fmt(stats?.baselineMae),
           new Date(report.capturedAt).toLocaleString(),report.missing]){
           const td=document.createElement("td");td.textContent=String(value);tr.append(td);
