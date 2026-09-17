@@ -495,7 +495,3 @@ html[data-theme="light"] .prediction-total strong {
     flex-basis: 29px;
   }
 }
-
-.prediction-breakdown { padding: .5rem; font-size: .75rem; white-space: normal; min-width: 130px; }
-.prediction-breakdown summary { cursor: pointer; font-weight: 600; }
-.prediction-breakdown div { padding-top: .2rem; text-transform: capitalize; }

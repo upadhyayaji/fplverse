@@ -1,4 +1,4 @@
-import { predictPlayerPoints, predictPlayerBreakdown, predictionMethodology } from "./predictions.mjs";
+import { predictPlayerPoints, predictionMethodology } from "./predictions.mjs";
 import { fixtureInfoForTeam, rankPlayersForWeeks } from "./predictor-data.mjs";
 
 const API_BASE = String(window.FPLVERSE_CONFIG?.apiBaseUrl || "").replace(/\/$/, "");
@@ -169,24 +169,6 @@ function makeFixtureCell(player, gameweek) {
 
   tile.append(opponent, points, label);
   cell.append(tile);
-  if (!fixture.blank) {
-    const breakdown = predictPlayerBreakdown({player, fixtures:state.fixtures, gameweek, completedGameweeks:completedGameweeks()});
-    const details = document.createElement("details");
-    details.className = "prediction-breakdown";
-    const summary = document.createElement("summary");
-    summary.textContent = "Why this score?";
-    details.append(summary);
-    for (const [key,value] of Object.entries(breakdown.components)) {
-      if (Math.abs(value) < .005) continue;
-      const line = document.createElement("div");
-      line.textContent = `${key.replace(/([A-Z])/g," $1")}: ${value.toFixed(2)}`;
-      details.append(line);
-    }
-    const note = document.createElement("small");
-    note.textContent = "Expected points; rounding can affect the displayed sum.";
-    details.append(note);
-    cell.append(details);
-  }
   return cell;
 }
 

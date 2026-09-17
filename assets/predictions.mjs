@@ -121,4 +121,4 @@ export function predictPlayerBreakdown({player, fixtures = [], gameweek, complet
   return {modelVersion,total:Math.round(rawTotal*10)/10,rawTotal,components,fixtures:perFixture};
 }
 export function predictPlayerPoints(options) { return predictPlayerBreakdown(options).total; }
-export const predictionMethodology = "Component model v2 (experimental): estimates minutes, goals, assists, clean sheets, saves, defensive contributions, bonus and deductions. Uses season rates with conservative priors and opponent adjustments; bonus and minutes are approximations, not a trained model. Current availability is held constant for future weeks.";
+export const predictionMethodology = "Estimated points for the selected gameweek.";

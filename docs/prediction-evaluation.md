@@ -103,7 +103,8 @@ Unknown scoring identifiers are retained as `other`; raw stats and explanations
 are retained for auditing. A future new scoring rule must trigger a model revision.
 
 The report includes same-cohort v1 MAE/RMSE/bias and component MAE/bias in downloadable
-results. The Predictor exposes forecast components through “Why this score?”.
+results. Forecast components remain in the archive; the public page keeps its existing layout
+and a brief tracking status. Detailed methodology stays in this document.
 
 Improvement procedure (future fitting work):
 1. Accumulate genuinely pre-deadline examples, including actual minutes and components.
