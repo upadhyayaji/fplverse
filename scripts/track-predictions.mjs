@@ -13,9 +13,11 @@ async function get(path) {
   return response.json();
 }
 const [bootstrap,fixtures]=await Promise.all([get("/bootstrap-static/"),get("/fixtures/")]);
-const modelHash=createHash("sha256").update(await readFile(new URL("../assets/predictions.mjs",import.meta.url))).digest("hex");
+const modelHash=createHash("sha256");
+for(const file of ["predictions.mjs","predictions-v1.mjs"]) modelHash.update(file).update(await readFile(new URL("../assets/"+file,import.meta.url)));
+const modelDigest=modelHash.digest("hex");
 // Timestamp after both responses arrive. A job crossing the deadline cannot create a late forecast.
-const snapshot=makeSnapshot(bootstrap,fixtures,new Date().toISOString(),modelHash);
+const snapshot=makeSnapshot(bootstrap,fixtures,new Date().toISOString(),modelDigest);
 if(snapshot){
   const path=root+snapshot.season+"-gw"+snapshot.gameweek+".json";
   try { await writeFile(path,JSON.stringify(snapshot,null,2)+"\n",{flag:"wx"}); console.log("Frozen",path); }

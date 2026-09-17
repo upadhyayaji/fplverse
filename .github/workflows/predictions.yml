@@ -19,6 +19,7 @@ jobs:
         with:
           node-version: "22"
       - run: node tests/prediction-audit.test.mjs
+      - run: node tests/prediction-components.test.mjs
       - run: node scripts/track-predictions.mjs
       - name: Persist forecasts and scores
         run: |
