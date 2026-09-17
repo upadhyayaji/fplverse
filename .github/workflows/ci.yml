@@ -50,5 +50,8 @@ jobs:
         run: |
           node tests/analytics.test.mjs
           node tests/predictions.test.mjs
+          node tests/prediction-audit.test.mjs
+          node --check assets/prediction-accuracy.js
+          node --check scripts/track-predictions.mjs
           node tests/optimizer.test.mjs
           node tests/predictor-data.test.mjs

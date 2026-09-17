@@ -4,6 +4,10 @@ on:
   push:
     branches: ["main"]
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Track FPL predictions"]
+    types: [completed]
+    branches: [main]
 
 permissions:
   contents: read
@@ -16,6 +20,7 @@ concurrency:
 
 jobs:
   deploy:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -38,11 +43,12 @@ jobs:
       - name: Build public artifact
         run: |
           mkdir -p _site
-          cp index.html _site/
+          cp index.html planner.html predictor.html _site/
           cp -R assets _site/assets
           mkdir -p _site/data
           cp data/managers.json _site/data/managers.json
           cp data/seasons.json _site/data/seasons.json
+          cp -R data/predictions _site/data/predictions
           touch _site/.nojekyll
 
       - name: Configure Pages

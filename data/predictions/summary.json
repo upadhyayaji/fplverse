@@ -1,0 +1,7 @@
+{
+  "schema": 1,
+  "policy": "First successful capture within 24 hours before deadline; no historical backfills.",
+  "pending": [],
+  "reports": [],
+  "models": []
+}
