@@ -1,4 +1,5 @@
 import { predictPlayerPoints, predictionMethodology } from "./predictions.mjs";
+import { optimizeSquad } from "./optimizer.mjs";
 
 const API_BASE = String(window.FPLVERSE_CONFIG?.apiBaseUrl || "").replace(/\/$/, "");
 
@@ -492,7 +493,9 @@ function renderSummary() {
   elements.bank.textContent = formatMoney(currentDraftBank());
   elements.transferCount.textContent = String(changes);
   elements.draftState.textContent = changes ? `${changes} draft change${changes === 1 ? "" : "s"} saved` : "Live squad loaded";
-  elements.reset.disabled = changes === 0;
+  elements.reset.disabled = changes === 0 && !state.squad.some((slot, index) =>
+    Boolean(slot.is_captain) !== Boolean(state.original[index]?.is_captain) ||
+    Boolean(slot.is_vice_captain) !== Boolean(state.original[index]?.is_vice_captain));
 }
 
 function selectVacancy(slotIndex) {
@@ -805,6 +808,33 @@ elements.search.addEventListener("input", renderReplacements);
 elements.sort.addEventListener("change", renderReplacements);
 elements.positionButtons.forEach((button) => button.addEventListener("click", () => choosePosition(Number(button.dataset.positionFilter))));
 elements.reset.addEventListener("click", resetDraft);
+document.querySelector("#optimizeSquad").addEventListener("click", () => {
+  try {
+    if (!state.activeGw) throw new Error("Select a gameweek first.");
+    const optimized = optimizeSquad(state.squad, playersById(), player => predictionFor(player));
+    // Preserve slot positions and their original-player restore association.
+    state.squad = [...state.squad].sort((a, b) => a.position - b.position).map((slot, index) => ({
+      ...slot, element: optimized[index].element,
+      is_captain: optimized[index].is_captain,
+      is_vice_captain: optimized[index].is_vice_captain,
+    }));
+    state.selectedSlot = null;
+    state.substituteFrom = null;
+    state.expandedPlayerId = null;
+    saveDraft();
+    renderSquad();
+    renderSummary();
+    renderReplacements();
+    elements.reset.disabled = false;
+    elements.transferTitle.textContent = "Choose a player";
+    elements.transferHint.textContent = "Remove a squad player, then add a replacement.";
+    const captain = playerFor(state.squad.find(slot => slot.is_captain));
+    const vice = playerFor(state.squad.find(slot => slot.is_vice_captain));
+    showStatus(`Optimized for GW ${state.activeGw}. Captain: ${captain.web_name}; vice-captain: ${vice.web_name}. Saved to your browser draft.`, "success");
+  } catch (error) {
+    showStatus(error.message, "error");
+  }
+});
 
 const params = new URLSearchParams(location.search);
 const savedEntry = params.get("entry") || localStorage.getItem("fplverse-entry-id") || "";
