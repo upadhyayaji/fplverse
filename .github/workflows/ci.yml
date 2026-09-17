@@ -50,4 +50,5 @@ jobs:
         run: |
           node tests/analytics.test.mjs
           node tests/predictions.test.mjs
+          node tests/optimizer.test.mjs
           node tests/predictor-data.test.mjs
