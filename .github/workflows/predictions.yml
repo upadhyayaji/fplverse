@@ -1,0 +1,31 @@
+name: Track FPL predictions
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 * * * *"
+permissions:
+  contents: write
+concurrency:
+  group: fplverse-data-update
+  cancel-in-progress: false
+jobs:
+  track:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node tests/prediction-audit.test.mjs
+      - run: node scripts/track-predictions.mjs
+      - name: Persist forecasts and scores
+        run: |
+          git add data/predictions
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name "fplverse-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -m "Archive FPL forecasts and scoring results"
+          git pull --rebase origin main
+          git push origin main

@@ -1,0 +1,30 @@
+import assert from "node:assert/strict";
+import { makeSnapshot, evaluateSnapshot, metrics } from "../scripts/prediction-audit.mjs";
+import { predictPlayerPoints } from "../assets/predictions.mjs";
+const deadline="2026-09-19T10:00:00Z";
+const player={id:1,web_name:"Test",team:1,element_type:3,minutes:270,starts:3,
+  total_points:18,form:"6",points_per_game:"6",status:"a",chance_of_playing_next_round:100};
+const event={id:4,deadline_time:deadline,finished:false,data_checked:false};
+const bootstrap={events:[{id:1,deadline_time:"2026-08-15T10:00:00Z",finished:true},
+  {id:2,finished:true},{id:3,finished:true},event],elements:[player]};
+const fixtures=[{event:4,team_h:1,team_a:2,team_h_difficulty:2,team_a_difficulty:3}];
+assert.equal(makeSnapshot(bootstrap,fixtures,"2026-09-18T09:59:00Z","hash"),null);
+assert.equal(makeSnapshot(bootstrap,fixtures,deadline,"hash"),null);
+assert.equal(makeSnapshot(bootstrap,fixtures,"2026-09-20T10:00:00Z","hash"),null);
+const snapshot=makeSnapshot(bootstrap,fixtures,"2026-09-18T11:00:00Z","hash");
+assert.equal(snapshot.season,"2026-2027");
+assert.equal(snapshot.players[0].predicted,predictPlayerPoints({player,fixtures,gameweek:4,completedGameweeks:3,isNextGameweek:true}));
+assert.equal(evaluateSnapshot(snapshot,event,{elements:[]},"now"),null);
+const final={...event,finished:true,data_checked:true};
+const report=evaluateSnapshot(snapshot,final,{elements:[{id:1,stats:{total_points:-1,minutes:90}}]},"now");
+assert.equal(report.rows[0].actual,-1);
+assert.equal(report.appeared.count,1);
+assert.equal(report.all.baselineMae,7);
+const missing=evaluateSnapshot(snapshot,final,{elements:[{id:2,stats:{total_points:0,minutes:0}}]},"now");
+assert.equal(missing.missing,1);
+assert.equal(missing.all,null);
+assert.throws(()=>evaluateSnapshot({...snapshot,capturedAt:deadline},final,{},"now"),/post-deadline/);
+const stats=metrics([{predicted:2,actual:0,baseline:1},{predicted:2,actual:4,baseline:1}]);
+assert.deepEqual(stats,{count:2,mae:2,rmse:2,bias:0,baselineMae:2});
+assert.equal(evaluateSnapshot(snapshot,final,{elements:[{id:1,stats:{total_points:0,minutes:0}}]},"now").appeared,null);
+console.log("Audit tests passed: deadline gates, model parity, finality, missing data, negative points, cohorts and error metrics.");
