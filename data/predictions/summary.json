@@ -1,14 +1,98 @@
 {
   "schema": 1,
   "policy": "First successful capture within 24 hours before deadline; no historical backfills.",
-  "pending": [
+  "pending": [],
+  "reports": [
     {
       "season": "2026-2027",
       "gameweek": 5,
+      "modelHash": "36a300edd0f63adf7be1609ebf0ca448b5bb5701db9180221bd0ad7ae0231376",
+      "modelVersion": "heuristic-v1",
       "capturedAt": "2026-09-17T20:23:25.851Z",
-      "deadline": "2026-09-18T17:30:00Z"
+      "deadline": "2026-09-18T17:30:00Z",
+      "leadHours": 21.109485833333334,
+      "scoredAt": "2026-09-21T14:19:05.491Z",
+      "missing": 0,
+      "all": {
+        "count": 659,
+        "mae": 1.2033383915022766,
+        "rmse": 2.186598719597694,
+        "bias": -0.03368740515933232,
+        "baselineMae": 1.3804248861911992
+      },
+      "appeared": {
+        "count": 301,
+        "mae": 2.0465116279069777,
+        "rmse": 3.105861995894462,
+        "bias": -0.6617940199335542,
+        "baselineMae": 2.2551495016611294
+      },
+      "positions": {
+        "1": {
+          "count": 71,
+          "mae": 1.0704225352112675,
+          "rmse": 1.8669097762548825,
+          "bias": 0.07042253521126751,
+          "baselineMae": 0.8549295774647888
+        },
+        "2": {
+          "count": 215,
+          "mae": 1.393953488372092,
+          "rmse": 2.3749173792238634,
+          "bias": -0.10000000000000009,
+          "baselineMae": 1.6032558139534885
+        },
+        "3": {
+          "count": 295,
+          "mae": 1.1494915254237281,
+          "rmse": 2.07943114776736,
+          "bias": -0.01389830508474578,
+          "baselineMae": 1.3413559322033901
+        },
+        "4": {
+          "count": 78,
+          "mae": 1.0025641025641026,
+          "rmse": 2.306957147857602,
+          "bias": -0.02051282051282053,
+          "baselineMae": 1.392307692307692
+        }
+      },
+      "comparison": null,
+      "comparisonAppeared": null,
+      "components": {
+        "appearance": null,
+        "goals": null,
+        "assists": null,
+        "cleanSheets": null,
+        "saves": null,
+        "bonus": null,
+        "defensiveContributions": null,
+        "goalsConceded": null,
+        "yellowCards": null,
+        "redCards": null,
+        "ownGoals": null,
+        "penaltiesMissed": null,
+        "penaltiesSaved": null
+      }
     }
   ],
-  "reports": [],
-  "models": []
+  "models": [
+    {
+      "modelHash": "36a300edd0f63adf7be1609ebf0ca448b5bb5701db9180221bd0ad7ae0231376",
+      "all": {
+        "count": 659,
+        "mae": 1.2033383915022766,
+        "rmse": 2.186598719597694,
+        "bias": -0.03368740515933232,
+        "baselineMae": 1.3804248861911992
+      },
+      "appeared": {
+        "count": 301,
+        "mae": 2.0465116279069777,
+        "rmse": 3.105861995894462,
+        "bias": -0.6617940199335542,
+        "baselineMae": 2.2551495016611294
+      }
+    }
+  ]
 }
