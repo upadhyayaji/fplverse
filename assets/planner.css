@@ -1054,3 +1054,37 @@ html[data-theme="light"] .position-filter button.active {
   .replacement-list-header { padding-inline: 12px; }
   .replacement-list { padding-inline: 8px; }
 }
+
+.mobile-scroll-hint { display: none; }
+@media (max-width: 780px) {
+  .planner-grid, .planner-summary, .gameweek-panel, .transfer-panel { min-width: 0; }
+  .planner-top-actions { margin-left: auto; gap: 8px; }
+  .reset-button { min-height: 44px; font-size: 12px; }
+  .gameweek-tabs { min-width: 0; overscroll-behavior-x: contain; }
+  .gameweek-tabs button, .position-filter button { min-height: 44px; font-size: 12px; }
+  .planner-panel-header p, .squad-forecast { font-size: 12px; line-height: 1.5; }
+  .mobile-scroll-hint { display: block; margin: 0; padding: 8px 16px; color: var(--muted-bright); font-size: 12px; }
+  .pitch { padding: 28px 10px; overscroll-behavior-x: contain; }
+  .position-row { min-width: 624px; gap: 8px; }
+  .pitch .player-card, .bench .player-card { width: 118px; min-width: 118px; padding: 8px 5px; }
+  .player-card .player-shirt-picture { margin-top: 28px; }
+  .player-name { font-size: 13px; }
+  .player-meta { display: block; font-size: 11px; }
+  .player-outlook-tile strong { font-size: 12px; }
+  .player-outlook-tile span { font-size: 10px; }
+  .squad-remove { width: 44px; height: 44px; top: 0; left: 0; font-size: 20px; border-radius: 10px; }
+  .substitute-button, .swap-button, .player-add, .player-restore { min-height: 44px; font-size: 12px; }
+  .bench-wrap { padding: 16px 10px; }
+  .bench { justify-content: flex-start; gap: 10px; padding: 12px 0; overscroll-behavior-x: contain; }
+  .transfer-tools { padding: 16px 12px; }
+  .replacement-list { max-height: none; padding: 0 8px 12px; }
+  .replacement-list-header, .replacement { grid-template-columns: minmax(0, 1fr) 48px 52px 62px; gap: 6px; }
+  .replacement-list-header { padding: 10px 12px; font-size: 9px; letter-spacing: 0; }
+  .replacement-copy strong { font-size: 12px; }
+  .replacement-copy span { font-size: 10px; white-space: normal; }
+  .replacement-price, .replacement-sort-metric { min-width: 0; font-size: 11px; }
+  .replacement button { min-height: 44px; padding: 7px 4px; font-size: 11px; }
+  .replacement-action { min-width: 0; }
+  .replacement-action small { overflow-wrap: anywhere; }
+  .replacement-fixtures { overflow-x: auto; grid-template-columns: repeat(5, minmax(58px, 1fr)); }
+}
