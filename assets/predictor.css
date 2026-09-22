@@ -495,3 +495,17 @@ html[data-theme="light"] .prediction-total strong {
     flex-basis: 29px;
   }
 }
+
+@media (max-width: 680px) {
+  .predictor-page .site-nav-link { flex: 1 1 0; }
+  .predictor-controls, .prediction-board { min-width: 0; }
+  .position-multiselect button, .gameweek-scroll button { min-height: 44px; font-size: 12px; }
+  .gameweek-scroll { overscroll-behavior-x: contain; }
+  .prediction-table-wrap { max-height: 70vh; overscroll-behavior-x: contain; }
+  .prediction-table .player-column { width: 132px; min-width: 132px; max-width: 132px; }
+  .prediction-table .total-column { position: static; width: 64px; min-width: 64px; max-width: 64px; }
+  .prediction-table thead .total-column { position: sticky; left: auto; z-index: 4; }
+  .prediction-table th, .prediction-table td { min-width: 104px; }
+  .prediction-player { gap: 6px; }
+  .position-marker { display: none; }
+}

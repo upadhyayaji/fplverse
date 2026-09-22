@@ -78,8 +78,9 @@
                 <div class="fixture-key" aria-label="Fixture difficulty key"><span>V easy</span><i class="fdr fdr-1" title="Very easy"></i><i class="fdr fdr-2" title="Easy"></i><i class="fdr fdr-3" title="Medium"></i><i class="fdr fdr-4" title="Hard"></i><i class="fdr fdr-5" title="Very hard"></i><span>V hard</span></div>
               </div>
               <div style="padding: 0 24px 16px"><button class="button button-primary" id="optimizeSquad" type="button" style="width:auto;font-size:12px;padding:0 16px">Optimize</button><small style="margin-left:12px;color:var(--muted)">Best XI, captain and vice-captain for the selected GW</small></div>
-              <div class="pitch" id="pitch"></div>
-              <div class="bench-wrap"><span class="section-kicker">Bench</span><div class="bench" id="bench"></div></div>
+              <p class="mobile-scroll-hint">Swipe across the pitch to see every player.</p>
+              <div class="pitch" id="pitch" tabindex="0" role="region" aria-label="Starting eleven; scroll horizontally to see all players"></div>
+              <div class="bench-wrap"><span class="section-kicker">Bench</span><div class="bench" id="bench" tabindex="0" role="region" aria-label="Bench players; scroll horizontally to see all players"></div></div>
             </section>
 
             <aside class="transfer-panel panel" aria-labelledby="transferTitle">
