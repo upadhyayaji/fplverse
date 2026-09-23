@@ -47,8 +47,9 @@
             <p>Load any public FPL squad, scan upcoming fixtures, and test transfers without touching the official team.</p>
           </div>
           <form class="planner-entry panel" id="plannerEntryForm">
-            <label for="plannerEntryId"><span>FPL Entry ID</span><input id="plannerEntryId" type="number" min="1" max="100000000" inputmode="numeric" placeholder="e.g. 218806" required /></label>
+            <label for="plannerEntryId"><span>FPL Entry ID</span><input id="plannerEntryId" type="text" placeholder="Entry ID or FPL team URL" required /></label>
             <button class="button button-primary" id="loadSquadButton" type="submit">Load squad</button>
+            <div class="planner-onboarding"><button class="button button-quiet" id="tryDemo" type="button">Try a demo squad</button><details class="entry-id-help"><summary>Where’s my ID?</summary><p>Open your team’s points page on the FPL website. The number after <code>/entry/</code> in its URL is your Entry ID. For example, <code>/entry/218806/</code> means <strong>218806</strong>. You can paste the full URL above. No password needed.</p></details></div>
             <small>No login needed. Pending transfers made after the deadline are not visible.</small>
           </form>
         </section>
@@ -56,6 +57,7 @@
         <div id="plannerStatus" class="status" role="status" aria-live="polite"></div>
 
         <section id="plannerWorkspace" class="planner-workspace" hidden>
+          <div class="planner-freshness"><p id="plannerFreshness" role="status"></p><button class="button button-quiet" id="refreshPlanner" type="button">Refresh data</button><button class="button button-quiet" id="useMyTeam" type="button" hidden>Load my team</button></div>
           <div class="planner-summary panel">
             <div class="manager-identity">
               <span class="connected-avatar" id="plannerAvatar">AU</span>

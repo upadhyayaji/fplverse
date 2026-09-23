@@ -1054,3 +1054,13 @@ html[data-theme="light"] .position-filter button.active {
   .replacement-list-header { padding-inline: 12px; }
   .replacement-list { padding-inline: 8px; }
 }
+
+.planner-onboarding { grid-column: 1 / -1; display: flex; align-items: flex-start; flex-wrap: wrap; gap: 12px; }
+.entry-id-help { flex: 1; min-width: 160px; font-size: 12px; line-height: 1.6; color: var(--muted-bright); }
+.entry-id-help summary { min-height: 44px; padding-block: 12px; cursor: pointer; text-decoration: underline; }
+.entry-id-help p { margin: 4px 0; overflow-wrap: anywhere; }
+.planner-freshness { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+.planner-freshness p { flex: 1; min-width: 220px; margin: 0; color: var(--muted-bright); font-size: 12px; line-height: 1.6; }
+.planner-freshness .button, .planner-onboarding .button { width: auto; min-height: 44px; padding: 0 14px; font-size: 12px; }
+.planner-freshness [hidden] { display: none; }
+@media (max-width: 680px) { .planner-entry input { font-size: 16px; } }
