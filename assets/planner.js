@@ -1,3 +1,4 @@
+import { parseEntryId, buildDemoSquad, validatePlannerData, freshnessText } from "./planner-onboarding.mjs";
 import { predictPlayerPoints, predictionMethodology } from "./predictions.mjs";
 import { optimizeSquad } from "./optimizer.mjs";
 
@@ -34,6 +35,10 @@ const elements = {
 
 const state = {
   entryId: null,
+  demo: false,
+  fetchedAt: null,
+  refreshFailed: false,
+  busy: false,
   profile: null,
   bootstrap: null,
   fixtures: [],
@@ -180,7 +185,7 @@ function formatMoney(tenths) {
 }
 
 function draftKey() {
-  return `fplverse-planner-draft-${state.entryId}`;
+  return state.demo ? `fplverse-demo-draft-${state.sourceGw}-${state.original.map(p=>p.element).join("-")}` : `fplverse-planner-draft-${state.entryId}`;
 }
 
 function currentDraftBank() {
@@ -486,13 +491,14 @@ function renderTabs() {
     });
     elements.tabs.append(button);
   });
+  renderFreshness();
 }
 
 function renderSummary() {
   const changes = changeCount();
   elements.bank.textContent = formatMoney(currentDraftBank());
   elements.transferCount.textContent = String(changes);
-  elements.draftState.textContent = changes ? `${changes} draft change${changes === 1 ? "" : "s"} saved` : "Live squad loaded";
+  elements.draftState.textContent = changes ? `${changes} draft change${changes === 1 ? "" : "s"} saved` : state.demo ? "Demo squad loaded" : "Published squad loaded";
   elements.reset.disabled = changes === 0 && !state.squad.some((slot, index) =>
     Boolean(slot.is_captain) !== Boolean(state.original[index]?.is_captain) ||
     Boolean(slot.is_vice_captain) !== Boolean(state.original[index]?.is_vice_captain));
@@ -749,20 +755,27 @@ function resetDraft() {
   renderSummary();
 }
 
-async function loadPlanner(entryId) {
+async function loadPlanner(entryId, demo = false) {
+  if (state.busy) return;
+  setPlannerBusy(true);
   showStatus("Loading the latest published squad and fixture calendar…");
   elements.loadButton.disabled = true;
-  elements.workspace.hidden = true;
+
   try {
     const [profile, bootstrap, fixtures] = await Promise.all([
-      apiGet(`/api/entry/${entryId}`),
+      demo ? Promise.resolve({id:"demo",name:"Demo squad",player_first_name:"Sample",player_last_name:"team"}) : apiGet(`/api/entry/${entryId}`),
       apiGet("/api/bootstrap"),
       apiGet("/api/fixtures"),
     ]);
-    const published = await latestPublishedPicks(profile);
+    validatePlannerData(bootstrap, fixtures);
+    const published = demo ? {gw:bootstrap.events.filter(e=>Date.parse(e.deadline_time)<=Date.now()).at(-1)?.id || 0,data:buildDemoSquad(bootstrap.elements)} : await latestPublishedPicks(profile);
     if (!Array.isArray(published.data.picks) || published.data.picks.length !== 15) throw new Error("The published squad is incomplete.");
 
-    state.entryId = Number(profile.id);
+    state.demo = demo;
+    state.entryId = demo ? "demo" : Number(profile.id);
+    state.fetchedAt = Date.now();
+    state.refreshFailed = false;
+    state.activeGw = null;
     state.profile = profile;
     state.bootstrap = bootstrap;
     state.fixtures = fixtures;
@@ -776,31 +789,66 @@ async function loadPlanner(entryId) {
     state.positionFilter = 1;
     restoreDraft();
 
-    localStorage.setItem("fplverse-entry-id", String(state.entryId));
-    history.replaceState(null, "", `planner.html?entry=${state.entryId}`);
-    elements.entryId.value = String(state.entryId);
+    if (!demo) {
+      localStorage.setItem("fplverse-entry-id", String(state.entryId));
+      elements.entryId.value = String(state.entryId);
+    }
+    history.replaceState(null, "", demo ? "planner.html?demo=1" : `planner.html?entry=${state.entryId}`);
+    document.querySelector("#useMyTeam").hidden = !demo;
     elements.avatar.textContent = initials(profile);
     elements.teamName.textContent = profile.name || `Entry ${state.entryId}`;
     elements.managerName.textContent = `${profile.player_first_name || ""} ${profile.player_last_name || ""}`.trim();
-    elements.sourceGameweek.textContent = `GW ${state.sourceGw}`;
-    elements.pitchSubtitle.textContent = `Fixtures shown for the selected future gameweek. Source squad locked at the GW ${state.sourceGw} deadline.`;
+    elements.sourceGameweek.textContent = demo ? "Sample" : `GW ${state.sourceGw}`;
+    elements.pitchSubtitle.textContent = demo ? "Sample team. Explore transfers and Optimize, or load your own team above." : `Source squad locked at the GW ${state.sourceGw} deadline.`;
     elements.workspace.hidden = false;
     renderTabs();
     renderPositionFilters();
     renderSquad();
     renderSummary();
-    showStatus(`Squad loaded. Future changes here are private planning only.`, "success");
+    renderReplacements();
+    showStatus(demo ? "Demo ready. Experiment freely; your personal draft is separate." : "Squad loaded. Future changes here are private planning only.", "success");
   } catch (error) {
     showStatus(error.message || "The planner could not load this squad.", "error");
   } finally {
-    elements.loadButton.disabled = false;
+    setPlannerBusy(false);
   }
 }
 
+function setPlannerBusy(busy) {
+  state.busy=busy;
+  for (const id of ["loadSquadButton","tryDemo","refreshPlanner"]) document.getElementById(id).disabled=busy;
+}
+function renderFreshness() {
+  if(!state.fetchedAt) return;
+  const element=document.querySelector("#plannerFreshness");
+  element.textContent=freshnessText({...state,failed:state.refreshFailed});
+  element.title=`Retrieved ${new Date(state.fetchedAt).toLocaleString()}. Upstream data may be cached. Refresh preserves your draft and squad source.`;
+}
+async function refreshPlanner() {
+  if(state.busy || !state.bootstrap) return;
+  setPlannerBusy(true);
+  try {
+    const [bootstrap,fixtures]=await Promise.all([apiGet("/api/bootstrap"),apiGet("/api/fixtures")]);
+    validatePlannerData(bootstrap,fixtures);
+    const ids=new Set(bootstrap.elements.map(p=>p.id));
+    if([...state.squad,...state.original].some(p=>p.element!==null && !ids.has(p.element))) throw new Error("Some squad players are missing from the latest data.");
+    state.bootstrap=bootstrap;state.fixtures=fixtures;state.fetchedAt=Date.now();state.refreshFailed=false;
+    renderTabs();renderSquad();renderSummary();renderReplacements();
+    showStatus("Player data and fixtures refreshed. Your draft is preserved.","success");
+  } catch(error) {
+    state.refreshFailed=true;
+    showStatus("Couldn’t refresh. Your draft and previously loaded data are preserved.","error");
+  } finally {setPlannerBusy(false);renderFreshness();}
+}
+document.querySelector("#tryDemo").addEventListener("click",()=>loadPlanner(null,true));
+document.querySelector("#refreshPlanner").addEventListener("click",refreshPlanner);
+document.querySelector("#useMyTeam").addEventListener("click",()=>{elements.form.scrollIntoView({behavior:"smooth",block:"center"});elements.entryId.focus({preventScroll:true});});
+setInterval(renderFreshness,60000);
+
 elements.form.addEventListener("submit", (event) => {
   event.preventDefault();
-  const entryId = Number(elements.entryId.value);
-  if (!Number.isInteger(entryId) || entryId < 1) return showStatus("Enter a valid FPL Entry ID.", "error");
+  const entryId = parseEntryId(elements.entryId.value);
+  if (!entryId) return showStatus("Enter a valid FPL Entry ID.", "error");
   loadPlanner(entryId);
 });
 
@@ -839,3 +887,5 @@ document.querySelector("#optimizeSquad").addEventListener("click", () => {
 const params = new URLSearchParams(location.search);
 const savedEntry = params.get("entry") || localStorage.getItem("fplverse-entry-id") || "";
 if (/^\d{1,8}$/.test(savedEntry)) elements.entryId.value = savedEntry;
+
+if(params.get("demo")==="1") loadPlanner(null,true);
