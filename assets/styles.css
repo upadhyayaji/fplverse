@@ -1420,3 +1420,21 @@ html[data-theme="light"] .table-rank {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Phone controls remain readable and usable without zooming. */
+@media (max-width: 680px) {
+  input, select, textarea { font-size: 16px !important; max-width: 100%; }
+  button, .site-nav-link { touch-action: manipulation; }
+  .theme-toggle, .button { min-height: 44px; }
+  .theme-toggle { min-width: 44px; }
+  .topbar { gap: 12px; }
+  .site-nav { min-width: 0; gap: 2px; }
+  .site-nav-link { min-width: 0; min-height: 44px; padding: 12px 6px; font-size: 11px; white-space: normal; }
+  .panel-header { flex-wrap: wrap; gap: 14px; }
+  .panel-header > div { min-width: 0; }
+  .segmented { max-width: 100%; flex-wrap: wrap; }
+  .segmented button, .legend button { min-height: 44px; }
+  footer > div { min-width: 0; }
+  footer span { overflow-wrap: anywhere; }
+  :where(button, a, input, select, [tabindex]):focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+}
