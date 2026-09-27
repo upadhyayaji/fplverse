@@ -11,7 +11,7 @@
       "capturedAt": "2026-09-17T20:23:25.851Z",
       "deadline": "2026-09-18T17:30:00Z",
       "leadHours": 21.109485833333334,
-      "scoredAt": "2026-09-21T14:19:05.491Z",
+      "scoredAt": "2026-09-27T14:06:23.427Z",
       "missing": 0,
       "all": {
         "count": 659,
@@ -27,6 +27,8 @@
         "bias": -0.6617940199335542,
         "baselineMae": 2.2551495016611294
       },
+      "previousModel": null,
+      "previousModelAppeared": null,
       "positions": {
         "1": {
           "count": 71,
