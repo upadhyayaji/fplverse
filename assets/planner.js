@@ -2,6 +2,7 @@ import { parseEntryId, buildDemoSquad, validatePlannerData, freshnessText } from
 import { predictPlayerPoints, predictionMethodology } from "./predictions.mjs";
 import { loadHistory } from "./prediction-history.mjs";
 import { optimizeSquad } from "./optimizer.mjs";
+import { anchoredBank, validBankAnchor } from "./draft-budget.mjs";
 
 const API_BASE = String(window.FPLVERSE_CONFIG?.apiBaseUrl || "").replace(/\/$/, "");
 
@@ -48,6 +49,7 @@ const state = {
   activeGw: null,
   original: [],
   squad: [],
+  bankAnchor: null,
   selectedSlot: null,
   substituteFrom: null,
   expandedPlayerId: null,
@@ -191,6 +193,8 @@ function draftKey() {
 
 function currentDraftBank() {
   const map = playersById();
+  const confirmed = anchoredBank(state.bankAnchor, state.squad, map);
+  if (confirmed !== null) return confirmed;
   const originalCost = state.original.reduce((sum, slot) => sum + Number(map.get(slot.element)?.now_cost || 0), 0);
   const draftCost = state.squad.reduce((sum, slot) => sum + Number(map.get(slot.element)?.now_cost || 0), 0);
   return Number(state.picks?.entry_history?.bank || 0) + originalCost - draftCost;
@@ -201,7 +205,7 @@ function changeCount() {
 }
 
 function saveDraft() {
-  localStorage.setItem(draftKey(), JSON.stringify({ sourceGw: state.sourceGw, squad: state.squad }));
+  localStorage.setItem(draftKey(), JSON.stringify({ sourceGw: state.sourceGw, squad: state.squad, bankAnchor: state.bankAnchor }));
 }
 
 function restoreDraft() {
@@ -215,6 +219,7 @@ function restoreDraft() {
       saved.squad.every((slot) => validIds.has(slot.element) || (slot.element === null && [1, 2, 3, 4].includes(Number(slot.replacement_type))))
     ) {
       state.squad = saved.squad.map((slot) => ({ ...slot }));
+      state.bankAnchor = validBankAnchor(saved.bankAnchor, validIds) ? saved.bankAnchor : null;
     }
   } catch {
     localStorage.removeItem(draftKey());
@@ -743,6 +748,7 @@ function addPlayer(elementId) {
 }
 
 function resetDraft() {
+  state.bankAnchor = null;
   state.squad = state.original.map((slot) => ({ ...slot }));
   state.selectedSlot = null;
   state.substituteFrom = null;
@@ -777,7 +783,8 @@ async function loadPlanner(entryId, demo = false) {
     state.entryId = demo ? "demo" : Number(profile.id);
     state.fetchedAt = Date.now();
     state.refreshFailed = false;
-    state.activeGw = null;
+    state.activeGw = Number(new URLSearchParams(location.search).get("gw")) || null;
+    state.bankAnchor = null;
     state.profile = profile;
     state.bootstrap = bootstrap;
     state.fixtures = fixtures;
@@ -892,3 +899,4 @@ const savedEntry = params.get("entry") || localStorage.getItem("fplverse-entry-i
 if (/^\d{1,8}$/.test(savedEntry)) elements.entryId.value = savedEntry;
 
 if(params.get("demo")==="1") loadPlanner(null,true);
+else if(params.get("from")==="recommendations" && parseEntryId(savedEntry)) loadPlanner(Number(savedEntry));

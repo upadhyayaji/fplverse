@@ -45,6 +45,8 @@ jobs:
           node --check assets/predictions.mjs
           node --check assets/predictor-data.mjs
           node --check assets/predictor.js
+          node --check assets/recommendations-page.js
+          node --check assets/recommendations-worker.mjs
 
       - name: Run frontend analytics tests
         run: |
@@ -57,4 +59,5 @@ jobs:
           node --check scripts/track-predictions.mjs
           node tests/optimizer.test.mjs
           node tests/planner-onboarding.test.mjs
+          node tests/recommendations.test.mjs
           node tests/predictor-data.test.mjs

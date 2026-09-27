@@ -43,11 +43,12 @@ jobs:
       - name: Build public artifact
         run: |
           mkdir -p _site
-          cp index.html planner.html predictor.html _site/
+          cp index.html planner.html predictor.html recommendations.html _site/
           cp -R assets _site/assets
           mkdir -p _site/data
           cp data/managers.json _site/data/managers.json
           cp data/seasons.json _site/data/seasons.json
+          cp data/player-history.json _site/data/player-history.json
           cp -R data/predictions _site/data/predictions
           touch _site/.nojekyll
 

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Explore fixture-aware FPL transfer suggestions for your squad." />
+    <meta name="theme-color" content="#080811" />
+    <title>AI Recommends — FPLVerse</title>
+    <script>try{document.documentElement.dataset.theme=localStorage.getItem("fplverse-theme")||"dark"}catch(e){document.documentElement.dataset.theme="dark"}</script>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="assets/styles.css" />
+    <link rel="stylesheet" href="assets/planner.css" />
+    <link rel="stylesheet" href="assets/recommendations.css" />
+  </head>
+  <body class="predictor-page">
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
+
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="index.html" aria-label="FPLVerse home">
+          <span class="brand-mark" aria-hidden="true">FV</span>
+          <span class="brand-copy"><strong>FPLVerse</strong><small>Friends. Family. FPL.</small></span>
+        </a>
+
+        <nav class="site-nav" aria-label="Primary navigation">
+          <a class="site-nav-link" href="planner.html">Squad Planner</a>
+          <a class="site-nav-link" href="predictor.html">Points Predictor</a>
+          <a class="site-nav-link active" href="recommendations.html" aria-current="page">AI Recommends</a>
+          <a class="site-nav-link" href="index.html">League Dashboard</a>
+        </nav>
+
+        <button class="theme-toggle" data-theme-toggle type="button" aria-label="Switch to light mode" title="Switch to light mode">
+          <svg class="theme-icon theme-icon-sun" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"></path></svg>
+          <svg class="theme-icon theme-icon-moon" aria-hidden="true" viewBox="0 0 24 24"><path d="M20.5 14.1A8.5 8.5 0 0 1 9.9 3.5 8.5 8.5 0 1 0 20.5 14.1Z"></path></svg>
+          <span data-theme-label>Light</span>
+        </button>
+      </header>
+
+      <main class="recommend-main">
+        <section class="recommend-intro">
+          <p class="eyebrow">AI Recommends · Transfer adviser</p>
+          <h1>A better move.<br />Or no move at all.</h1>
+          <p>Compare transfers using your squad, upcoming fixtures and predicted points. Keep the players you believe in.</p>
+        </section>
+        <form id="recommendLoad" class="panel recommend-panel">
+          <div class="recommend-inputs">
+            <label>Entry ID or official team URL<input id="recommendEntry" required autocomplete="off" placeholder="218806" /></label>
+          </div>
+          <div class="recommend-actions">
+            <button class="button" id="recommendLoadButton" type="submit">Load my squad</button>
+            <button class="button secondary" id="recommendDemo" type="button">Try a demo squad</button>
+            <a href="planner.html">Find your ID / edit your squad</a>
+          </div>
+        </form>
+        <div class="status" id="recommendStatus" role="status" aria-live="polite">Load a squad to begin.</div>
+        <form class="panel recommend-panel" id="recommendSettings" hidden>
+          <h2>Your transfer brief</h2>
+          <p id="recommendSourceNote"></p>
+          <div class="recommend-inputs">
+            <label>Squad to evaluate<select id="recommendSource"><option value="original">Imported deadline squad</option><option value="draft">Current planner draft</option></select></label>
+            <label>Free transfers remaining<input id="recommendFree" type="number" min="0" max="5" step="1" required placeholder="Confirm 0–5" /></label>
+            <label>Bank for this squad (£m)<input id="recommendBank" type="number" min="0" step="0.1" required /></label>
+            <label>Starting gameweek<select id="recommendWeek"></select></label>
+            <label>Planning horizon<select id="recommendHorizon"><option value="1">1 gameweek</option><option value="3">3 gameweeks</option><option value="5" selected>5 gameweeks</option></select></label>
+          </div>
+          <label class="recommend-check"><input id="recommendHits" type="checkbox" />Allow points hits (−4 per extra transfer)</label>
+          <details>
+            <summary>Review selling prices and lock players</summary>
+            <p>Prices below start at current purchase prices, not your actual selling prices. Check them against the official FPL Transfers page. “Keep” prevents a player being sold, not benched.</p>
+            <div id="recommendRoster" class="recommend-roster"></div>
+          </details>
+          <label class="recommend-check"><input id="recommendConfirmed" type="checkbox" required />I confirm this squad includes my already-made transfers, the remaining free transfers, bank and selling prices are correct, and no Wildcard or Free Hit is active.</label>
+          <button class="button" id="recommendRun" type="submit">Find my recommendations</button>
+          <p class="recommend-note">All suggested moves happen before the selected gameweek. Up to two transfers, not a week-by-week transfer plan. Chips and future price changes are not modelled. If selecting a later week, enter the bank and free transfers you expect then.</p>
+        </form>
+        <section id="recommendOutput" hidden aria-label="Transfer recommendations">
+          <h2>Your options</h2>
+          <p class="recommend-note" id="recommendSummary"></p>
+          <div id="recommendResults" class="recommend-results"></div>
+          <p class="recommend-note">Powered by our statistical prediction model and a rules-based transfer search, not live AI team news. Estimates are not guarantees. Starting XI totals exclude captain doubling and automatic substitutions. The same squad is held for the entire horizon, with its best legal XI selected each week. Single moves search all eligible players; two-move suggestions search a shortlist of points leaders, cheaper players and value candidates. We favour holding or using fewer transfers unless another option adds at least 2 estimated points. This margin is a heuristic, not a confidence interval.</p>
+        </section>
+      </main>
+
+      <footer><div><strong>FPLVerse</strong><span>Independent fan project. Not affiliated with the Premier League.</span></div><span>Predictions are estimates, not guarantees.</span></footer>
+    </div>
+
+    <script src="assets/theme.js"></script>
+    <script src="assets/config.js"></script>
+    <script type="module" src="assets/recommendations-page.js"></script>
+  </body>
+</html>

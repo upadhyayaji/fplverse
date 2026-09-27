@@ -1,0 +1,42 @@
+.recommend-main { padding: 48px 0; }
+.recommend-intro { max-width: 740px; margin-bottom: 30px; }
+.recommend-intro h1 { font-size: clamp(36px,6vw,64px); letter-spacing: -.05em; margin: 8px 0 16px; }
+.recommend-intro p, .recommend-panel p { color: var(--muted-bright); line-height: 1.6; }
+.recommend-panel { padding: 24px; margin-bottom: 22px; }
+.recommend-panel h2 { margin: 0 0 16px; }
+.recommend-inputs { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; }
+.recommend-inputs label { display: grid; gap: 8px; font-size: 13px; }
+.recommend-panel input:not([type=checkbox]), .recommend-panel select { width: 100%; min-height: 44px; border: 1px solid var(--line); border-radius: 10px; padding: 10px; background: var(--panel-strong); color: var(--text); font: inherit; }
+.recommend-check { display: flex; align-items: center; gap: 10px; min-height: 44px; margin: 12px 0; line-height: 1.5; }
+.recommend-check input { width: 20px; height: 20px; flex: 0 0 20px; }
+.recommend-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.recommend-roster { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin: 16px 0; }
+.recommend-roster-row { border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+.recommend-roster-row strong { display: block; }
+.recommend-roster-row small { display: block; color: var(--muted-bright); margin: 5px 0 10px; }
+.recommend-roster-row label { font-size: 12px; }
+.recommend-results { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 18px; }
+.recommend-card { padding: 22px; min-width: 0; }
+.recommend-card.is-preferred { outline: 2px solid var(--lime); }
+.recommend-tag { display: block; color: var(--lime); min-height: 24px; font-size: 12px; font-weight: 700; }
+.recommend-gain { font-size: 32px; font-weight: 700; margin: 16px 0 4px; }
+.recommend-card p { color: var(--muted-bright); line-height: 1.6; font-size: 13px; }
+.recommend-move { border-top: 1px solid var(--line); padding: 14px 0; }
+.recommend-fixtures { display: flex; gap: 5px; overflow-x: auto; padding: 8px 0; }
+.recommend-fixture { min-width: 74px; border-radius: 7px; padding: 7px; font-size: 10px; text-align: center; }
+.recommend-fixture strong, .recommend-fixture span { display: block; margin-top: 4px; }
+.recommend-fixture strong { font-size: 15px; }
+.recommend-week-table { border-collapse: collapse; width: 100%; font-size: 12px; margin: 16px 0; }
+.recommend-week-table th, .recommend-week-table td { padding: 7px 3px; border-bottom: 1px solid var(--line); text-align: right; }
+.recommend-week-table th:first-child { text-align: left; }
+.recommend-note { font-size: 12px; color: var(--muted-bright); line-height: 1.7; }
+.recommend-panel [hidden], [hidden].recommend-results { display: none; }
+.recommend-panel button, .recommend-card button { min-height: 44px; }
+@media(max-width:1000px) { .recommend-results { grid-template-columns:1fr; } }
+@media(max-width:680px) {
+  .recommend-inputs { grid-template-columns:1fr; }
+  .recommend-roster { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .recommend-panel { padding:16px; }
+  .recommend-main { padding-top:28px; }
+}
+@media(max-width:370px) { .recommend-roster { grid-template-columns:1fr; } }
