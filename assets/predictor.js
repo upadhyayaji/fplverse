@@ -1,4 +1,5 @@
 import { predictPlayerPoints, predictionMethodology } from "./predictions.mjs";
+import { loadHistory } from "./prediction-history.mjs";
 import { fixtureInfoForTeam, rankPlayersForWeeks } from "./predictor-data.mjs";
 
 const API_BASE = String(window.FPLVERSE_CONFIG?.apiBaseUrl || "").replace(/\/$/, "");
@@ -238,6 +239,7 @@ function renderTable() {
 async function loadPredictor() {
   try {
     const [bootstrap, fixtures] = await Promise.all([apiGet("/api/bootstrap"), apiGet("/api/fixtures")]);
+    await loadHistory(bootstrap);
     state.bootstrap = bootstrap;
     state.fixtures = fixtures;
     futureEvents().slice(0, 5).forEach((event) => state.selectedGameweeks.add(event.id));

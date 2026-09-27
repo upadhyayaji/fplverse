@@ -1,6 +1,7 @@
 import { predictPlayerBreakdown, COMPONENTS, modelVersion } from "../assets/predictions.mjs";
 
 import { predictPlayerPoints as predictV1 } from "../assets/predictions-v1.mjs";
+import { predictPlayerPoints as predictV2 } from "../assets/predictions-v2.mjs";
 
 export function makeSnapshot(bootstrap, fixtures, capturedAt, modelHash) {
   const now = Date.parse(capturedAt);
@@ -21,6 +22,7 @@ export function makeSnapshot(bootstrap, fixtures, capturedAt, modelHash) {
     isNextGameweek: event.id === nextUnfinished,
     fixtures, // Preserve historical opponent inputs as well as target fixtures.
     comparisonVersion: "heuristic-v1",
+    previousModelVersion: "components-v2",
     players: bootstrap.elements.map(player => {
       const options = {player,fixtures,gameweek:event.id,completedGameweeks:completed,isNextGameweek:event.id===nextUnfinished};
       const breakdown = predictPlayerBreakdown(options);
@@ -29,7 +31,7 @@ export function makeSnapshot(bootstrap, fixtures, capturedAt, modelHash) {
       const baseline = Number(player.points_per_game) || 0;
       if (!Number.isFinite(predicted)) throw new Error("Non-finite forecast");
       return {id:player.id,name:player.web_name,position:player.element_type,
-        predicted,baseline,comparison,components:breakdown.components,fixturePredictions:breakdown.fixtures,inputs:player};
+        predicted,baseline,comparison,previousModel:predictV2(options),components:breakdown.components,fixturePredictions:breakdown.fixtures,inputs:player};
     }),
   };
 }
@@ -62,15 +64,19 @@ export function evaluateSnapshot(snapshot, event, live, scoredAt) {
       baseline:player.baseline,actual:valid?actual:null,minutes:valid?minutes:null,
       error:valid?player.predicted-actual:null,
       comparison:player.comparison ?? null, predictedComponents:player.components ?? null,
+      previousModel:player.previousModel ?? null,
       actualComponents:valid?actualComponents(record):null,actualStats:stats ?? null,
       actualExplanation:record?.explain ?? null};
   });
   const matched=rows.filter(r=>r.actual!==null);
   return {season:snapshot.season,gameweek:snapshot.gameweek,modelHash:snapshot.modelHash,
     modelVersion:snapshot.modelVersion,comparisonVersion:snapshot.comparisonVersion,
+    previousModelVersion:snapshot.previousModelVersion,
     capturedAt:snapshot.capturedAt,deadline:snapshot.deadline,leadHours:snapshot.leadHours,scoredAt,
     missing:rows.length-matched.length,all:metrics(matched),
     appeared:metrics(matched.filter(r=>r.minutes>0)),
+    previousModel:metrics(matched.filter(r=>Number.isFinite(r.previousModel)).map(r=>({...r,predicted:r.previousModel}))),
+    previousModelAppeared:metrics(matched.filter(r=>r.minutes>0 && Number.isFinite(r.previousModel)).map(r=>({...r,predicted:r.previousModel}))),
     positions:Object.fromEntries([1,2,3,4].map(p=>[p,metrics(matched.filter(r=>r.position===p))])),
     comparison:metrics(matched.filter(r=>Number.isFinite(r.comparison)).map(r=>({...r,predicted:r.comparison}))),
     comparisonAppeared:metrics(matched.filter(r=>r.minutes>0 && Number.isFinite(r.comparison)).map(r=>({...r,predicted:r.comparison}))),
