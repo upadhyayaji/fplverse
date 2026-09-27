@@ -1,5 +1,6 @@
 import { parseEntryId, buildDemoSquad, validatePlannerData, freshnessText } from "./planner-onboarding.mjs";
 import { predictPlayerPoints, predictionMethodology } from "./predictions.mjs";
+import { loadHistory } from "./prediction-history.mjs";
 import { optimizeSquad } from "./optimizer.mjs";
 
 const API_BASE = String(window.FPLVERSE_CONFIG?.apiBaseUrl || "").replace(/\/$/, "");
@@ -768,6 +769,7 @@ async function loadPlanner(entryId, demo = false) {
       apiGet("/api/fixtures"),
     ]);
     validatePlannerData(bootstrap, fixtures);
+    await loadHistory(bootstrap);
     const published = demo ? {gw:bootstrap.events.filter(e=>Date.parse(e.deadline_time)<=Date.now()).at(-1)?.id || 0,data:buildDemoSquad(bootstrap.elements)} : await latestPublishedPicks(profile);
     if (!Array.isArray(published.data.picks) || published.data.picks.length !== 15) throw new Error("The published squad is incomplete.");
 
@@ -830,6 +832,7 @@ async function refreshPlanner() {
   try {
     const [bootstrap,fixtures]=await Promise.all([apiGet("/api/bootstrap"),apiGet("/api/fixtures")]);
     validatePlannerData(bootstrap,fixtures);
+    await loadHistory(bootstrap);
     const ids=new Set(bootstrap.elements.map(p=>p.id));
     if([...state.squad,...state.original].some(p=>p.element!==null && !ids.has(p.element))) throw new Error("Some squad players are missing from the latest data.");
     state.bootstrap=bootstrap;state.fixtures=fixtures;state.fetchedAt=Date.now();state.refreshFailed=false;

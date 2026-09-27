@@ -2,6 +2,7 @@ import { readFile, writeFile, mkdir, readdir } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { makeSnapshot, evaluateSnapshot, metrics } from "./prediction-audit.mjs";
+import { attachHistory } from "../assets/prediction-history.mjs";
 
 const root = fileURLToPath(new URL("../data/predictions/",import.meta.url));
 await mkdir(root,{recursive:true});
@@ -13,8 +14,12 @@ async function get(path) {
   return response.json();
 }
 const [bootstrap,fixtures]=await Promise.all([get("/bootstrap-static/"),get("/fixtures/")]);
+try {
+  const archive=JSON.parse(await readFile(new URL("../data/player-history.json",import.meta.url),"utf8"));
+  if(!attachHistory(bootstrap,archive)) console.warn("Historical archive not applicable; using current-season fallback");
+} catch(error) { console.warn("Historical archive unavailable:",error.message); }
 const modelHash=createHash("sha256");
-for(const file of ["predictions.mjs","predictions-v1.mjs"]) modelHash.update(file).update(await readFile(new URL("../assets/"+file,import.meta.url)));
+for(const file of ["predictions.mjs","prediction-history.mjs","predictions-v1.mjs","predictions-v2.mjs"]) modelHash.update(file).update(await readFile(new URL("../assets/"+file,import.meta.url)));
 const modelDigest=modelHash.digest("hex");
 // Timestamp after both responses arrive. A job crossing the deadline cannot create a late forecast.
 const snapshot=makeSnapshot(bootstrap,fixtures,new Date().toISOString(),modelDigest);

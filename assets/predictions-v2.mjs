@@ -1,6 +1,5 @@
 // Transparent component model; coefficients are priors, not fitted parameters.
-import { historicalPrior } from "./prediction-history.mjs";
-export const modelVersion = "components-v3-history";
+export const modelVersion = "components-v2";
 export const COMPONENTS = Object.freeze(["appearance", "goals", "assists", "cleanSheets", "saves", "bonus", "defensiveContributions", "goalsConceded", "yellowCards", "redCards", "ownGoals", "penaltiesMissed", "penaltiesSaved"]);
 const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
 const num = (x, fallback = 0) => x === null || x === undefined || x === "" || !Number.isFinite(Number(x)) ? fallback : Number(x);
@@ -26,7 +25,6 @@ export function poissonExpectation(lambda, score) {
   return result;
 }
 function rate(player, field, prior, priorMinutes = 450) {
-  prior = historicalPrior(player, field, prior);
   if (!present(player[field])) return prior;
   return (Math.max(0, num(player[field])) + prior * priorMinutes / 90) /
     ((Math.max(0, num(player.minutes)) + priorMinutes) / 90);
