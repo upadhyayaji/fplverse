@@ -1,14 +1,7 @@
 {
   "schema": 1,
   "policy": "First successful capture within 24 hours before deadline; no historical backfills.",
-  "pending": [
-    {
-      "season": "2026-2027",
-      "gameweek": 6,
-      "capturedAt": "2026-10-09T16:19:52.571Z",
-      "deadline": "2026-10-10T10:00:00Z"
-    }
-  ],
+  "pending": [],
   "reports": [
     {
       "season": "2026-2027",
@@ -83,6 +76,158 @@
         "penaltiesMissed": null,
         "penaltiesSaved": null
       }
+    },
+    {
+      "season": "2026-2027",
+      "gameweek": 6,
+      "modelHash": "d3b6374a5f575e985b273e9ae88bbf7d6ed0ab0d05b8b9b5791adf8d352ca01e",
+      "modelVersion": "components-v3-history",
+      "comparisonVersion": "heuristic-v1",
+      "previousModelVersion": "components-v2",
+      "capturedAt": "2026-10-09T16:19:52.571Z",
+      "deadline": "2026-10-10T10:00:00Z",
+      "leadHours": 17.66873027777778,
+      "scoredAt": "2026-10-13T19:21:34.113Z",
+      "missing": 0,
+      "all": {
+        "count": 667,
+        "mae": 1.2032983508245865,
+        "rmse": 2.062494377803431,
+        "bias": 0.14452773613193404,
+        "baselineMae": 1.3598200899550221
+      },
+      "appeared": {
+        "count": 315,
+        "mae": 1.8917460317460324,
+        "rmse": 2.840796892445319,
+        "bias": -0.3501587301587301,
+        "baselineMae": 2.1041269841269843
+      },
+      "previousModel": {
+        "count": 667,
+        "mae": 1.2023988005996986,
+        "rmse": 2.0563938392703145,
+        "bias": 0.15682158920539732,
+        "baselineMae": 1.3598200899550221
+      },
+      "previousModelAppeared": {
+        "count": 315,
+        "mae": 1.8838095238095238,
+        "rmse": 2.8280454858154727,
+        "bias": -0.3301587301587304,
+        "baselineMae": 2.1041269841269843
+      },
+      "positions": {
+        "1": {
+          "count": 73,
+          "mae": 0.9726027397260272,
+          "rmse": 1.472394378378107,
+          "bias": 0.5999999999999998,
+          "baselineMae": 0.6972602739726028
+        },
+        "2": {
+          "count": 217,
+          "mae": 1.2824884792626732,
+          "rmse": 1.9929946436881325,
+          "bias": 0.33963133640552995,
+          "baselineMae": 1.5193548387096778
+        },
+        "3": {
+          "count": 298,
+          "mae": 1.2546979865771823,
+          "rmse": 2.2234488598154822,
+          "bias": -0.012416107382550414,
+          "baselineMae": 1.420134228187919
+        },
+        "4": {
+          "count": 79,
+          "mae": 1.0050632911392405,
+          "rmse": 2.0864845366115197,
+          "bias": -0.2202531645569621,
+          "baselineMae": 1.3063291139240507
+        }
+      },
+      "comparison": {
+        "count": 667,
+        "mae": 1.1569715142428794,
+        "rmse": 2.102026579786502,
+        "bias": 0.06191904047976001,
+        "baselineMae": 1.3598200899550221
+      },
+      "comparisonAppeared": {
+        "count": 315,
+        "mae": 1.9333333333333351,
+        "rmse": 2.9462593987027756,
+        "bias": -0.3853968253968252,
+        "baselineMae": 2.1041269841269843
+      },
+      "components": {
+        "appearance": {
+          "count": 667,
+          "mae": 0.380321624901835,
+          "bias": 0.03728296566002707
+        },
+        "goals": {
+          "count": 667,
+          "mae": 0.4413731028338829,
+          "bias": -0.029257243130555718
+        },
+        "assists": {
+          "count": 667,
+          "mae": 0.22712596929846407,
+          "bias": -0.03361678897147034
+        },
+        "cleanSheets": {
+          "count": 667,
+          "mae": 0.28550354503102887,
+          "bias": 0.15693653912084057
+        },
+        "saves": {
+          "count": 667,
+          "mae": 0.02339094219121514,
+          "bias": 0.0001498107868382604
+        },
+        "bonus": {
+          "count": 667,
+          "mae": 0.1901017078742384,
+          "bias": 0.02590862338811608
+        },
+        "defensiveContributions": {
+          "count": 667,
+          "mae": 0.16189978700802934,
+          "bias": -0.04369813544544582
+        },
+        "goalsConceded": {
+          "count": 667,
+          "mae": 0.112908257841999,
+          "bias": 0.02000964107314645
+        },
+        "yellowCards": {
+          "count": 667,
+          "mae": 0.10343510764940553,
+          "bias": 0.004758419125863448
+        },
+        "redCards": {
+          "count": 667,
+          "mae": 0.01850621752889487,
+          "bias": 0.008432266008120432
+        },
+        "ownGoals": {
+          "count": 667,
+          "mae": 0.003152886716528175,
+          "bias": -0.003152886716528175
+        },
+        "penaltiesMissed": {
+          "count": 667,
+          "mae": 0.0024999744363952275,
+          "bias": -0.0024999744363952275
+        },
+        "penaltiesSaved": {
+          "count": 667,
+          "mae": 0.0029826556373582906,
+          "bias": 0.0029826556373582906
+        }
+      }
     }
   ],
   "models": [
@@ -101,6 +246,23 @@
         "rmse": 3.105861995894462,
         "bias": -0.6617940199335542,
         "baselineMae": 2.2551495016611294
+      }
+    },
+    {
+      "modelHash": "d3b6374a5f575e985b273e9ae88bbf7d6ed0ab0d05b8b9b5791adf8d352ca01e",
+      "all": {
+        "count": 667,
+        "mae": 1.2032983508245865,
+        "rmse": 2.062494377803431,
+        "bias": 0.14452773613193404,
+        "baselineMae": 1.3598200899550221
+      },
+      "appeared": {
+        "count": 315,
+        "mae": 1.8917460317460324,
+        "rmse": 2.840796892445319,
+        "bias": -0.3501587301587301,
+        "baselineMae": 2.1041269841269843
       }
     }
   ]
