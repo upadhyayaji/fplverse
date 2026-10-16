@@ -1,7 +1,14 @@
 {
   "schema": 1,
   "policy": "First successful capture within 24 hours before deadline; no historical backfills.",
-  "pending": [],
+  "pending": [
+    {
+      "season": "2026-2027",
+      "gameweek": 7,
+      "capturedAt": "2026-10-16T14:55:07.602Z",
+      "deadline": "2026-10-17T10:00:00Z"
+    }
+  ],
   "reports": [
     {
       "season": "2026-2027",
